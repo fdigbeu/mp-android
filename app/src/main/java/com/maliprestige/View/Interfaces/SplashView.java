@@ -1,0 +1,12 @@
+package com.maliprestige.View.Interfaces;
+
+public class SplashView {
+    public interface ISplash{
+        public void initialize();
+        public void events();
+        public void hideHeader();
+        public void displayHome();
+    }
+
+    public interface IPresenter{}
+}

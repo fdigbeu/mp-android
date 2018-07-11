@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/groupe_sitemenu" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_menu_accueil"
+            android:icon="@drawable/ic_menu_home"
+            android:title="@string/lb_accueil" />
+        <item
+            android:id="@+id/nav_vetement_homme"
+            android:icon="@drawable/ic_menu_homme"
+            android:title="@string/lb_homme" />
+        <item
+            android:id="@+id/nav_vetement_femme"
+            android:icon="@drawable/ic_menu_femme"
+            android:title="@string/lb_femme" />
+        <item
+            android:id="@+id/nav_vetement_enfant"
+            android:icon="@drawable/ic_menu_enfant"
+            android:title="@string/lb_enfant" />
+        <item
+            android:id="@+id/nav_produit_exotique"
+            android:icon="@drawable/ic_menu_exotique"
+            android:title="@string/lb_exotique" />
+        <item
+            android:id="@+id/nav_mon_panier"
+            android:icon="@drawable/ic_menu_panier"
+            android:title="@string/lb_shopping" />
+    </group>
+
+    <group android:id="@+id/groupe_compte" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_mon_compte"
+            android:icon="@drawable/ic_menu_compte"
+            android:title="@string/lb_compte" />
+        <item
+            android:id="@+id/nav_mes_commandes"
+            android:icon="@drawable/ic_menu_commande"
+            android:title="@string/lb_commande" />
+        <item
+            android:id="@+id/nav_deconnexion"
+            android:icon="@drawable/ic_menu_deconnexion"
+            android:title="@string/lb_deconnexion" />
+    </group>
+
+    <group android:id="@+id/groupe_no_compte" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inscription"
+            android:icon="@drawable/ic_menu_inscription"
+            android:title="@string/lb_inscription" />
+        <item
+            android:id="@+id/nav_connexion"
+            android:icon="@drawable/ic_menu_unlock"
+            android:title="@string/lb_connexion" />
+    </group>
+
+    <group android:id="@+id/groupe_info" android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_livraison"
+            android:icon="@drawable/ic_menu_livraison"
+            android:title="@string/lb_livraison" />
+        <item
+            android:id="@+id/nav_qui_sommes_nous"
+            android:icon="@drawable/ic_menu_who_is"
+            android:title="@string/lb_qui_sommes_nous" />
+        <item
+            android:id="@+id/nav_conditions_ventes"
+            android:icon="@drawable/ic_menu_cgv"
+            android:title="@string/lb_conditions_ventes" />
+    </group>
+
+    <group android:id="@+id/groupe_communication" android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_partager_app"
+            android:icon="@drawable/ic_menu_share"
+            android:title="@string/lb_partager" />
+        <item
+            android:id="@+id/nav_envoyer_mail"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/lb_envoyer_msg" />
+    </group>
+
+</menu>

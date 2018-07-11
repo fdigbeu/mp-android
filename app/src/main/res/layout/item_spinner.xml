@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/item_spinner"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/largeur_element_ten"
+    android:textColor="@color/colorGrayDark"
+    android:textSize="@dimen/text_size_18sp"
+    android:ellipsize="marquee"
+    android:singleLine="true"
+    android:foreground="?android:attr/selectableItemBackground" />

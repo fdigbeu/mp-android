@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGrayLight"
+    tools:context=".View.Fragments.ConnectionFragment">
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/largeur_element_ten">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largeur_element_ten">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/form_connect_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/lb_form_votre_email"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largeur_element_ten"
+                app:passwordToggleEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/form_connect_idPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:hint="@string/lb_form_votre_password"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/connexionCheckBok"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largeur_element_ten"
+                android:layout_marginBottom="@dimen/largeur_element_ten"
+                android:textSize="@dimen/text_size_16sp"
+                android:checked="true"
+                android:text="@string/lb_connexion_automatique"/>
+
+
+            <Button
+                android:id="@+id/form_btn_connection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_18sp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/colorWhiteGreen"
+                android:paddingTop="@dimen/largeur_element_ten"
+                android:paddingBottom="@dimen/largeur_element_ten"
+                android:layout_margin="@dimen/largeur_element_ten"
+                android:layout_gravity="center"
+                android:text="@string/lb_connexion"
+                android:clickable="true"
+                android:contentDescription="@string/lb_empty"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/passwordOublie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/text_size_16sp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/largeur_element_ten"
+                android:padding="@dimen/largeur_element_ten"
+                android:clickable="true"
+                android:textColor="@color/colorPrimary"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/lb_form_pasword_oublie"/>
+
+            <TextView
+                android:id="@+id/pasDeCompte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/text_size_16sp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/largeur_element_ten"
+                android:padding="@dimen/largeur_element_ten"
+                android:clickable="true"
+                android:textColor="@color/colorPrimary"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/lb_form_pas_de_compte"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/connection_progressBar" />
+
+
+</FrameLayout>
