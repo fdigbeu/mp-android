@@ -2,6 +2,7 @@ package com.maliprestige.Presenter.ExoticFrag;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.maliprestige.Model.DAOProduit;
 import com.maliprestige.Model.DAOSlide;
@@ -44,6 +45,7 @@ public class ExoticFragPresenter implements ExoticFragView.IPresenter{
                 else{
                     // Load all data produits
                     if(HomePresenter.isMobileConnected(context)){
+                        iExoticFrag.progressVisibility(View.VISIBLE);
                         exoticdAsyntask = new GetAllProduits();
                         exoticdAsyntask.setExoticPresenter(this);
                         exoticdAsyntask.initialize(context, "exotique", "500");
@@ -78,6 +80,7 @@ public class ExoticFragPresenter implements ExoticFragView.IPresenter{
     @Override
     public void onLoadProduitsFinished(Context context, ArrayList<Produit> produits) {
         try {
+            iExoticFrag.progressVisibility(View.GONE);
             // Save produit in database
             if(produits != null && produits.size() > 0){
                 //Log.i("TAG_DATA", "onLoadProduitsFinished(EXOTIC_FRAG_PRESENTER : TOTAL_PRODUITS = "+produits.size()+")");
@@ -133,7 +136,7 @@ public class ExoticFragPresenter implements ExoticFragView.IPresenter{
             if(iExoticFrag != null && produit != null){
                 String clientToken = HomePresenter.retrieveClientToken(context);
                 // If user is not connected
-                if(clientToken==null || clientToken.isEmpty() || clientToken.equalsIgnoreCase("YES") || clientToken.equalsIgnoreCase("NO")){
+                if(clientToken==null || clientToken.isEmpty() || clientToken.length() <= 15){
                     HomeView.IHome mIHome = iExoticFrag.retrieveIHomeInstance();
                     HomePresenter homePresenter = new HomePresenter(mIHome);
                     homePresenter.showViewPager(context.getResources().getString(R.string.lb_connexion));

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.maliprestige.Model.DAOProduit;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.ChildFragView;
@@ -68,6 +69,8 @@ public class GetAllProduits extends AsyncTask<Void, Void, ArrayList<Produit>> {
 
         }
         catch (Exception e) {
+            DAOProduit daoProduit = new DAOProduit(context);
+            produits = daoProduit.getAllBy(typeProduit);
             return produits;
         }
         finally {
@@ -114,6 +117,8 @@ public class GetAllProduits extends AsyncTask<Void, Void, ArrayList<Produit>> {
         }
         catch (JSONException ex) {
             Log.e("TAG_ERREUR", "GetAllProduits()->doInBackground("+typeProduit+") : "+ex.getMessage());
+            DAOProduit daoProduit = new DAOProduit(context);
+            produits = daoProduit.getAllBy(typeProduit);
             return produits;
         }
 

@@ -80,9 +80,9 @@ public class ManFragPresenter implements ManFragView.IPresenter{
     @Override
     public void onLoadProduitsFinished(Context context, ArrayList<Produit> produits) {
         try {
+            iManFrag.progressVisibility(View.GONE);
             // Save produit in database
             if(produits != null && produits.size() > 0){
-                iManFrag.progressVisibility(View.GONE);
                 iManFrag.loadRecyclerViewData(produits, 1);
                 //--
                 HomeView.IHome mIHome = iManFrag.retrieveIHomeInstance();
@@ -133,7 +133,7 @@ public class ManFragPresenter implements ManFragView.IPresenter{
             if(iManFrag != null && produit != null){
                 String clientToken = HomePresenter.retrieveClientToken(context);
                 // If user is not connected
-                if(clientToken==null || clientToken.isEmpty() || clientToken.equalsIgnoreCase("YES") || clientToken.equalsIgnoreCase("NO")){
+                if(clientToken==null || clientToken.isEmpty() || clientToken.length() <= 15){
                     HomeView.IHome mIHome = iManFrag.retrieveIHomeInstance();
                     HomePresenter homePresenter = new HomePresenter(mIHome);
                     homePresenter.showViewPager(context.getResources().getString(R.string.lb_connexion));

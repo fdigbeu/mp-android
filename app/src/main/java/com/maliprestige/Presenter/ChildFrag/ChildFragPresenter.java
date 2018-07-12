@@ -80,9 +80,9 @@ public class ChildFragPresenter implements ChildFragView.IPresenter{
     @Override
     public void onLoadProduitsFinished(Context context, ArrayList<Produit> produits) {
         try {
+            iChildFrag.progressVisibility(View.GONE);
             // Save produit in database
             if(produits != null && produits.size() > 0){
-                iChildFrag.progressVisibility(View.GONE);
                 //Log.i("TAG_DATA", "onLoadProduitsFinished(CHILD_FRAG_PRESENTER : TOTAL_PRODUITS = "+produits.size()+")");
                 iChildFrag.loadRecyclerViewData(produits, 1);
                 //--
@@ -135,7 +135,7 @@ public class ChildFragPresenter implements ChildFragView.IPresenter{
             if(iChildFrag != null && produit != null){
                 String clientToken = HomePresenter.retrieveClientToken(context);
                 // If user is not connected
-                if(clientToken==null || clientToken.isEmpty() || clientToken.equalsIgnoreCase("YES") || clientToken.equalsIgnoreCase("NO")){
+                if(clientToken==null || clientToken.isEmpty() || clientToken.length() <= 15){
                     HomeView.IHome mIHome = iChildFrag.retrieveIHomeInstance();
                     HomePresenter homePresenter = new HomePresenter(mIHome);
                     homePresenter.showViewPager(context.getResources().getString(R.string.lb_connexion));

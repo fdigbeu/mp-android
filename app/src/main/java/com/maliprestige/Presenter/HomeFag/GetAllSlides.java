@@ -2,7 +2,9 @@ package com.maliprestige.Presenter.HomeFag;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 
+import com.maliprestige.Model.DAOSlide;
 import com.maliprestige.Model.Slide;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.HomeFragView;
@@ -20,6 +22,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class GetAllSlides  extends AsyncTask<Void, Void, ArrayList<Slide>> {
+
+    private CountDownTimer downTimer;
 
     private ArrayList<Slide> slides;
     // Ref attributes
@@ -57,6 +61,8 @@ public class GetAllSlides  extends AsyncTask<Void, Void, ArrayList<Slide>> {
 
         }
         catch (Exception e) {
+            DAOSlide daoSlide = new DAOSlide(context);
+            slides = daoSlide.getAll();
             return slides;
         }
         finally {
@@ -74,6 +80,8 @@ public class GetAllSlides  extends AsyncTask<Void, Void, ArrayList<Slide>> {
             }
         }
         catch (JSONException e) {
+            DAOSlide daoSlide = new DAOSlide(context);
+            slides = daoSlide.getAll();
             return slides;
         }
 
