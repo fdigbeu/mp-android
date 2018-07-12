@@ -17,15 +17,15 @@ public class DAOAdresse {
     }
 
     public void createTable(){
-        String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, type VARCHAR, token VARCHAR, destinataire VARCHAR, libelle VARCHAR);";
+        String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, adresseId INTEGER, type VARCHAR, token VARCHAR, destinataire VARCHAR, libelle VARCHAR);";
         connexion = new DAOConnexion(context);
         connexion.getDb().execSQL(sql);
     }
 
     public void add(Adresse adresse){
         createTable();
-        String sql = "INSERT INTO " + table_name + " (type, token, destinataire, libelle)" +
-                " VALUES ('"+adresse.getType().replace("'", "''")+"', " +
+        String sql = "INSERT INTO " + table_name + " (adresseId, type, token, destinataire, libelle)" +
+                " VALUES ('"+adresse.getAdresseId()+"', '"+adresse.getType().replace("'", "''")+"', " +
                 "'"+adresse.getToken().replace("'", "''")+"', " +
                 "'"+adresse.getDestinataire().replace("'", "''")+"', " +
                 "'"+adresse.getLibelle().replace("'", "''")+"');";
@@ -43,12 +43,14 @@ public class DAOAdresse {
         for(Integer j=0; j<count; j++){
             Adresse adresse = new Adresse();
             int id = cursor.getInt(cursor.getColumnIndex("id"));
+            int adresseId = cursor.getInt(cursor.getColumnIndex("adresseId"));
             String type = cursor.getString(cursor.getColumnIndex("type"));
             String token = cursor.getString(cursor.getColumnIndex("token"));
             String destinataire = cursor.getString(cursor.getColumnIndex("destinataire"));
             String libelle = cursor.getString(cursor.getColumnIndex("libelle"));
             //--
             adresse.setId(id);
+            adresse.setAdresseId(adresseId);
             adresse.setType(type);
             adresse.setDestinataire(destinataire);
             adresse.setLibelle(libelle);

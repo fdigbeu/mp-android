@@ -15,12 +15,14 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 
+import com.maliprestige.Model.Cryptage;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Screen;
 import com.maliprestige.Model.Slide;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.HomeView;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,11 +41,19 @@ public class HomePresenter implements HomeView.IPresenter{
             if(iHome != null && context != null){
                 iHome.initialize();
                 iHome.events();
-                iHome.notifyUserIsConnected(false);
-                // Home : default
-                iHome.changeHomeView(0, context.getResources().getString(R.string.lb_accueil));
-                // Checked home menu in navigation view
-                iHome.checkedNavigationView(R.id.nav_menu_accueil);
+
+                String clientToken = HomePresenter.retrieveClientToken(context);
+                if(clientToken != null && clientToken.length() >= 50){
+                    iHome.notifyUserIsConnected(true);
+                    showViewPager(context.getResources().getString(R.string.lb_commande));
+                }
+                else{
+                    iHome.notifyUserIsConnected(false);
+                    // Home : default
+                    iHome.changeHomeView(0, context.getResources().getString(R.string.lb_accueil));
+                    // Checked home menu in navigation view
+                    iHome.checkedNavigationView(R.id.nav_menu_accueil);
+                }
             }
         }
         catch (Exception ex){
@@ -97,6 +107,16 @@ public class HomePresenter implements HomeView.IPresenter{
                     case "connecter": // Se connecter
                         iHome.changeHomeView(8, titreSlide);
                         iHome.checkedNavigationView(R.id.nav_connexion);
+                        break;
+
+                    case "compte": // Mon compte
+                        iHome.changeHomeView(5, titreSlide);
+                        iHome.checkedNavigationView(R.id.nav_mon_compte);
+                        break;
+
+                    case "commandes": // Mes commandes
+                        iHome.changeHomeView(6, titreSlide);
+                        iHome.checkedNavigationView(R.id.nav_mes_commandes);
                         break;
                 }
             }
@@ -280,6 +300,18 @@ public class HomePresenter implements HomeView.IPresenter{
     public static void saveClientToken(Context context, String token){
         try { saveDataInSharePreferences(context, "MP_CLIENT_TOKEN", token); }
         catch (Exception ex){ Log.e("TAG_ERROR", "HomePresenter-->saveClientToken() : "+ex.getMessage()); }
+    }
+
+    // Method to crypte data
+    public static String crypterData(String data){
+        Cryptage cryptage = new Cryptage();
+        return cryptage.crypterData(data);
+    }
+
+    // Method to decrypt data
+    public static String decrypterData(String data){
+        Cryptage cryptage = new Cryptage();
+        return cryptage.decrypterData(data);
     }
 
 

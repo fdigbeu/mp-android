@@ -2,10 +2,21 @@ package com.maliprestige.Model;
 
 public class Adresse {
     private int id;
+    private int adresseId;
     private String type;
     private String token;
     private String destinataire;
     private String libelle;
+
+    @Override
+    public String toString() {
+        return "{\"id\":\""+id+"\"," +
+                "\"adresseId\":\""+adresseId+"\"," +
+                "\"type\":\""+type+"\"," +
+                "\"destinataire\":\""+destinataire+"\"," +
+                "\"libelle\":\""+libelle+"\"," +
+                "\"token\":"+token+"}";
+    }
 
     public int getId() {
         return id;
@@ -13,6 +24,14 @@ public class Adresse {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getAdresseId() {
+        return adresseId;
+    }
+
+    public void setAdresseId(int adresseId) {
+        this.adresseId = adresseId;
     }
 
     public String getType() {

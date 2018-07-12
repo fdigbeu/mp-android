@@ -69,7 +69,7 @@ public class DAOClient {
         return resultat.size()>0 ? resultat.get(0) : null;
     }
 
-    public void delete(String mToken)
+    public void deleteBy(String mToken)
     {
         createTable();
         String sql = "DELETE FROM " + table_name + " WHERE token LIKE '"+mToken+"'";

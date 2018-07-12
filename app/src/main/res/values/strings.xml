@@ -16,19 +16,18 @@
     <string name="lb_ajouter_au_panier">Ajouter au panier</string>
     <string name="lb_form_pas_de_compte">Je n\'ai pas de compte</string>
 
-    <string name="lb_adressses_livraisons">Adresses de livraisons</string>
-    <string name="lb_nom_prenom">NOM / PRÉNOM</string>
-    <string name="lb_email">EMAIL</string>
-    <string name="lb_telephones">TÉLÉPHONES</string>
-    <string name="lb_adressses_facturations">Adresses de facturations</string>
-
+    <string name="lb_adressses_livraisons">ADRESSES DE LIVRAISONS</string>
+    <string name="lb_nom_prenom">Nom / Prénom</string>
+    <string name="lb_email">E-mail</string>
+    <string name="lb_telephones">Téléphones</string>
+    <string name="lb_adressses_facturations">ADRESSES DE FACTURATIONS</string>
     <string name="lb_identite">IDENTITÉ</string>
 
     <string name="lb_livraison">Livraison</string>
     <string name="lb_qui_sommes_nous">Qui sommes-nous ?</string>
     <string name="lb_conditions_ventes">Conditions de ventes</string>
 
-    <string name="lb_form_pasword_oublie">Mot de passe oublié ?</string>
+    <string name="lb_form_pasword_oublie">Mot de passe oublié</string>
     <string name="lb_connexion_automatique">Activez ma connexion automatique</string>
 
     <string name="lb_champ_obligatoire">Ce champ est obligatoire</string>

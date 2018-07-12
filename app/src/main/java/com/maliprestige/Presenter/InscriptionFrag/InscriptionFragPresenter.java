@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.maliprestige.Presenter.Home.HomePresenter;
+import com.maliprestige.Presenter.Home.SendFormData;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
 
@@ -18,7 +19,7 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
     private InscriptionFragView.IInscriptionFrag iInscriptionFrag;
     // Ref Asyntask
     private HashMap<String, String> postDataParams;
-    private SendInscriptionForm sendInscriptionForm;
+    private SendFormData sendInscriptionForm;
 
     public InscriptionFragPresenter(InscriptionFragView.IInscriptionFrag iInscriptionFrag) {
         this.iInscriptionFrag = iInscriptionFrag;
@@ -72,6 +73,7 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
                 //--
                 if(HomePresenter.isMobileConnected(view.getContext())) {
                     iInscriptionFrag.progressVisibility(View.VISIBLE);
+                    iInscriptionFrag.enableDisableButton(false);
                     //--
                     postDataParams = new HashMap<>();
                     postDataParams.put("civilite", civilite);
@@ -81,12 +83,14 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
                     postDataParams.put("confirmPassword", confirmPassword);
                     //--
                     String actionForm = view.getContext().getResources().getString(R.string.mp_json_hote_production) + view.getContext().getResources().getString(R.string.mp_json_client_inscription);
-                    sendInscriptionForm = new SendInscriptionForm();
-                    sendInscriptionForm.initializeData(view.getContext(), postDataParams, actionForm, this);
+                    sendInscriptionForm = new SendFormData();
+                    sendInscriptionForm.setiInscriptionPresenter(this);
+                    sendInscriptionForm.initializeData(view.getContext(), postDataParams, actionForm);
                     sendInscriptionForm.execute();
                 }
                 else{
                     iInscriptionFrag.displaySnackBar(view, view.getContext().getResources().getString(R.string.no_connection));
+                    iInscriptionFrag.enableDisableButton(true);
                 }
             }
         }
@@ -97,12 +101,18 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
 
     @Override
     public void onSendInscriptionFormFinished(Context context, String returnCode) {
-        iInscriptionFrag.progressVisibility(View.GONE);
-        if(returnCode == null){
-            Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
+        try {
+            iInscriptionFrag.progressVisibility(View.GONE);
+            iInscriptionFrag.enableDisableButton(true);
+            if(returnCode == null){
+                Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
+            }
+            else{
+                Log.i("TAG_RETURN_CODE", returnCode);
+            }
         }
-        else{
-            Log.i("TAG_RETURN_CODE", returnCode);
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "InscriptionFragPresenter-->onSendInscriptionFormFinished() : "+ex.getMessage());
         }
     }
 }

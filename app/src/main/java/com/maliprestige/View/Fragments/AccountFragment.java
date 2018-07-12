@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.maliprestige.Model.Client;
 import com.maliprestige.Presenter.AccountFrag.AccountFragPresenter;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.AccountFragView;
@@ -82,5 +83,12 @@ public class AccountFragment extends Fragment implements AccountFragView.IAccoun
     public void loadAdressesFacturations(String[] facturations) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, facturations);
         adresseFacturation.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadIdentiteData(Client client) {
+        txtNomPrenom.setText(client.getCivilite()+" "+client.getNom()+" "+client.getPrenom());
+        txtEmail.setText(client.getEmail());
+        txtTelephone.setText(client.getTelPort()+" / "+client.getTelFixe());
     }
 }

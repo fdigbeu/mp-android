@@ -14,6 +14,7 @@ public class InscriptionFragView {
         public void champPasswordObligatoire();
         public void champConfirmPasswordObligatoire();
         public void displaySnackBar(View view, String message);
+        public void enableDisableButton(boolean enable);
     }
 
     // Presenter interface

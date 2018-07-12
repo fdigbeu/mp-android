@@ -42,6 +42,7 @@
         <item
             android:id="@+id/nav_deconnexion"
             android:icon="@drawable/ic_menu_deconnexion"
+            android:checkable="false"
             android:title="@string/lb_deconnexion" />
     </group>
 

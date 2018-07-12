@@ -133,7 +133,7 @@ public class ManFragPresenter implements ManFragView.IPresenter{
             if(iManFrag != null && produit != null){
                 String clientToken = HomePresenter.retrieveClientToken(context);
                 // If user is not connected
-                if(clientToken==null || clientToken.isEmpty()){
+                if(clientToken==null || clientToken.isEmpty() || clientToken.equalsIgnoreCase("YES") || clientToken.equalsIgnoreCase("NO")){
                     HomeView.IHome mIHome = iManFrag.retrieveIHomeInstance();
                     HomePresenter homePresenter = new HomePresenter(mIHome);
                     homePresenter.showViewPager(context.getResources().getString(R.string.lb_connexion));

@@ -24,7 +24,7 @@
     <style name="CustomHorizontalLine" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.2dp</item>
-        <item name="android:background">@color/colorGrayLight</item>
+        <item name="android:background">@color/colorWhiteGreen</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

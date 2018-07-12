@@ -1,7 +1,6 @@
 package com.maliprestige.View.Interfaces;
 
-import android.content.Context;
-import android.view.View;
+import com.maliprestige.Model.Client;
 
 public class AccountFragView {
     public interface IAccountFrag{
@@ -10,6 +9,7 @@ public class AccountFragView {
         public void progressVisibility(int visibility);
         public void loadAdressesLivraisons(String[] livraisons);
         public void loadAdressesFacturations(String[] facturations);
+        public void loadIdentiteData(Client client);
     }
 
     // Presenter interface

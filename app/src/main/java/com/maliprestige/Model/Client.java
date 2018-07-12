@@ -10,6 +10,18 @@ public class Client {
     private String email;
     private String token;
 
+    @Override
+    public String toString() {
+        return "{\"id\":\""+id+"\"," +
+                "\"civilite\":\""+civilite+"\"," +
+                "\"nom\":\""+nom+"\"," +
+                "\"prenom\":\""+prenom+"\"," +
+                "\"telPort\":\""+telPort+"\"," +
+                "\"telFixe\":\""+telFixe+"\"," +
+                "\"email\":\""+email+"\"," +
+                "\"token\":"+token+"}";
+    }
+
     public int getId() {
         return id;
     }

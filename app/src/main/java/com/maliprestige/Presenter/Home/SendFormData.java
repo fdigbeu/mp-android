@@ -1,8 +1,9 @@
-package com.maliprestige.Presenter.InscriptionFrag;
+package com.maliprestige.Presenter.Home;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.maliprestige.View.Interfaces.ConnectionFragView;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
 
 import java.io.BufferedReader;
@@ -17,14 +18,15 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SendInscriptionForm extends AsyncTask<Void, Void, String> {
+public class SendFormData extends AsyncTask<Void, Void, String> {
     private Context context;
     private  String codeRetour;
     private URL url;
     private String actionForm;
     private HttpURLConnection httpURLConnection;
     private HashMap<String, String> postDataParams;
-    private InscriptionFragView.IPresenter iPresenter;
+    private ConnectionFragView.IPresenter iConnectionPresenter;
+    private InscriptionFragView.IPresenter iInscriptionPresenter;
 
     @Override
     protected void onPreExecute() {
@@ -72,14 +74,14 @@ public class SendInscriptionForm extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        iPresenter.onSendInscriptionFormFinished(context, s);
+        if(iConnectionPresenter != null) iConnectionPresenter.onSendConnectionFormFinished(context, s);
+        if(iInscriptionPresenter != null) iInscriptionPresenter.onSendInscriptionFormFinished(context, s);
     }
 
-    public void initializeData(Context context, HashMap<String, String> postDataParams, String actionForm, InscriptionFragView.IPresenter iPresenter){
+    public void initializeData(Context context, HashMap<String, String> postDataParams, String actionForm){
         this.context = context;
         this.postDataParams = postDataParams;
         this.actionForm = actionForm;
-        this.iPresenter = iPresenter;
     }
 
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
@@ -97,5 +99,13 @@ public class SendInscriptionForm extends AsyncTask<Void, Void, String> {
             resultat.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
         return resultat.toString();
+    }
+
+    public void setiConnectionPresenter(ConnectionFragView.IPresenter iConnectionPresenter) {
+        this.iConnectionPresenter = iConnectionPresenter;
+    }
+
+    public void setiInscriptionPresenter(InscriptionFragView.IPresenter iInscriptionPresenter) {
+        this.iInscriptionPresenter = iInscriptionPresenter;
     }
 }
