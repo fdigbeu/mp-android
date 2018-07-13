@@ -149,4 +149,10 @@ public class ChildFragPresenter implements ChildFragView.IPresenter{
             Log.e("TAG_ERROR", "ChildFragPresenter-->showProductDetail() : "+ex.getMessage());
         }
     }
+
+    public void cancelAsytask(){
+        if(childAsyntask != null){
+            childAsyntask.cancel(true);
+        }
+    }
 }

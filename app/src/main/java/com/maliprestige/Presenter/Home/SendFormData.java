@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.maliprestige.View.Interfaces.ConnectionFragView;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
+import com.maliprestige.View.Interfaces.PwdOublieDialogView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,6 +28,7 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
     private HashMap<String, String> postDataParams;
     private ConnectionFragView.IPresenter iConnectionPresenter;
     private InscriptionFragView.IPresenter iInscriptionPresenter;
+    private PwdOublieDialogView.IPresenter iPwdOublieDialogPresenter;
 
     @Override
     protected void onPreExecute() {
@@ -38,8 +40,8 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
         try{
             url = new URL(actionForm);
             httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setReadTimeout(10000);
-            httpURLConnection.setConnectTimeout(10000);
+            httpURLConnection.setReadTimeout(8000);
+            httpURLConnection.setConnectTimeout(8000);
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
@@ -76,6 +78,7 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
         super.onPostExecute(s);
         if(iConnectionPresenter != null) iConnectionPresenter.onSendConnectionFormFinished(context, s);
         if(iInscriptionPresenter != null) iInscriptionPresenter.onSendInscriptionFormFinished(context, s);
+        if(iPwdOublieDialogPresenter != null) iPwdOublieDialogPresenter.onSendPwdOublieFormFinished(context, s);
     }
 
     public void initializeData(Context context, HashMap<String, String> postDataParams, String actionForm){
@@ -107,5 +110,9 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
 
     public void setiInscriptionPresenter(InscriptionFragView.IPresenter iInscriptionPresenter) {
         this.iInscriptionPresenter = iInscriptionPresenter;
+    }
+
+    public void setiPwdOublieDialogPresenter(PwdOublieDialogView.IPresenter iPwdOublieDialogPresenter) {
+        this.iPwdOublieDialogPresenter = iPwdOublieDialogPresenter;
     }
 }

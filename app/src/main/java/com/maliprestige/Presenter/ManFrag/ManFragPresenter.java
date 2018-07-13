@@ -147,4 +147,11 @@ public class ManFragPresenter implements ManFragView.IPresenter{
             Log.e("TAG_ERROR", "ManFragPresenter-->addProductToBasket() : "+ex.getMessage());
         }
     }
+
+
+    public void cancelAsytask(){
+        if(manAsyntask != null){
+            manAsyntask.cancel(true);
+        }
+    }
 }

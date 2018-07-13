@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.maliprestige.Presenter.ConnectionFrag.ConnectionFragPresenter;
 import com.maliprestige.R;
@@ -34,6 +35,8 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
     private CheckBox connexionAutomatique;
     private Button btnConnexion;
     private ProgressBar progressBar;
+    private TextView passwordOublie;
+    private TextView pasDeCompte;
 
     private String mEmail;
     private String mPassword;
@@ -69,6 +72,8 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
         connexionAutomatique = getActivity().findViewById(R.id.connexionCheckBok);
         btnConnexion = getActivity().findViewById(R.id.form_btn_connection);
         progressBar = getActivity().findViewById(R.id.connection_progressBar);
+        passwordOublie = getActivity().findViewById(R.id.passwordOublie);
+        pasDeCompte = getActivity().findViewById(R.id.pasDeCompte);
     }
 
     @Override
@@ -80,6 +85,18 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
                 mPassword = password.getText().toString().trim();
                 mConnAutomatic = connexionAutomatique.isChecked();
                 fragPresenter.retrieveFormData(v, mEmail, mPassword, mConnAutomatic);
+            }
+        });
+        passwordOublie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragPresenter.passwordOublie(getActivity());
+            }
+        });
+        pasDeCompte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragPresenter.createNewCompteClient();
             }
         });
     }

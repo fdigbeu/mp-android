@@ -126,4 +126,11 @@ public class HomeFragPresenter implements HomeFragView.IPresenter{
             Log.e("TAG_ERROR", "HomeFragPresenter-->notifySlideIsSelected() : "+ex.getMessage());
         }
     }
+
+
+    public void cancelAsytask(){
+        if(getAllSlides != null){
+            getAllSlides.cancel(true);
+        }
+    }
 }

@@ -118,6 +118,11 @@ public class HomePresenter implements HomeView.IPresenter{
                         iHome.changeHomeView(6, titreSlide);
                         iHome.checkedNavigationView(R.id.nav_mes_commandes);
                         break;
+
+                    case "inscription": // S'inscrire
+                        iHome.changeHomeView(9, "S'inscrire");
+                        iHome.checkedNavigationView(R.id.nav_inscription);
+                        break;
                 }
             }
         }

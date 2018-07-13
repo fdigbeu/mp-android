@@ -15,6 +15,8 @@
     <string name="lb_inscription">S\'inscrire</string>
     <string name="lb_ajouter_au_panier">Ajouter au panier</string>
     <string name="lb_form_pas_de_compte">Je n\'ai pas de compte</string>
+    <string name="lb_btn_envoyer">Envoyer</string>
+    <string name="lb_btn_fermer">Fermer</string>
 
     <string name="lb_adressses_livraisons">ADRESSES DE LIVRAISONS</string>
     <string name="lb_nom_prenom">Nom / Prénom</string>
@@ -49,12 +51,12 @@
         <item>Monsieur</item>
     </string-array>
     <string name="mp_cgv_link">/conditions-de-ventes/</string>
-    <string name="mp_password_oublie_link">/mot-de-passe-oublie/</string>
 
     <string name="mp_json_hote_production">http://www.recette.maliprestige.com</string>
     <string name="mp_json_slide">/api/slides.json/</string>
     <!-- TYPE_PRODUIT = all|homme|femme|enfant|exotique et LIMIT_PRODUIT = 0 à n -->
     <string name="mp_json_produit">/api/type/{TYPE_PRODUIT}/limit/{LIMIT_PRODUIT}/produits.json/</string>
+    <string name="mp_json_client_pwd_oublie">/mot-de-passe-oublie/</string>
     <string name="mp_json_client_commande">/api/client/token/{CLIENT_TOKEN}/commandes.json/</string>
     <string name="mp_json_client_connexion">/api/client/connexion.json/</string>
     <string name="mp_json_client_inscription">/api/client/inscription.json/</string>

@@ -92,7 +92,7 @@
                 android:id="@+id/form_btn_enregistrer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_18sp"
+                android:textSize="@dimen/text_size_16sp"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/colorWhiteGreen"
                 android:paddingTop="@dimen/largeur_element_ten"

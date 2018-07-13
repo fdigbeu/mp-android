@@ -15,6 +15,7 @@ import com.maliprestige.Model.JsonData;
 import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.Presenter.Home.SendFormData;
 import com.maliprestige.R;
+import com.maliprestige.View.Dialogs.PwdOublieDialog;
 import com.maliprestige.View.Interfaces.ConnectionFragView;
 import com.maliprestige.View.Interfaces.HomeView;
 
@@ -49,10 +50,39 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
         }
     }
 
+    // Method to show dialog to modify password
+    public void passwordOublie(Context context){
+        if(iConnectionFrag != null && context != null) {
+            try {
+                PwdOublieDialog pwdOublieDialog = new PwdOublieDialog(context);
+                pwdOublieDialog.showForm();
+            }
+            catch (Exception ex){
+                Log.e("TAG_ERROR", "ConnectionFragPresenter-->passwordOublie() : "+ex.getMessage());
+            }
+        }
+    }
+
+    // Methode to create a client account
+    public void createNewCompteClient(){
+        try {
+            if(iConnectionFrag != null) {
+                HomeView.IHome mIHome = iConnectionFrag.retrieveIHomeInstance();
+                HomePresenter homePresenter = new HomePresenter(mIHome);
+                if (mIHome != null) {
+                    homePresenter.showViewPager("inscription");
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "ConnectionFragPresenter-->createNewCompteClient() : "+ex.getMessage());
+        }
+    }
+
     // Method to load external page web
     public void loadPasswordOubliePageWeb(Context context){
         try {
-            String url = context.getResources().getString(R.string.mp_json_hote_production)+context.getResources().getString(R.string.mp_password_oublie_link);
+            String url = context.getResources().getString(R.string.mp_json_hote_production)+context.getResources().getString(R.string.mp_json_client_pwd_oublie);
             if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             }
@@ -166,6 +196,13 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "ConnectionFragPresenter-->onSendConnectionFormFinished() : "+ex.getMessage());
+        }
+    }
+
+
+    public void cancelAsytask(){
+        if(sendConnexionForm != null){
+            sendConnexionForm.cancel(true);
         }
     }
 }

@@ -20,7 +20,7 @@ public class ExoticFragPresenter implements ExoticFragView.IPresenter{
     // Ref interface
     private ExoticFragView.IExoticFrag iExoticFrag;
 
-    private GetAllProduits exoticdAsyntask;
+    private GetAllProduits exoticAsyntask;
 
     public ExoticFragPresenter(ExoticFragView.IExoticFrag iExoticFrag) {
         this.iExoticFrag = iExoticFrag;
@@ -46,10 +46,10 @@ public class ExoticFragPresenter implements ExoticFragView.IPresenter{
                     // Load all data produits
                     if(HomePresenter.isMobileConnected(context)){
                         iExoticFrag.progressVisibility(View.VISIBLE);
-                        exoticdAsyntask = new GetAllProduits();
-                        exoticdAsyntask.setExoticPresenter(this);
-                        exoticdAsyntask.initialize(context, "exotique", "500");
-                        exoticdAsyntask.execute();
+                        exoticAsyntask = new GetAllProduits();
+                        exoticAsyntask.setExoticPresenter(this);
+                        exoticAsyntask.initialize(context, "exotique", "500");
+                        exoticAsyntask.execute();
                     }
                     else{
                         //Log.i("TAG_DATA", "loadExoticFragData(DATABASE_OK)");
@@ -148,6 +148,13 @@ public class ExoticFragPresenter implements ExoticFragView.IPresenter{
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "ExoticFragPresenter-->showProductDetail() : "+ex.getMessage());
+        }
+    }
+
+
+    public void cancelAsytask(){
+        if(exoticAsyntask != null){
+            exoticAsyntask.cancel(true);
         }
     }
 }

@@ -65,12 +65,6 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
                 if(!password.equals(confirmPassword)) { iInscriptionFrag.displaySnackBar(view, view.getContext().getResources().getString(R.string.lb_password_non_identique));return; }
                 if(!HomePresenter.isMailValide(email)){ iInscriptionFrag.displaySnackBar(view, view.getContext().getResources().getString(R.string.lb_form_email_invalide)); return; }
                 //--
-                /*Log.i("TAG_CIVILITE", "CIVILITE = "+civilite);
-                Log.i("TAG_NOM", "NOM = "+nom);
-                Log.i("TAG_EMAIL", "EMAIL = "+email);
-                Log.i("TAG_PASSWORD", "PASSWORD = "+password);
-                Log.i("TAG_CONFIRM_PASSWORD", "CONFIRM_PASSWORD = "+confirmPassword);*/
-                //--
                 if(HomePresenter.isMobileConnected(view.getContext())) {
                     iInscriptionFrag.progressVisibility(View.VISIBLE);
                     iInscriptionFrag.enableDisableButton(false);
@@ -113,6 +107,13 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "InscriptionFragPresenter-->onSendInscriptionFormFinished() : "+ex.getMessage());
+        }
+    }
+
+
+    public void cancelAsytask(){
+        if(sendInscriptionForm != null){
+            sendInscriptionForm.cancel(true);
         }
     }
 }

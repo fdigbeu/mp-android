@@ -150,4 +150,11 @@ public class WomanFragPresenter implements WomanFragView.IPresenter{
             Log.e("TAG_ERROR", "WomanFragPresenter-->showProductDetail() : "+ex.getMessage());
         }
     }
+
+
+    public void cancelAsytask(){
+        if(womanAsyntask != null){
+            womanAsyntask.cancel(true);
+        }
+    }
 }
