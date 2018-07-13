@@ -1,6 +1,7 @@
 package com.maliprestige.View.Fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -18,12 +19,17 @@ import android.widget.TextView;
 
 import com.maliprestige.Presenter.InscriptionFrag.InscriptionFragPresenter;
 import com.maliprestige.R;
+import com.maliprestige.View.Activities.HomeActivity;
+import com.maliprestige.View.Interfaces.HomeView;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class InscriptionFragment extends Fragment implements InscriptionFragView.IInscriptionFrag{
+
+    // Ref HomeActivity interface
+    private HomeView.IHome iHome;
 
     // Ref widgets
     private Spinner civilite;
@@ -144,5 +150,19 @@ public class InscriptionFragment extends Fragment implements InscriptionFragView
     @Override
     public void enableDisableButton(boolean enable) {
         btnEnregistrer.setEnabled(enable);
+    }
+
+
+    @Override
+    public HomeView.IHome retrieveIHomeInstance(){
+        return iHome;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        context = getActivity();
+        iHome =(HomeView.IHome) context;
+        ((HomeActivity)context).initialiseIInscriptionFrag(this);
     }
 }

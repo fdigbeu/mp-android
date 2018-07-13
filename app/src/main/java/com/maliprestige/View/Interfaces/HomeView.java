@@ -19,6 +19,7 @@ public class HomeView {
         public ArrayList<Slide> retrievePersistSlides();
         public void persistProduits(String key, ArrayList<Produit> produits);
         public ArrayList<Produit> retrievePersistProduits(String key);
+        public void launchWebHtmlActivity(String url);
     }
 
     public interface IPresenter{

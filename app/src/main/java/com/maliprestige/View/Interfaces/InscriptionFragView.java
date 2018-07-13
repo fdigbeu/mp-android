@@ -15,6 +15,7 @@ public class InscriptionFragView {
         public void champConfirmPasswordObligatoire();
         public void displaySnackBar(View view, String message);
         public void enableDisableButton(boolean enable);
+        public HomeView.IHome retrieveIHomeInstance();
     }
 
     // Presenter interface

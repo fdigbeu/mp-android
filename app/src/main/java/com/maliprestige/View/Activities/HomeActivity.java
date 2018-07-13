@@ -1,5 +1,6 @@
 package com.maliprestige.View.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -141,6 +142,14 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void events() {
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void launchWebHtmlActivity(String url) {
+        Intent intent = new Intent(HomeActivity.this, WebHtmlActivity.class);
+        intent.putExtra("url", url);
+        startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override

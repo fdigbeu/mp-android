@@ -2,10 +2,12 @@ package com.maliprestige.Presenter.Home;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +16,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.maliprestige.Model.Cryptage;
 import com.maliprestige.Model.Produit;
@@ -182,27 +185,50 @@ public class HomePresenter implements HomeView.IPresenter{
                         break;
 
                     case R.id.nav_partager_app:
+                        shareApp(context);
                         break;
 
                     case R.id.nav_envoyer_mail:
+                        sendMessage(context);
                         break;
 
                     case R.id.nav_deconnexion:
                         break;
 
                     case R.id.nav_livraison:
+                        String urlLivraison = context.getResources().getString(R.string.mp_json_hote_production)+
+                                context.getResources().getString(R.string.mp_livraison_link);
+                        iHome.launchWebHtmlActivity(urlLivraison);
                         break;
 
                     case R.id.nav_qui_sommes_nous:
+                        String urlWhois = context.getResources().getString(R.string.mp_json_hote_production)+
+                                context.getResources().getString(R.string.mp_whois_link);
+                        iHome.launchWebHtmlActivity(urlWhois);
                         break;
 
                     case R.id.nav_conditions_ventes:
+                        String urlCGV = context.getResources().getString(R.string.mp_json_hote_production)+
+                                context.getResources().getString(R.string.mp_cgv_link);
+                        iHome.launchWebHtmlActivity(urlCGV);
                         break;
                 }
             }
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "HomePresenter-->retrieveUserAction() : "+ex.getMessage());
+        }
+    }
+
+    // Launch WebHtmlActivity
+    public void launchWebHtmlActivity(String url){
+        try {
+            if(iHome != null) {
+                iHome.launchWebHtmlActivity(url);
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->launchWebHtmlActivity() : "+ex.getMessage());
         }
     }
 
@@ -285,6 +311,11 @@ public class HomePresenter implements HomeView.IPresenter{
         return matcher.find();
     }
 
+    //Method to load html in textview
+    public static void loadHtmlInTextView(TextView textView, String message){
+        textView.setText(buildHtml(message));
+    }
+
     public static Spanned buildHtml(String str) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY);
@@ -317,6 +348,31 @@ public class HomePresenter implements HomeView.IPresenter{
     public static String decrypterData(String data){
         Cryptage cryptage = new Cryptage();
         return cryptage.decrypterData(data);
+    }
+
+    // Share apps
+    public static void shareApp(Context context)
+    {
+        try {
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            sendIntent.setType("text/plain");
+            String objet = context.getResources().getString(R.string.app_name);
+            String message = context.getResources().getString(R.string.lb_message_partager_app);
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, objet);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, message);
+            context.startActivity(Intent.createChooser(sendIntent, context.getResources().getString(R.string.lb_partager_avec)));
+        }
+        catch (Exception ex){}
+    }
+
+    public static void sendMessage(Context context){
+        String message = "";
+        String email = context.getResources().getString(R.string.lb_contact_adresse_email);
+        String objet = context.getResources().getString(R.string.lb_demande_renseignement);
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, objet);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, message.trim());
+        context.startActivity(Intent.createChooser(emailIntent, context.getResources().getString(R.string.lb_selection_messagerie)));
     }
 
 

@@ -5,12 +5,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.maliprestige.Model.Client;
+import com.maliprestige.Model.DAOClient;
+import com.maliprestige.Model.JsonData;
 import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.Presenter.Home.SendFormData;
 import com.maliprestige.R;
+import com.maliprestige.View.Interfaces.HomeView;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -45,9 +52,9 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
     public void loadCGVPageWeb(Context context){
         try {
             String url = context.getResources().getString(R.string.mp_json_hote_production)+context.getResources().getString(R.string.mp_cgv_link);
-            if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            }
+            HomeView.IHome iHome = iInscriptionFrag.retrieveIHomeInstance();
+            HomePresenter homePresenter = new HomePresenter(iHome);
+            homePresenter.launchWebHtmlActivity(url);
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "InscriptionFragPresenter-->loadPageWebFromUrl() : "+ex.getMessage());
@@ -103,6 +110,28 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
             }
             else{
                 Log.i("TAG_RETURN_CODE", returnCode);
+                String jsonString = returnCode.replace("null", "");
+                JSONObject jsonObject = new JSONObject(jsonString);
+                String codeRetour = jsonObject.getString("codeRetour");
+                String message = jsonObject.getString("message");
+                //--
+                if(Integer.parseInt(codeRetour) != 200){
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                }
+                else{
+                    JsonData jsonData = new JsonData(jsonString);
+                    Client client = jsonData.getClientFromJson();
+                    // Save token
+                    HomePresenter.saveClientToken(context, client.getToken());
+                    // Save client int the database
+                    DAOClient daoClient = new DAOClient(context);
+                    daoClient.deleteBy(client.getToken());
+                    daoClient.add(client);
+                    // Notify client is connected
+                    HomeView.IHome mIHome = iInscriptionFrag.retrieveIHomeInstance();
+                    HomePresenter homePresenter = new HomePresenter(mIHome);
+                    homePresenter.loadHomeData(context);
+                }
             }
         }
         catch (Exception ex){
