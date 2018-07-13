@@ -24,7 +24,7 @@ public class DAOSlide {
     public void add(Slide slide){
         createTable();
         String sql = "INSERT INTO " + table_name + " (titre, url)" +
-                " VALUES ('"+slide.getTitle().replace("'", "''")+"', " +
+                " VALUES ('"+slide.getTitre().replace("'", "''")+"', " +
                 "'"+slide.getUrl().replace("'", "''")+"');";
         connexion.getDb().execSQL(sql);
     }
@@ -41,8 +41,9 @@ public class DAOSlide {
             String titre = cursor.getString(cursor.getColumnIndex("titre"));
             String url = cursor.getString(cursor.getColumnIndex("url"));
             //--
-            slide.setTitle(titre);
+            slide.setTitre(titre);
             slide.setUrl(url);
+            resultat.add(slide);
             //--
             cursor.moveToNext();
         }

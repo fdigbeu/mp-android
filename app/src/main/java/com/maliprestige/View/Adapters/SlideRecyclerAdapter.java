@@ -46,7 +46,7 @@ public class SlideRecyclerAdapter extends RecyclerView.Adapter<SlideRecyclerAdap
         Slide slide = slides.get(position);
 
         holder.positionItem = position;
-        holder.textView.setText(slide.getTitle());
+        holder.textView.setText(slide.getTitre());
 
         Picasso.with(context).load(slide.getUrl()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomeFragPresenter.getScreenResolution(context).getWidth(), (int)(HomeFragPresenter.getScreenResolution(context).getWidth()/2.7f)).into(holder.imageView);
     }

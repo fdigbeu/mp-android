@@ -1,21 +1,21 @@
 package com.maliprestige.Model;
 
 public class Slide {
-    private String title;
+    private String titre;
     private String url;
 
     @Override
     public String toString() {
-        return "{\"title\":\""+title+"\"," +
+        return "{\"titre\":\""+titre+"\"," +
                 "\"url\":"+url+"}";
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitre() {
+        return titre;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public String getUrl() {

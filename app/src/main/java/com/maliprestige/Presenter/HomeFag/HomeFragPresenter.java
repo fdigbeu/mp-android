@@ -36,6 +36,7 @@ public class HomeFragPresenter implements HomeFragView.IPresenter{
                 ArrayList<Slide> slides = homePresenter.retrievePersistSlides();
                 if(slides != null){
                     iHomeFrag.loadRecyclerViewData(slides, 1);
+                    homePresenter.persistSlides(slides);
                     Log.i("TAG_DATA", "loadHomeFragData(RETRIEVE_PERSISTANCE_DATA)");
                 }
                 else{
@@ -48,11 +49,12 @@ public class HomeFragPresenter implements HomeFragView.IPresenter{
                         getAllSlides.execute();
                     }
                     else{
-                        //Log.i("TAG_DATA", "loadHomeFragData(DATABASE_OK)");
                         // Retrieve slides from database
                         DAOSlide daoSlide = new DAOSlide(context);
                         slides = daoSlide.getAll();
+                        Log.i("TAG_DATA", "loadHomeFragData(DATABASE_OK_1)");
                         if(slides != null && slides.size() > 0) {
+                            Log.i("TAG_DATA", "loadHomeFragData(DATABASE_OK_2)");
                             iHomeFrag.loadRecyclerViewData(slides, 1);
                             if(mIHome != null) {
                                 homePresenter.persistSlides(slides);
@@ -75,9 +77,9 @@ public class HomeFragPresenter implements HomeFragView.IPresenter{
     @Override
     public void onLoadSlidesFinished(Context context, ArrayList<Slide> slides) {
         try {
+            iHomeFrag.progressVisibility(View.GONE);
             if(iHomeFrag != null && slides != null && slides.size() > 0){
-                iHomeFrag.progressVisibility(View.GONE);
-                //Log.i("TAG_DATA", "onLoadSlidesFinished(TOTAL_SLIDES = "+slides.size()+")");
+                Log.i("TAG_DATA", "onLoadSlidesFinished(TOTAL_SLIDES = "+slides.size()+")");
                 iHomeFrag.loadRecyclerViewData(slides, 1);
                 //--
                 HomeView.IHome mIHome = iHomeFrag.retrieveIHomeInstance();
@@ -91,6 +93,7 @@ public class HomeFragPresenter implements HomeFragView.IPresenter{
                 for(int i=0; i<slides.size(); i++){
                     daoSlide = new DAOSlide(context);
                     daoSlide.add(slides.get(i));
+                    Log.i("TAG_DATA", "onLoadSlidesFinished(DATA = "+slides.get(i).toString()+")");
                 }
             }
             else{
@@ -119,7 +122,7 @@ public class HomeFragPresenter implements HomeFragView.IPresenter{
             if(iHomeFrag != null && slide != null){
                 HomeView.IHome mIHome = iHomeFrag.retrieveIHomeInstance();
                 HomePresenter homePresenter = new HomePresenter(mIHome);
-                homePresenter.showViewPager(slide.getTitle());
+                homePresenter.showViewPager(slide.getTitre());
             }
         }
         catch (Exception ex){

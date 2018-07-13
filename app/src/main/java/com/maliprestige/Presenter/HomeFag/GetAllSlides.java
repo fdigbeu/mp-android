@@ -74,7 +74,7 @@ public class GetAllSlides  extends AsyncTask<Void, Void, ArrayList<Slide>> {
             for (int i = 0; i < results.length(); i++){
                 JSONObject jsonObject = results.getJSONObject(i);
                 Slide slide = new Slide();
-                slide.setTitle(jsonObject.getString("titre"));
+                slide.setTitre(jsonObject.getString("titre"));
                 slide.setUrl(jsonObject.getString("url"));
                 slides.add(slide);
             }

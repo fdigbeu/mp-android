@@ -1,11 +1,9 @@
 package com.maliprestige.View.Adapters;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +23,10 @@ import com.maliprestige.View.Interfaces.ExoticFragView;
 import com.maliprestige.View.Interfaces.ManFragView;
 import com.maliprestige.View.Interfaces.WomanFragView;
 import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecyclerAdapter.MyViewHolder> {
 
@@ -72,7 +70,8 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Produit produit = produits.get(position);
+
+        Produit produit = produits.get(position);;
 
         holder.positionItem = position;
         holder.titleTextView.setText(produit.getNom());
@@ -109,7 +108,24 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
         }
 
         holder.btnAjouterPanier.setText(context.getResources().getString(R.string.lb_ajouter_au_panier));
-        Picasso.with(context).load(produit.getImage1()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomePresenter.getScreenResolution(context).getWidth()/2, (int)((HomePresenter.getScreenResolution(context).getWidth()/2)/0.87f)).into(holder.imageView);
+
+        holder.imageView.setVisibility(View.GONE);
+        if(produit.getImage1() != null && !produit.getImage1().isEmpty()) {
+            holder.imageView.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(produit.getImage1()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomePresenter.getScreenResolution(context).getWidth() / 2, (int) ((HomePresenter.getScreenResolution(context).getWidth() / 2) / 0.87f)).into(holder.imageView);
+        }
+        //--
+        holder.imageView2.setVisibility(View.GONE);
+        if(produit.getImage2() != null && !produit.getImage2().isEmpty()) {
+            holder.imageView2.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(produit.getImage2()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomePresenter.getScreenResolution(context).getWidth() / 2, (int) ((HomePresenter.getScreenResolution(context).getWidth() / 2) / 0.87f)).into(holder.imageView2);
+        }
+        //--
+        holder.imageView3.setVisibility(View.GONE);
+        if(produit.getImage3() != null && !produit.getImage3().isEmpty()) {
+            holder.imageView3.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(produit.getImage3()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomePresenter.getScreenResolution(context).getWidth() / 2, (int) ((HomePresenter.getScreenResolution(context).getWidth() / 2) / 0.87f)).into(holder.imageView3);
+        }
     }
 
     @Override
@@ -121,6 +137,8 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
 
         View container;
         ImageView imageView;
+        ImageView imageView2;
+        ImageView imageView3;
         ImageView newProduit;
         TextView titleTextView;
         TextView prixTextView;
@@ -132,6 +150,8 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
 
             container = itemView.findViewById(R.id.container);
             imageView = itemView.findViewById(R.id.produit_imageview);
+            imageView2 = itemView.findViewById(R.id.produit_imageview2);
+            imageView3 = itemView.findViewById(R.id.produit_imageview3);
             newProduit = itemView.findViewById(R.id.newProduit);
             titleTextView = itemView.findViewById(R.id.produit_title_textView);
             prixTextView = itemView.findViewById(R.id.prix_produit_textView);
