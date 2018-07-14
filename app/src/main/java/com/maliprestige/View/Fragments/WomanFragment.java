@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.maliprestige.Model.Produit;
@@ -33,7 +34,7 @@ public class WomanFragment extends Fragment implements WomanFragView.IWomanFrag{
 
     private WomanFragPresenter fragPresenter;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
     private ProduitRecyclerAdapter adapter;
 
 
@@ -59,7 +60,7 @@ public class WomanFragment extends Fragment implements WomanFragView.IWomanFrag{
     @Override
     public void initialize() {
         recyclerView = getActivity().findViewById(R.id.woman_recyclerView);
-        progressBar = getActivity().findViewById(R.id.woman_progressBar);
+        progressBar = getActivity().findViewById(R.id.woman_frag_progressBar);
     }
 
     @Override

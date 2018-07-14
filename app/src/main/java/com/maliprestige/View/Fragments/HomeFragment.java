@@ -11,6 +11,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.maliprestige.Model.Slide;
@@ -34,7 +35,7 @@ public class HomeFragment extends Fragment implements HomeFragView.IHomeFrag {
 
     private HomeFragPresenter fragPresenter;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
     private SlideRecyclerAdapter adapter;
 
     public HomeFragment() {
@@ -58,7 +59,7 @@ public class HomeFragment extends Fragment implements HomeFragView.IHomeFrag {
     @Override
     public void initialize() {
         recyclerView = getActivity().findViewById(R.id.home_recyclerView);
-        progressBar = getActivity().findViewById(R.id.home_progressBar);
+        progressBar = getActivity().findViewById(R.id.home_frag_progressBar);
     }
 
     @Override

@@ -81,6 +81,10 @@
             android:id="@+id/nav_envoyer_mail"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/lb_envoyer_msg" />
+        <item
+            android:id="@+id/nav_app_update"
+            android:icon="@drawable/ic_menu_update"
+            android:title="@string/lb_app_update" />
     </group>
 
 </menu>

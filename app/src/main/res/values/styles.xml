@@ -27,6 +27,15 @@
         <item name="android:background">@color/colorGrayGreen</item>
     </style>
 
+    <!-- Popup Menu Style -->
+    <style name="CustomPopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+    <!-- //END -->
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

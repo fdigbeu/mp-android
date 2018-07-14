@@ -13,6 +13,7 @@ public class ConnectionFragView {
         public void displaySnackBar(View view, String message);
         public void enableDisableButton(boolean enable);
         public HomeView.IHome retrieveIHomeInstance();
+        public void rempliChampEmail(String email);
     }
 
     // Presenter interface

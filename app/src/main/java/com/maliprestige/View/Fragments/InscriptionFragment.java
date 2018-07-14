@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ public class InscriptionFragment extends Fragment implements InscriptionFragView
     private TextInputEditText passwordConfirm;
     private TextView conditionVente;
     private Button btnEnregistrer;
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
 
     private String mCivilite;
     private String mNom;
@@ -78,7 +79,7 @@ public class InscriptionFragment extends Fragment implements InscriptionFragView
         password = getActivity().findViewById(R.id.form_idPassword);
         passwordConfirm = getActivity().findViewById(R.id.form_idConfirmPassword);
         btnEnregistrer = getActivity().findViewById(R.id.form_btn_enregistrer);
-        progressBar = getActivity().findViewById(R.id.inscription_progressBar);
+        progressBar = getActivity().findViewById(R.id.inscription_frag_progressBar);
         conditionVente = getActivity().findViewById(R.id.conditionVente);
     }
 

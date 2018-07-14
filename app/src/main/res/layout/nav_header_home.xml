@@ -1,43 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height2"
-    android:gravity="bottom"
-    android:orientation="vertical"
     android:background="@color/colorPrimary"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
-    <!--
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:contentDescription="@string/nav_header_desc"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        app:srcCompat="@mipmap/logo" />
-    -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        android:layout_toLeftOf="@+id/headerMenu"
+        android:gravity="bottom">
 
         <ImageView
-            android:id="@+id/user_icon"
+            android:id="@+id/userPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/nav_header_desc"
-            android:src="@drawable/ic_photo_inconnu"/>
+            android:contentDescription="@string/nav_header_desc" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
@@ -47,8 +34,7 @@
                 android:textSize="@dimen/text_size_16sp"
                 android:textColor="@color/colorWhiteGreen"
                 android:ellipsize="end"
-                android:singleLine="true"
-                android:text="Inconnu"/>
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/userEmail"
@@ -57,11 +43,23 @@
                 android:textSize="@dimen/text_size_16sp"
                 android:textColor="@color/colorWhiteGreen"
                 android:ellipsize="end"
-                android:singleLine="true"
-                android:text="Veuillez vous identifier"/>
+                android:singleLine="true" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/headerMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:src="@drawable/ic_menu_user_connected"
+        android:contentDescription="@string/nav_header_desc"
+        android:layout_margin="@dimen/largeur_element_ten" />
+
+</RelativeLayout>

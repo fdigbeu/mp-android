@@ -43,6 +43,15 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
                 iConnectionFrag.initialize();
                 iConnectionFrag.events();
                 iConnectionFrag.progressVisibility(View.GONE);
+                //--
+                String clientToken = HomePresenter.retrieveClientToken(context);
+                if(clientToken != null && clientToken.equalsIgnoreCase("MP_CLIENT_DECONNECTED")){
+                    String jsonClient = HomePresenter.retrieveLastClientConnected(context);
+                    if(jsonClient != null){
+                        Client client = new JsonData(jsonClient).getClientFromJson();
+                        iConnectionFrag.rempliChampEmail(client.getEmail());
+                    }
+                }
             }
         }
         catch (Exception ex){
@@ -186,6 +195,8 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
                                 daoAdresse.add(adressesFacturations.get(i));
                             }
                         }
+                        // Save last client connected
+                        HomePresenter.saveLastClientConnected(context, client.toString());
                         // Notify client is connected
                         HomeView.IHome mIHome = iConnectionFrag.retrieveIHomeInstance();
                         HomePresenter homePresenter = new HomePresenter(mIHome);

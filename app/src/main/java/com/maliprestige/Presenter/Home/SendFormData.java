@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.maliprestige.View.Interfaces.ConnectionFragView;
+import com.maliprestige.View.Interfaces.HomeView;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
 import com.maliprestige.View.Interfaces.PwdOublieDialogView;
 
@@ -26,6 +27,7 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
     private String actionForm;
     private HttpURLConnection httpURLConnection;
     private HashMap<String, String> postDataParams;
+    private HomeView.IPresenter iHomePresenter;
     private ConnectionFragView.IPresenter iConnectionPresenter;
     private InscriptionFragView.IPresenter iInscriptionPresenter;
     private PwdOublieDialogView.IPresenter iPwdOublieDialogPresenter;
@@ -79,6 +81,7 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
         if(iConnectionPresenter != null) iConnectionPresenter.onSendConnectionFormFinished(context, s);
         if(iInscriptionPresenter != null) iInscriptionPresenter.onSendInscriptionFormFinished(context, s);
         if(iPwdOublieDialogPresenter != null) iPwdOublieDialogPresenter.onSendPwdOublieFormFinished(context, s);
+        if(iHomePresenter != null) iHomePresenter.onUserDeconnectionFinished(context, s);
     }
 
     public void initializeData(Context context, HashMap<String, String> postDataParams, String actionForm){
@@ -102,6 +105,10 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
             resultat.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
         return resultat.toString();
+    }
+
+    public void setiHomePresenter(HomeView.IPresenter iHomePresenter) {
+        this.iHomePresenter = iHomePresenter;
     }
 
     public void setiConnectionPresenter(ConnectionFragView.IPresenter iConnectionPresenter) {

@@ -17,6 +17,13 @@
     <string name="lb_form_pas_de_compte">Je n\'ai pas de compte</string>
     <string name="lb_btn_envoyer">Envoyer</string>
     <string name="lb_btn_fermer">Fermer</string>
+    <string name="lb_app_update">Mettre à jour l\'application</string>
+    <string name="lb_chargement_encours">Chargement en cours...</string>
+    <string name="lb_deconnexion_encours">Déconnexion en cours...</string>
+    <string name="lb_connexion_encours">Connexion en cours...</string>
+    <string name="lb_inscription_encours">Inscription en cours...</string>
+
+    <string name="google_market_link">market://details?id=com.maliprestige</string>
 
     <string name="lb_erreur_chargement">Erreur de chargement ! \n\nUne erreur est survenue pendant le chargement des données.</string>
 
@@ -45,6 +52,7 @@
 
     <string name="unstable_connection">Connexion internet instable</string>
     <string name="no_connection">Aucune connexion internet</string>
+    <string name="lb_deconnexion_erreur">Erreur ! La déconnexion a échoué</string>
 
     <string name="lb_form_votre_nom">Votre nom</string>
     <string name="lb_form_votre_email">Votre adresse e-mail</string>
@@ -53,6 +61,9 @@
     <string name="lb_form_enregistrer">Enregistrer</string>
     <string name="lb_form_condition_vente">En vous inscrivant, vous acceptez nos conditions de ventes</string>
     <string name="lb_form_email_invalide">L\'adresse email n\'est pas valide</string>
+
+    <string name="lb_who_are_you">Qui êtes-vous ?</string>
+    <string name="lb_identify_you">Veuillez vous identifier</string>
 
     <string-array name="liste_civilite">
         <item>Madame</item>

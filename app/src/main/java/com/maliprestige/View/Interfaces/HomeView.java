@@ -11,7 +11,7 @@ public class HomeView {
     public interface IHome{
         public void initialize();
         public void events();
-        public void notifyUserIsConnected(boolean response);
+        public void notifyUserIsConnected(boolean response, String[] userInfos);
         public void closeActivity();
         public void changeHomeView(int position, String title);
         public void checkedNavigationView(int menuItemId);
@@ -20,9 +20,12 @@ public class HomeView {
         public void persistProduits(String key, ArrayList<Produit> produits);
         public ArrayList<Produit> retrievePersistProduits(String key);
         public void launchWebHtmlActivity(String url);
+        public void openOrCloseMenuDrawer();
+        public void progressBarVisibility(int visibility);
     }
 
     public interface IPresenter{
         public void onLoadProduitsFinished(Context context, ArrayList<Produit> produits);
+        public void onUserDeconnectionFinished(Context context, String returnCode);
     }
 }

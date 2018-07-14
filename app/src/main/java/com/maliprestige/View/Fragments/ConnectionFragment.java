@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,9 +33,8 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
     // Ref Widgets
     private TextInputEditText email;
     private TextInputEditText password;
-    private CheckBox connexionAutomatique;
     private Button btnConnexion;
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
     private TextView passwordOublie;
     private TextView pasDeCompte;
 
@@ -69,9 +69,8 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
     public void initialize() {
         email = getActivity().findViewById(R.id.form_connect_email);
         password = getActivity().findViewById(R.id.form_connect_idPassword);
-        connexionAutomatique = getActivity().findViewById(R.id.connexionCheckBok);
         btnConnexion = getActivity().findViewById(R.id.form_btn_connection);
-        progressBar = getActivity().findViewById(R.id.connection_progressBar);
+        progressBar = getActivity().findViewById(R.id.connection_frag_progressBar);
         passwordOublie = getActivity().findViewById(R.id.passwordOublie);
         pasDeCompte = getActivity().findViewById(R.id.pasDeCompte);
     }
@@ -83,8 +82,7 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
             public void onClick(View v) {
                 mEmail = email.getText().toString().trim();
                 mPassword = password.getText().toString().trim();
-                mConnAutomatic = connexionAutomatique.isChecked();
-                fragPresenter.retrieveFormData(v, mEmail, mPassword, mConnAutomatic);
+                fragPresenter.retrieveFormData(v, mEmail, mPassword, true);
             }
         });
         passwordOublie.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +123,12 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
     @Override
     public HomeView.IHome retrieveIHomeInstance(){
         return iHome;
+    }
+
+    @Override
+    public void rempliChampEmail(String adresseEmail) {
+        email.setText(adresseEmail);
+        password.setText("");
     }
 
     @Override

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_mon_compte"
+        android:icon="@drawable/ic_menu_compte"
+        android:title="@string/lb_compte" />
+    <item
+        android:id="@+id/nav_mes_commandes"
+        android:icon="@drawable/ic_menu_commande"
+        android:title="@string/lb_commande" />
+    <item
+        android:id="@+id/nav_deconnexion"
+        android:icon="@drawable/ic_menu_deconnexion"
+        android:checkable="false"
+        android:title="@string/lb_deconnexion" />
+</menu>

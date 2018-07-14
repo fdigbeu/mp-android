@@ -1,6 +1,7 @@
 package com.maliprestige.Presenter.Home;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,28 +12,41 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.maliprestige.Model.Client;
 import com.maliprestige.Model.Cryptage;
+import com.maliprestige.Model.DAOClient;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Screen;
 import com.maliprestige.Model.Slide;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.HomeView;
 
-import java.sql.Connection;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HomePresenter implements HomeView.IPresenter{
 
     private HomeView.IHome iHome;
+
+    private static String MP_LAST_CLIENT_CONNECTED = "MP_LAST_CLIENT_CONNECTED";
+    private static String MP_CLIENT_TOKEN = "MP_CLIENT_TOKEN";
+    private static String MP_CLIENT_DECONNECTED = "MP_CLIENT_DECONNECTED";
 
     public HomePresenter(HomeView.IHome iHome) {
         this.iHome = iHome;
@@ -47,11 +61,19 @@ public class HomePresenter implements HomeView.IPresenter{
 
                 String clientToken = HomePresenter.retrieveClientToken(context);
                 if(clientToken != null && clientToken.length() >= 50){
-                    iHome.notifyUserIsConnected(true);
+                    DAOClient daoClient = new DAOClient(context);
+                    Client client = daoClient.getInfo(clientToken);
+                    String userNom = client.getCivilite()+" "+client.getNom();
+                    String userEmail = client.getEmail();
+                    int drawable = R.drawable.ic_photo_account;
+                    iHome.notifyUserIsConnected(true, new String[]{""+drawable, userNom, userEmail});
                     showViewPager(context.getResources().getString(R.string.lb_commande));
                 }
                 else{
-                    iHome.notifyUserIsConnected(false);
+                    int drawable = R.drawable.ic_photo_inconnu;
+                    String userNom = context.getResources().getString(R.string.lb_who_are_you);
+                    String userEmail = context.getResources().getString(R.string.lb_identify_you);
+                    iHome.notifyUserIsConnected(false, new String[]{""+drawable, userNom, userEmail});
                     // Home : default
                     iHome.changeHomeView(0, context.getResources().getString(R.string.lb_accueil));
                     // Checked home menu in navigation view
@@ -162,18 +184,12 @@ public class HomePresenter implements HomeView.IPresenter{
 
                     case R.id.nav_mon_compte:
                         iHome.changeHomeView(5, context.getResources().getString(R.string.lb_compte));
-                        break;
-
-                    case R.id.nav_inscription:
-                        iHome.changeHomeView(9, context.getResources().getString(R.string.lb_inscription));
-                        break;
-
-                    case R.id.nav_connexion:
-                        iHome.changeHomeView(8, context.getResources().getString(R.string.lb_connexion));
+                        iHome.checkedNavigationView(R.id.nav_mon_compte);
                         break;
 
                     case R.id.nav_mes_commandes:
                         iHome.changeHomeView(6, context.getResources().getString(R.string.lb_commande));
+                        iHome.checkedNavigationView(R.id.nav_mes_commandes);
                         break;
 
                     case R.id.nav_mon_panier:
@@ -182,6 +198,14 @@ public class HomePresenter implements HomeView.IPresenter{
                         if(id == R.id.action_shopping){
                             iHome.checkedNavigationView(R.id.nav_mon_panier);
                         }
+                        break;
+
+                    case R.id.nav_connexion:
+                        iHome.changeHomeView(8, context.getResources().getString(R.string.lb_connexion));
+                        break;
+
+                    case R.id.nav_inscription:
+                        iHome.changeHomeView(9, context.getResources().getString(R.string.lb_inscription));
                         break;
 
                     case R.id.nav_partager_app:
@@ -193,6 +217,21 @@ public class HomePresenter implements HomeView.IPresenter{
                         break;
 
                     case R.id.nav_deconnexion:
+                        if(isMobileConnected(context)){
+                            iHome.progressBarVisibility(View.VISIBLE);
+                            String clientToken = HomePresenter.retrieveClientToken(context);
+                            HashMap<String, String> postDataParams = new HashMap<>();
+                            postDataParams.put("token", clientToken);
+                            //--
+                            String actionForm = context.getResources().getString(R.string.mp_json_hote_production) + context.getResources().getString(R.string.mp_json_client_deconnexion);
+                            SendFormData deconnectionForm = new SendFormData();
+                            deconnectionForm.setiHomePresenter(this);
+                            deconnectionForm.initializeData(context, postDataParams, actionForm);
+                            deconnectionForm.execute();
+                        }
+                        else{
+                            Toast.makeText(context, context.getResources().getString(R.string.no_connection), Toast.LENGTH_LONG).show();
+                        }
                         break;
 
                     case R.id.nav_livraison:
@@ -212,11 +251,32 @@ public class HomePresenter implements HomeView.IPresenter{
                                 context.getResources().getString(R.string.mp_cgv_link);
                         iHome.launchWebHtmlActivity(urlCGV);
                         break;
+
+                    case R.id.nav_app_update:
+                        verifyAppUpdate(context);
+                        break;
                 }
             }
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "HomePresenter-->retrieveUserAction() : "+ex.getMessage());
+        }
+    }
+
+    // Verify update
+    private void verifyAppUpdate(Context context){
+        try {
+            Intent intent = context.getPackageManager().getLaunchIntentForPackage("com.android.vending");
+            // package name and activity
+            ComponentName comp = new ComponentName("com.android.vending", "com.google.android.finsky.activities.LaunchUrlHandlerActivity");
+            intent.setComponent(comp);
+            String marketLink = context.getResources().getString(R.string.google_market_link);
+            intent.setData(Uri.parse(marketLink));
+            context.startActivity(intent);
+            ((Activity)context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->verifyAppUpdate() : "+ex.getMessage());
         }
     }
 
@@ -280,6 +340,48 @@ public class HomePresenter implements HomeView.IPresenter{
         return null;
     }
 
+    // Method to show user connected menu
+    public void showUserConnectedMenu(View view){
+        if(iHome != null && view != null) {
+            try {
+                showUserConnectedPopupMenu(view);
+            }
+            catch (Exception ex){
+                Log.e("TAG_ERROR", "HomePresenter-->showUserConnectedMenu() : "+ex.getMessage());
+            }
+        }
+    }
+
+    // Manage when user click
+    private void showUserConnectedPopupMenu(final View view) {
+        Context wrapper = new ContextThemeWrapper(view.getContext(), R.style.CustomPopupMenu);
+        PopupMenu popup = new PopupMenu(wrapper, view);
+        try {
+            Field[] fields = popup.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if ("mPopup".equals(field.getName())) {
+                    field.setAccessible(true);
+                    Object menuPopupHelper = field.get(popup);
+                    Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                    Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                    setForceIcons.invoke(menuPopupHelper, true);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        popup.getMenuInflater().inflate(R.menu.menu_user_connected, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                retrieveUserAction(view.getContext(), item);
+                iHome.openOrCloseMenuDrawer();
+                return true;
+            }
+        });
+        popup.show();
+    }
+
     // Get screen resolution
     public static Screen getScreenResolution(Context context) {
         Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
@@ -324,9 +426,23 @@ public class HomePresenter implements HomeView.IPresenter{
         }
     }
 
+    // Method to retrieve last client connected
+    public static String retrieveLastClientConnected(Context context){
+        try { return getDataFromSharePreferences(context, MP_LAST_CLIENT_CONNECTED); }
+        catch (Exception ex){
+            return null;
+        }
+    }
+
+    // Method to save last client connected
+    public static void saveLastClientConnected(Context context, String jsonClient){
+        try { saveDataInSharePreferences(context, MP_LAST_CLIENT_CONNECTED, jsonClient); }
+        catch (Exception ex){ Log.e("TAG_ERROR", "HomePresenter-->saveLastClientConnected() : "+ex.getMessage()); }
+    }
+
     // Method to retrieve client token
     public static String retrieveClientToken(Context context){
-        try { return getDataFromSharePreferences(context, "MP_CLIENT_TOKEN"); }
+        try { return getDataFromSharePreferences(context, MP_CLIENT_TOKEN); }
         catch (Exception ex){
             return null;
         }
@@ -334,7 +450,7 @@ public class HomePresenter implements HomeView.IPresenter{
 
     // Method to save client token
     public static void saveClientToken(Context context, String token){
-        try { saveDataInSharePreferences(context, "MP_CLIENT_TOKEN", token); }
+        try { saveDataInSharePreferences(context, MP_CLIENT_TOKEN, token); }
         catch (Exception ex){ Log.e("TAG_ERROR", "HomePresenter-->saveClientToken() : "+ex.getMessage()); }
     }
 
@@ -375,6 +491,13 @@ public class HomePresenter implements HomeView.IPresenter{
         context.startActivity(Intent.createChooser(emailIntent, context.getResources().getString(R.string.lb_selection_messagerie)));
     }
 
+    public static void getNavDrawerDimension(Context context, View navDrawer){
+        ViewGroup.LayoutParams params = navDrawer.getLayoutParams();
+        Screen screen = getScreenResolution(context);
+        int imgWidth = screen.getWidth() <= screen.getHeight() ? screen.getWidth() : screen.getHeight();
+        params.width = (int)(imgWidth*0.95f);
+        navDrawer.setLayoutParams(params);
+    }
 
     // Method to get data in share preferences
     private static String getDataFromSharePreferences(Context context, String key){
@@ -396,5 +519,34 @@ public class HomePresenter implements HomeView.IPresenter{
     @Override
     public void onLoadProduitsFinished(Context context, ArrayList<Produit> produits) {
 
+    }
+
+    @Override
+    public void onUserDeconnectionFinished(Context context, String returnCode) {
+        try {
+            if(iHome != null){
+                iHome.progressBarVisibility(View.GONE);
+                String jsonString = returnCode != null ? returnCode.replace("null", "") : "";
+                if(jsonString == null || jsonString.isEmpty()){
+                    Toast.makeText(context, context.getResources().getString(R.string.lb_deconnexion_erreur), Toast.LENGTH_LONG).show();
+                }
+                else {
+                    String clientToken = retrieveClientToken(context);
+                    if(clientToken != null){
+                        DAOClient daoClient = new DAOClient(context);
+                        Client client = daoClient.getInfo(clientToken);
+                        if(client != null){
+                            saveLastClientConnected(context, client.toString());
+                        }
+                    }
+                    saveClientToken(context, MP_CLIENT_DECONNECTED);
+                    loadHomeData(context);
+                    Log.i("TAG_DECONNEXION_CODE", returnCode);
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->onUserDeconnectionFinished() : "+ex.getMessage());
+        }
     }
 }

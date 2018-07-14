@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maliprestige.Model.Produit;
@@ -53,12 +56,19 @@ public class HomeActivity extends AppCompatActivity
     private InscriptionFragView.IInscriptionFrag iInscriptionFrag;
     private ConnectionFragView.IConnectionFrag iConnectionFrag;
 
+    private LinearLayout layoutProgress;
+
     // Widgets
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
     private TextView homeTitle;
+
+    private ImageView userPhoto;
+    private TextView userNom;
+    private TextView userEmail;
+    private ImageView headerMenu;
 
     // Ref ViewPager
     private HomePagerAdapter pagerAdapter;
@@ -105,6 +115,16 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
+    public void openOrCloseMenuDrawer(){
+        homePresenter.openOrCloseMenuDrawer(drawer);
+    }
+
+    @Override
+    public void progressBarVisibility(int visibility) {
+        layoutProgress.setVisibility(visibility);
+    }
+
+    @Override
     public void initialize() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,6 +138,15 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        userPhoto = header.findViewById(R.id.userPhoto);
+        userNom = header.findViewById(R.id.userNom);
+        userEmail = header.findViewById(R.id.userEmail);
+        headerMenu = header.findViewById(R.id.headerMenu);
+
+        HomePresenter.getNavDrawerDimension(HomeActivity.this, navigationView);
+
+        layoutProgress = findViewById(R.id.layout_home_progressBar);
 
         // HomeViewPager contents
         fragments = new ArrayList<>();
@@ -142,6 +171,13 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void events() {
         navigationView.setNavigationItemSelectedListener(this);
+
+        headerMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homePresenter.showUserConnectedMenu(v);
+            }
+        });
     }
 
     @Override
@@ -153,9 +189,15 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void notifyUserIsConnected(boolean response) {
+    public void notifyUserIsConnected(boolean response, String[] userInfos) {
         navigationView.getMenu().setGroupVisible(R.id.groupe_compte, response);
         navigationView.getMenu().setGroupVisible(R.id.groupe_no_compte, !response);
+        //--
+        navigationView.getHeaderView(0);
+        userPhoto.setBackgroundResource(Integer.parseInt(userInfos[0]));
+        userNom.setText(userInfos[1]);
+        userEmail.setText(userInfos[2]);
+        headerMenu.setVisibility(response ? View.VISIBLE : View.GONE);
     }
 
     @Override

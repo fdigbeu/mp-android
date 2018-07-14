@@ -52,6 +52,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
+<!--
             <CheckBox
                 android:id="@+id/connexionCheckBok"
                 android:layout_width="match_parent"
@@ -61,6 +62,7 @@
                 android:textSize="@dimen/text_size_16sp"
                 android:checked="true"
                 android:text="@string/lb_connexion_automatique"/>
+-->
 
 
             <Button
@@ -112,13 +114,31 @@
 
     </ScrollView>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyle"
+    <LinearLayout
+        android:id="@+id/connection_frag_progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_gravity="center"
         android:visibility="gone"
-        android:id="@+id/connection_progressBar" />
+        android:padding="@dimen/largeur_element_ten"
+        android:background="@drawable/progress_bar_radius">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_16sp"
+            android:text="@string/lb_connexion_encours"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
 
 </FrameLayout>
