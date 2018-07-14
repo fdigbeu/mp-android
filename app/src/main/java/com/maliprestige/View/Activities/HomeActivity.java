@@ -31,6 +31,7 @@ import com.maliprestige.View.Fragments.InscriptionFragment;
 import com.maliprestige.View.Fragments.ManFragment;
 import com.maliprestige.View.Fragments.OrderFragment;
 import com.maliprestige.View.Fragments.WomanFragment;
+import com.maliprestige.View.Interfaces.BasketFragView;
 import com.maliprestige.View.Interfaces.ChildFragView;
 import com.maliprestige.View.Interfaces.ConnectionFragView;
 import com.maliprestige.View.Interfaces.ExoticFragView;
@@ -55,6 +56,7 @@ public class HomeActivity extends AppCompatActivity
     private ExoticFragView.IExoticFrag iExoticFrag;
     private InscriptionFragView.IInscriptionFrag iInscriptionFrag;
     private ConnectionFragView.IConnectionFrag iConnectionFrag;
+    private BasketFragView.IBasketFrag iBasketFrag;
 
     private LinearLayout layoutProgress;
 
@@ -224,6 +226,7 @@ public class HomeActivity extends AppCompatActivity
     public void initialiseIExoticFrag(ExoticFragView.IExoticFrag iExoticFrag){ this.iExoticFrag = iExoticFrag; }
     public void initialiseIInscriptionFrag(InscriptionFragView.IInscriptionFrag iInscriptionFrag){ this.iInscriptionFrag = iInscriptionFrag; }
     public void initialiseIConnectionFrag(ConnectionFragView.IConnectionFrag iConnectionFrag){ this.iConnectionFrag = iConnectionFrag; }
+    public void initialiseIBasketFrag(BasketFragView.IBasketFrag iBasketFrag){ this.iBasketFrag = iBasketFrag; }
 
     // Persist slides data
     private ArrayList<Slide> slides;

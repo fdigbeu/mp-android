@@ -166,4 +166,10 @@ public class InscriptionFragment extends Fragment implements InscriptionFragView
         iHome =(HomeView.IHome) context;
         ((HomeActivity)context).initialiseIInscriptionFrag(this);
     }
+
+    @Override
+    public void onDetach() {
+        fragPresenter.cancelAsytask();
+        super.onDetach();
+    }
 }

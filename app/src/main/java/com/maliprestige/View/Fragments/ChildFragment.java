@@ -93,4 +93,10 @@ public class ChildFragment extends Fragment implements ChildFragView.IChildFrag{
         iHome =(HomeView.IHome) context;
         ((HomeActivity)context).initialiseIChildFrag(this);
     }
+
+    @Override
+    public void onDetach() {
+        fragPresenter.cancelAsytask();
+        super.onDetach();
+    }
 }

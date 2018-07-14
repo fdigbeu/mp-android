@@ -17,8 +17,6 @@
 
             <!-- IDENTITY -->
             <android.support.v7.widget.CardView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/largeur_element_ten">
@@ -132,8 +130,6 @@
 
             <!-- ADRESSE LIVRAISON -->
             <android.support.v7.widget.CardView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -169,8 +165,6 @@
 
             <!-- ADRESSE FACTURATION -->
             <android.support.v7.widget.CardView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/largeur_element_ten">
@@ -207,12 +201,30 @@
 
     </ScrollView>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyle"
+    <LinearLayout
+        android:id="@+id/account_frag_progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_gravity="center"
         android:visibility="gone"
-        android:id="@+id/account_progressBar" />
+        android:padding="@dimen/largeur_element_ten"
+        android:background="@drawable/progress_bar_radius">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_16sp"
+            android:text="@string/lb_chargement_encours"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
 </FrameLayout>

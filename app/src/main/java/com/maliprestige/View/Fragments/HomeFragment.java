@@ -93,4 +93,10 @@ public class HomeFragment extends Fragment implements HomeFragView.IHomeFrag {
         iHome =(HomeView.IHome) context;
         ((HomeActivity)context).initialiseIHomeFrag(this);
     }
+
+    @Override
+    public void onDetach() {
+        fragPresenter.cancelAsytask();
+        super.onDetach();
+    }
 }

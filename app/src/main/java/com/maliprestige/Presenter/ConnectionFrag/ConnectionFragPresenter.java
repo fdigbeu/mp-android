@@ -49,7 +49,9 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
                     String jsonClient = HomePresenter.retrieveLastClientConnected(context);
                     if(jsonClient != null){
                         Client client = new JsonData(jsonClient).getClientFromJson();
-                        iConnectionFrag.rempliChampEmail(client.getEmail());
+                        if(client != null) {
+                            iConnectionFrag.rempliChampEmail(client.getEmail());
+                        }
                     }
                 }
             }
@@ -102,7 +104,7 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
     }
 
     // Method to retrieve user data
-    public void retrieveFormData(View view, String email, String password, boolean connAutomatic){
+    public void retrieveFormData(View view, String email, String password){
         try {
             if (view != null && iConnectionFrag != null) {
                 if(email.length()==0) {iConnectionFrag.champEmailObligatoire(); return;}
@@ -112,7 +114,6 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
                 if(HomePresenter.isMobileConnected(view.getContext())) {
                     iConnectionFrag.progressVisibility(View.VISIBLE);
                     iConnectionFrag.enableDisableButton(false);
-                    HomePresenter.saveClientToken(view.getContext(), connAutomatic ? "YES" : "NO");
                     //--
                     postDataParams = new HashMap<>();
                     postDataParams.put("email", HomePresenter.crypterData(email));
@@ -169,10 +170,7 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
                         jsonData = new JsonData(jsonFacturations);
                         ArrayList<Adresse> adressesFacturations = jsonData.getAdressesFacturationsFromJson(client.getToken());
                         // Save client token
-                        String clientToken = HomePresenter.retrieveClientToken(context);
-                        if(clientToken.equalsIgnoreCase("YES")){
-                            HomePresenter.saveClientToken(context, client.getToken());
-                        }
+                        HomePresenter.saveClientToken(context, client.getToken());
                         // Save client int the database
                         DAOClient daoClient = new DAOClient(context);
                         daoClient.deleteBy(client.getToken());

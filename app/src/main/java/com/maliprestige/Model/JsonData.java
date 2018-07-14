@@ -14,24 +14,32 @@ public class JsonData {
         this.jsonString = jsonString;
     }
 
-    public Client getClientFromJson() throws JSONException {
-        Client client = new Client();
-        JSONObject jsonObject = new JSONObject(jsonString);
-        String civilite = jsonObject.getString("civilite");
-        String nom = jsonObject.getString("nom");
-        String prenom = jsonObject.getString("prenom");
-        String telPort = jsonObject.getString("telPort");
-        String telFixe = jsonObject.getString("telFixe");
-        String email = jsonObject.getString("email");
-        String token = jsonObject.getString("token");
-        client.setCivilite(civilite);
-        client.setNom(nom);
-        client.setPrenom(prenom);
-        client.setTelPort(telPort);
-        client.setTelFixe(telFixe);
-        client.setEmail(email);
-        client.setToken(token);
-        return client;
+    public Client getClientFromJson() {
+        try {
+            if (jsonString != null && !jsonString.isEmpty()) {
+                Client client = new Client();
+                JSONObject jsonObject = new JSONObject(jsonString);
+                String civilite = jsonObject.getString("civilite");
+                String nom = jsonObject.getString("nom");
+                String prenom = jsonObject.getString("prenom");
+                String telPort = jsonObject.getString("telPort");
+                String telFixe = jsonObject.getString("telFixe");
+                String email = jsonObject.getString("email");
+                String token = jsonObject.getString("token");
+                client.setCivilite(civilite);
+                client.setNom(nom);
+                client.setPrenom(prenom);
+                client.setTelPort(telPort);
+                client.setTelFixe(telFixe);
+                client.setEmail(email);
+                client.setToken(token);
+                return client;
+            }
+        }
+        catch (JSONException ex){
+            return null;
+        }
+        return null;
     }
 
     public ArrayList<Adresse> getAdressesFacturationsFromJson(String token) {

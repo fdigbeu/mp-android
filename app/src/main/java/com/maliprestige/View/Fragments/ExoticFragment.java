@@ -93,4 +93,10 @@ public class ExoticFragment extends Fragment implements ExoticFragView.IExoticFr
         iHome =(HomeView.IHome) context;
         ((HomeActivity)context).initialiseIExoticFrag(this);
     }
+
+    @Override
+    public void onDetach() {
+        fragPresenter.cancelAsytask();
+        super.onDetach();
+    }
 }

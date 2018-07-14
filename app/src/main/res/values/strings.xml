@@ -39,6 +39,10 @@
     <string name="lb_telephones">Téléphones</string>
     <string name="lb_adressses_facturations">ADRESSES DE FACTURATIONS</string>
     <string name="lb_identite">IDENTITÉ</string>
+    <string name="lb_mon_panier">MON PANIER</string>
+
+    <string name="lb_panier_vide">Votre panier est vide.</string>
+    <string name="lb_produit_ajout_succes">Produit ajouté au panier</string>
 
     <string name="lb_livraison">Livraison</string>
     <string name="lb_qui_sommes_nous">Qui sommes-nous ?</string>

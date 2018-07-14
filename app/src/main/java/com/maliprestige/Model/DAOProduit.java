@@ -169,6 +169,86 @@ public class DAOProduit {
         return resultat;
     }
 
+    public Produit getInfoBy(int mProduitId){
+        createTable();
+        ArrayList<Produit> resultat = new ArrayList<>();
+        Cursor cursor = connexion.getDb().rawQuery("Select * FROM " + table_name +" WHERE produitId = '"+mProduitId+"'", null);
+        int count = cursor.getCount();
+        cursor.moveToFirst();
+        //--
+        for(Integer j=0; j<count; j++){
+            Produit produit = new Produit();
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            int produitId = cursor.getInt(cursor.getColumnIndex("produitId"));
+            String nom = cursor.getString(cursor.getColumnIndex("nom"));
+            String descrition = cursor.getString(cursor.getColumnIndex("descrition"));
+            String prixUnitaire = cursor.getString(cursor.getColumnIndex("prixUnitaire"));
+            String prixUnitaireTtc = cursor.getString(cursor.getColumnIndex("prixUnitaireTtc"));
+            String prixUnitaireGros = cursor.getString(cursor.getColumnIndex("prixUnitaireGros"));
+            String prixExpedition = cursor.getString(cursor.getColumnIndex("prixExpedition"));
+            String image1 = cursor.getString(cursor.getColumnIndex("image1"));
+            String image2 = cursor.getString(cursor.getColumnIndex("image2"));
+            String image3 = cursor.getString(cursor.getColumnIndex("image3"));
+            String date = cursor.getString(cursor.getColumnIndex("date"));
+            String quantite = cursor.getString(cursor.getColumnIndex("quantite"));
+            String isNouveaute = cursor.getString(cursor.getColumnIndex("isNouveaute"));
+            String isReduction = cursor.getString(cursor.getColumnIndex("isReduction"));
+            String prixReduction = cursor.getString(cursor.getColumnIndex("prixReduction"));
+            String prixReductionTtc = cursor.getString(cursor.getColumnIndex("prixReductionTtc"));
+            String dateReduction = cursor.getString(cursor.getColumnIndex("dateReduction"));
+            String delaiJourMin = cursor.getString(cursor.getColumnIndex("delaiJourMin"));
+            String delaiJourMax = cursor.getString(cursor.getColumnIndex("delaiJourMax"));
+            String dateFinReduction = cursor.getString(cursor.getColumnIndex("dateFinReduction"));
+            String isTailleStandard = cursor.getString(cursor.getColumnIndex("isTailleStandard"));
+            String modeEmploi = cursor.getString(cursor.getColumnIndex("modeEmploi"));
+            String typeCoupeId = cursor.getString(cursor.getColumnIndex("typeCoupeId"));
+            String typeCoupeLibelle = cursor.getString(cursor.getColumnIndex("typeCoupeLibelle"));
+            String typeProduitId = cursor.getString(cursor.getColumnIndex("typeProduitId"));
+            String typeProduitLibelle = cursor.getString(cursor.getColumnIndex("typeProduitLibelle"));
+            String matiereId = cursor.getString(cursor.getColumnIndex("matiereId"));
+            String matiereLibelle = cursor.getString(cursor.getColumnIndex("matiereLibelle"));
+            String typeMancheId = cursor.getString(cursor.getColumnIndex("typeMancheId"));
+            String typeMancheLibelle = cursor.getString(cursor.getColumnIndex("typeMancheLibelle"));
+            //--
+            produit.setId(id);
+            produit.setProduitId(produitId);
+            produit.setNom(nom);
+            produit.setDescrition(descrition);
+            produit.setPrixUnitaire(Float.parseFloat(prixUnitaire));
+            produit.setPrixUnitaireTtc(Float.parseFloat(prixUnitaireTtc));
+            produit.setPrixUnitaireGros(Float.parseFloat(prixUnitaireGros));
+            produit.setPrixExpedition(Float.parseFloat(prixExpedition));
+            produit.setImage1(image1);
+            produit.setImage2(image2);
+            produit.setImage3(image3);
+            produit.setDate(date);
+            produit.setQuantite(Integer.parseInt(quantite));
+            produit.setNouveaute(Boolean.parseBoolean(isNouveaute));
+            produit.setReduction(Boolean.parseBoolean(isReduction));
+            produit.setPrixReduction(Float.parseFloat(prixReduction));
+            produit.setPrixReductionTtc(Float.parseFloat(prixReductionTtc));
+            produit.setDateReduction(dateReduction);
+            produit.setDelaiJourMin(Integer.parseInt(delaiJourMin));
+            produit.setDelaiJourMax(Integer.parseInt(delaiJourMax));
+            produit.setDateFinReduction(dateFinReduction);
+            produit.setTailleStandard(Boolean.parseBoolean(isTailleStandard));
+            produit.setModeEmploi(modeEmploi);
+            produit.setTypeCoupeId(Integer.parseInt(typeCoupeId));
+            produit.setTypeCoupeLibelle(typeCoupeLibelle);
+            produit.setTypeProduitId(Integer.parseInt(typeProduitId));
+            produit.setTypeProduitLibelle(typeProduitLibelle);
+            produit.setMatiereId(Integer.parseInt(matiereId));
+            produit.setMatiereLibelle(matiereLibelle);
+            produit.setTypeMancheId(Integer.parseInt(typeMancheId));
+            produit.setTypeMancheLibelle(typeMancheLibelle);
+            resultat.add(produit);
+            //--
+            cursor.moveToNext();
+        }
+        connexion.getDb().close();
+        return resultat.size() == 0 ? resultat.get(0) : null;
+    }
+
     public ArrayList<Produit> getAll(){
         createTable();
         ArrayList<Produit> resultat = new ArrayList<>();

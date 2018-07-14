@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class AccountFragment extends Fragment implements AccountFragView.IAccoun
     private TextView txtTelephone;
     private Spinner adresseLivraison;
     private Spinner adresseFacturation;
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
 
     // Ref preseneter
     private AccountFragPresenter fragPresenter;
@@ -60,7 +61,7 @@ public class AccountFragment extends Fragment implements AccountFragView.IAccoun
         txtTelephone = getActivity().findViewById(R.id.txtTelephone);
         adresseLivraison = getActivity().findViewById(R.id.adresseLivraison);
         adresseFacturation = getActivity().findViewById(R.id.adresseFacturation);
-        progressBar = getActivity().findViewById(R.id.account_progressBar);
+        progressBar = getActivity().findViewById(R.id.account_frag_progressBar);
     }
 
     @Override

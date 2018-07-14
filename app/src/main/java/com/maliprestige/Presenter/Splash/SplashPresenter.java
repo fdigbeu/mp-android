@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.CountDownTimer;
 import android.util.Log;
 
+import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.View.Interfaces.SplashView;
 
 public class SplashPresenter {
@@ -20,6 +21,11 @@ public class SplashPresenter {
     public void loadSplashData(Context context){
         try {
             if(iSplash != null){
+                String clienToken = HomePresenter.retrieveClientToken(context);
+                if(clienToken == null || clienToken.isEmpty()){
+                    HomePresenter.saveClientToken(context, "MP_CLIENT_DECONNECTED");
+                }
+                //--
                 iSplash.hideHeader();
                 iSplash.initialize();
                 iSplash.events();

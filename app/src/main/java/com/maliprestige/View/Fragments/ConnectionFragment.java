@@ -82,7 +82,7 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
             public void onClick(View v) {
                 mEmail = email.getText().toString().trim();
                 mPassword = password.getText().toString().trim();
-                fragPresenter.retrieveFormData(v, mEmail, mPassword, true);
+                fragPresenter.retrieveFormData(v, mEmail, mPassword);
             }
         });
         passwordOublie.setOnClickListener(new View.OnClickListener() {
@@ -143,5 +143,11 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
         context = getActivity();
         iHome =(HomeView.IHome) context;
         ((HomeActivity)context).initialiseIConnectionFrag(this);
+    }
+
+    @Override
+    public void onDetach() {
+        fragPresenter.cancelAsytask();
+        super.onDetach();
     }
 }

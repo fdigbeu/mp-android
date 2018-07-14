@@ -94,4 +94,10 @@ public class WomanFragment extends Fragment implements WomanFragView.IWomanFrag{
         iHome =(HomeView.IHome) context;
         ((HomeActivity)context).initialiseIWomanFrag(this);
     }
+
+    @Override
+    public void onDetach() {
+        fragPresenter.cancelAsytask();
+        super.onDetach();
+    }
 }

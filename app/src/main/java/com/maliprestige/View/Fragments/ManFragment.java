@@ -94,4 +94,10 @@ public class ManFragment extends Fragment implements ManFragView.IManFrag{
         iHome =(HomeView.IHome) context;
         ((HomeActivity)context).initialiseIManFrag(this);
     }
+
+    @Override
+    public void onDetach() {
+        fragPresenter.cancelAsytask();
+        super.onDetach();
+    }
 }
