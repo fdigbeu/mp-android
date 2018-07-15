@@ -160,6 +160,8 @@ public class ManFragPresenter implements ManFragView.IPresenter{
                         panier.setPrixQuantite(prixQuantite);
                         panier.setProduitId(produitId);
                         panier.setImageProduit(produit.getImage1());
+                        panier.setDelaiJourMin(produit.getDelaiJourMin());
+                        panier.setDelaiJourMax(produit.getDelaiJourMax());
                         panier.setNomProduit(produit.getNom());
                         daoPanier = new DAOPanier(context);
                         daoPanier.add(panier);

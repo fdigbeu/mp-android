@@ -3,8 +3,11 @@ package com.maliprestige.Presenter.ChildFrag;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.maliprestige.Model.DAOPanier;
 import com.maliprestige.Model.DAOProduit;
+import com.maliprestige.Model.Panier;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Screen;
 import com.maliprestige.Presenter.Home.GetAllProduits;
@@ -134,14 +137,42 @@ public class ChildFragPresenter implements ChildFragView.IPresenter{
         try {
             if(iChildFrag != null && produit != null){
                 String clientToken = HomePresenter.retrieveClientToken(context);
-                // If user is not connected
-                if(clientToken==null || clientToken.isEmpty() || clientToken.length() <= 15){
-                    HomeView.IHome mIHome = iChildFrag.retrieveIHomeInstance();
-                    HomePresenter homePresenter = new HomePresenter(mIHome);
-                    homePresenter.showViewPager(context.getResources().getString(R.string.lb_connexion));
+                int produitId = produit.getProduitId();
+                float prixProduit = 0f;
+                int quantite = 1;
+                if(produit.isReduction()){ prixProduit = produit.getPrixReductionTtc(); }
+                else{ prixProduit = produit.getPrixUnitaireGros() > 0 ? produit.getPrixUnitaireGros() : produit.getPrixUnitaireTtc(); }
+                //--
+                float prixQuantite = quantite*prixProduit;
+                //--
+                Panier panier = new Panier();
+                if(clientToken != null && !clientToken.isEmpty()){
+                    DAOPanier daoPanier = new DAOPanier(context);
+                    Panier existDejaDansPanier = daoPanier.getInfoBy(clientToken, produitId);
+                    // If already exists
+                    if(existDejaDansPanier != null){
+                        quantite = existDejaDansPanier.getQuantite()+1;
+                        prixQuantite = quantite*prixProduit;
+                        daoPanier = new DAOPanier(context);
+                        daoPanier.modify(clientToken, produitId, quantite, prixQuantite);
+                    }
+                    else {
+                        panier.setToken(clientToken);
+                        panier.setQuantite(quantite);
+                        panier.setPrixQuantite(prixQuantite);
+                        panier.setProduitId(produitId);
+                        panier.setImageProduit(produit.getImage1());
+                        panier.setDelaiJourMin(produit.getDelaiJourMin());
+                        panier.setDelaiJourMax(produit.getDelaiJourMax());
+                        panier.setNomProduit(produit.getNom());
+                        daoPanier = new DAOPanier(context);
+                        daoPanier.add(panier);
+                    }
+                    //--
+                    Toast.makeText(context, context.getResources().getString(R.string.lb_produit_ajout_succes), Toast.LENGTH_SHORT).show();
                 }
                 else{
-
+                    Toast.makeText(context, "Erreur ! aucun token trouvé.", Toast.LENGTH_LONG).show();
                 }
             }
         }

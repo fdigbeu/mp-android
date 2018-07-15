@@ -8,6 +8,8 @@ public class Panier {
     private float prixQuantite;
     private String nomProduit;
     private String imageProduit;
+    private int delaiJourMin;
+    private int delaiJourMax;
 
     @Override
     public String toString() {
@@ -16,6 +18,8 @@ public class Panier {
                 "\"quantite\":\""+quantite+"\"," +
                 "\"prixQuantite\":\""+prixQuantite+"\"," +
                 "\"nomProduit\":\""+nomProduit+"\"," +
+                "\"delaiJourMin\":\""+delaiJourMin+"\"," +
+                "\"delaiJourMax\":\""+delaiJourMax+"\"," +
                 "\"imageProduit\":\""+imageProduit+"\"," +
                 "\"token\":"+token+"}";
     }
@@ -74,5 +78,21 @@ public class Panier {
 
     public void setImageProduit(String imageProduit) {
         this.imageProduit = imageProduit;
+    }
+
+    public int getDelaiJourMin() {
+        return delaiJourMin;
+    }
+
+    public void setDelaiJourMin(int delaiJourMin) {
+        this.delaiJourMin = delaiJourMin;
+    }
+
+    public int getDelaiJourMax() {
+        return delaiJourMax;
+    }
+
+    public void setDelaiJourMax(int delaiJourMax) {
+        this.delaiJourMax = delaiJourMax;
     }
 }

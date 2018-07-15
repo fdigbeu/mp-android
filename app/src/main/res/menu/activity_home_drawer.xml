@@ -40,6 +40,10 @@
             android:icon="@drawable/ic_menu_commande"
             android:title="@string/lb_commande" />
         <item
+            android:id="@+id/nav_recapitulatif"
+            android:icon="@drawable/ic_menu_recapitulatif"
+            android:title="@string/lb_recapitulatif"/>
+        <item
             android:id="@+id/nav_deconnexion"
             android:icon="@drawable/ic_menu_deconnexion"
             android:checkable="false"

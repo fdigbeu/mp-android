@@ -109,21 +109,34 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
 
         holder.btnAjouterPanier.setText(context.getResources().getString(R.string.lb_ajouter_au_panier));
 
-        holder.imageView.setVisibility(View.GONE);
+        int totalImage = 0;
+        if(produit.getImage1() != null && !produit.getImage1().isEmpty()) { totalImage++; }
+        if(produit.getImage2() != null && !produit.getImage2().isEmpty()) { totalImage++; }
+        if(produit.getImage3() != null && !produit.getImage3().isEmpty()) { totalImage++; }
+
+        int numerImage = 0;
+
+        holder.relative.setVisibility(View.GONE);
         if(produit.getImage1() != null && !produit.getImage1().isEmpty()) {
-            holder.imageView.setVisibility(View.VISIBLE);
+            numerImage++;
+            holder.relative.setVisibility(View.VISIBLE);
+            holder.textView.setText(numerImage+"/"+totalImage);
             Picasso.with(context).load(produit.getImage1()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomePresenter.getScreenResolution(context).getWidth() / 2, (int) ((HomePresenter.getScreenResolution(context).getWidth() / 2) / 0.87f)).into(holder.imageView);
         }
         //--
-        holder.imageView2.setVisibility(View.GONE);
+        holder.relative2.setVisibility(View.GONE);
         if(produit.getImage2() != null && !produit.getImage2().isEmpty()) {
-            holder.imageView2.setVisibility(View.VISIBLE);
+            numerImage++;
+            holder.relative2.setVisibility(View.VISIBLE);
+            holder.textView2.setText(numerImage+"/"+totalImage);
             Picasso.with(context).load(produit.getImage2()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomePresenter.getScreenResolution(context).getWidth() / 2, (int) ((HomePresenter.getScreenResolution(context).getWidth() / 2) / 0.87f)).into(holder.imageView2);
         }
         //--
-        holder.imageView3.setVisibility(View.GONE);
+        holder.relative3.setVisibility(View.GONE);
         if(produit.getImage3() != null && !produit.getImage3().isEmpty()) {
-            holder.imageView3.setVisibility(View.VISIBLE);
+            numerImage++;
+            holder.relative3.setVisibility(View.VISIBLE);
+            holder.textView3.setText(numerImage+"/"+totalImage);
             Picasso.with(context).load(produit.getImage3()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomePresenter.getScreenResolution(context).getWidth() / 2, (int) ((HomePresenter.getScreenResolution(context).getWidth() / 2) / 0.87f)).into(holder.imageView3);
         }
     }
@@ -136,9 +149,9 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         View container;
-        ImageView imageView;
-        ImageView imageView2;
-        ImageView imageView3;
+        View relative, relative2, relative3;
+        TextView textView, textView2, textView3;
+        ImageView imageView, imageView2, imageView3;
         ImageView newProduit;
         TextView titleTextView;
         TextView prixTextView;
@@ -149,9 +162,19 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
             super(itemView);
 
             container = itemView.findViewById(R.id.container);
+
+            relative = itemView.findViewById(R.id.relative_image);
+            relative2 = itemView.findViewById(R.id.relative_image2);
+            relative3 = itemView.findViewById(R.id.relative_image3);
+
+            textView = itemView.findViewById(R.id.number_textview);
+            textView2 = itemView.findViewById(R.id.number_textview2);
+            textView3 = itemView.findViewById(R.id.number_textview3);
+
             imageView = itemView.findViewById(R.id.produit_imageview);
             imageView2 = itemView.findViewById(R.id.produit_imageview2);
             imageView3 = itemView.findViewById(R.id.produit_imageview3);
+
             newProduit = itemView.findViewById(R.id.newProduit);
             titleTextView = itemView.findViewById(R.id.produit_title_textView);
             prixTextView = itemView.findViewById(R.id.prix_produit_textView);

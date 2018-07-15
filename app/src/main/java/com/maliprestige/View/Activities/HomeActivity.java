@@ -30,6 +30,7 @@ import com.maliprestige.View.Fragments.HomeFragment;
 import com.maliprestige.View.Fragments.InscriptionFragment;
 import com.maliprestige.View.Fragments.ManFragment;
 import com.maliprestige.View.Fragments.OrderFragment;
+import com.maliprestige.View.Fragments.OrderSummaryFragment;
 import com.maliprestige.View.Fragments.WomanFragment;
 import com.maliprestige.View.Interfaces.BasketFragView;
 import com.maliprestige.View.Interfaces.ChildFragView;
@@ -39,6 +40,7 @@ import com.maliprestige.View.Interfaces.HomeFragView;
 import com.maliprestige.View.Interfaces.HomeView;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
 import com.maliprestige.View.Interfaces.ManFragView;
+import com.maliprestige.View.Interfaces.OrderSummaryFragView;
 import com.maliprestige.View.Interfaces.WomanFragView;
 import com.maliprestige.View.ViewPagers.HomeViewPager;
 
@@ -57,6 +59,7 @@ public class HomeActivity extends AppCompatActivity
     private InscriptionFragView.IInscriptionFrag iInscriptionFrag;
     private ConnectionFragView.IConnectionFrag iConnectionFrag;
     private BasketFragView.IBasketFrag iBasketFrag;
+    private OrderSummaryFragView.IOrderSummaryFrag iOrderSummaryFrag;
 
     private LinearLayout layoutProgress;
 
@@ -146,7 +149,7 @@ public class HomeActivity extends AppCompatActivity
         userEmail = header.findViewById(R.id.userEmail);
         headerMenu = header.findViewById(R.id.headerMenu);
 
-        HomePresenter.getNavDrawerDimension(HomeActivity.this, navigationView);
+        //HomePresenter.getNavDrawerDimension(HomeActivity.this, navigationView);
 
         layoutProgress = findViewById(R.id.layout_home_progressBar);
 
@@ -162,6 +165,7 @@ public class HomeActivity extends AppCompatActivity
         fragments.add(Fragment.instantiate(this, BasketFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, ConnectionFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, InscriptionFragment.class.getName()));
+        fragments.add(Fragment.instantiate(this, OrderSummaryFragment.class.getName()));
 
         pagerAdapter  = new HomePagerAdapter(super.getSupportFragmentManager(), fragments);
 
@@ -227,6 +231,15 @@ public class HomeActivity extends AppCompatActivity
     public void initialiseIInscriptionFrag(InscriptionFragView.IInscriptionFrag iInscriptionFrag){ this.iInscriptionFrag = iInscriptionFrag; }
     public void initialiseIConnectionFrag(ConnectionFragView.IConnectionFrag iConnectionFrag){ this.iConnectionFrag = iConnectionFrag; }
     public void initialiseIBasketFrag(BasketFragView.IBasketFrag iBasketFrag){ this.iBasketFrag = iBasketFrag; }
+    public void initialiseIOrderSummaryFrag(OrderSummaryFragView.IOrderSummaryFrag iOrderSummaryFrag){ this.iOrderSummaryFrag = iOrderSummaryFrag; }
+
+    // Persist redirection value
+    private int numberViewPager = 0;
+    @Override
+    public void persistNumberViewPager(int numberViewPager){ this.numberViewPager = numberViewPager; }
+    @Override
+    public int retrieveNumberViewPager(){ return this.numberViewPager; }
+
 
     // Persist slides data
     private ArrayList<Slide> slides;

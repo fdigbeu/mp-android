@@ -16,19 +16,21 @@ public class DAOPanier {
     }
 
     public void createTable(){
-        String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, token VARCHAR, produitId VARCHAR, quantite VARCHAR, nomProduit VARCHAR, imageProduit VARCHAR, prixQuantite VARCHAR);";
+        String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, token VARCHAR, produitId VARCHAR, quantite VARCHAR, nomProduit VARCHAR, imageProduit VARCHAR, delaiJourMin INTEGER, delaiJourMax INTEGER, prixQuantite VARCHAR);";
         connexion = new DAOConnexion(context);
         connexion.getDb().execSQL(sql);
     }
 
     public void add(Panier panier){
         createTable();
-        String sql = "INSERT INTO " + table_name + " (token, produitId, quantite, nomProduit, imageProduit, prixQuantite)" +
+        String sql = "INSERT INTO " + table_name + " (token, produitId, quantite, nomProduit, imageProduit, delaiJourMin, delaiJourMax, prixQuantite)" +
                 " VALUES ('"+panier.getToken().replace("'", "''")+"', " +
                 "'"+panier.getProduitId()+"', " +
                 "'"+panier.getQuantite()+"', " +
                 "'"+panier.getNomProduit().replace("'", "''")+"', " +
                 "'"+panier.getImageProduit().replace("'", "''")+"', " +
+                "'"+panier.getDelaiJourMin()+"', " +
+                "'"+panier.getDelaiJourMax()+"', " +
                 "'"+panier.getPrixQuantite()+"');";
         connexion.getDb().execSQL(sql);
     }
@@ -37,6 +39,13 @@ public class DAOPanier {
     {
         createTable();
         String sql = "UPDATE " + table_name + " SET quantite = '"+mQuantite+"', prixQuantite = '"+mPrixQuantite+"'  WHERE token LIKE '"+mToken+"' AND produitId = '"+mProduitId+"'";
+        connexion.getDb().execSQL(sql);
+    }
+
+    public void modifyByToken(String mOldToken, String mNewToken)
+    {
+        createTable();
+        String sql = "UPDATE " + table_name + " SET token = '"+mNewToken+"'  WHERE token LIKE '"+mOldToken+"'";
         connexion.getDb().execSQL(sql);
     }
 
@@ -56,6 +65,8 @@ public class DAOPanier {
             int quantite = cursor.getInt(cursor.getColumnIndex("quantite"));
             String nomProduit = cursor.getString(cursor.getColumnIndex("nomProduit"));
             String imageProduit = cursor.getString(cursor.getColumnIndex("imageProduit"));
+            int delaiJourMin = cursor.getInt(cursor.getColumnIndex("delaiJourMin"));
+            int delaiJourMax = cursor.getInt(cursor.getColumnIndex("delaiJourMax"));
             String prixQuantite = cursor.getString(cursor.getColumnIndex("prixQuantite"));
             //--
             panier.setId(id);
@@ -64,6 +75,8 @@ public class DAOPanier {
             panier.setQuantite(quantite);
             panier.setNomProduit(nomProduit);
             panier.setImageProduit(imageProduit);
+            panier.setDelaiJourMin(delaiJourMin);
+            panier.setDelaiJourMax(delaiJourMax);
             panier.setPrixQuantite(Float.parseFloat(prixQuantite));
             resultat.add(panier);
             //--
@@ -89,6 +102,8 @@ public class DAOPanier {
             int quantite = cursor.getInt(cursor.getColumnIndex("quantite"));
             String nomProduit = cursor.getString(cursor.getColumnIndex("nomProduit"));
             String imageProduit = cursor.getString(cursor.getColumnIndex("imageProduit"));
+            int delaiJourMin = cursor.getInt(cursor.getColumnIndex("delaiJourMin"));
+            int delaiJourMax = cursor.getInt(cursor.getColumnIndex("delaiJourMax"));
             String prixQuantite = cursor.getString(cursor.getColumnIndex("prixQuantite"));
             //--
             panier.setId(id);
@@ -97,6 +112,8 @@ public class DAOPanier {
             panier.setQuantite(quantite);
             panier.setNomProduit(nomProduit);
             panier.setImageProduit(imageProduit);
+            panier.setDelaiJourMin(delaiJourMin);
+            panier.setDelaiJourMax(delaiJourMax);
             panier.setPrixQuantite(Float.parseFloat(prixQuantite));
             resultat.add(panier);
             //--

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.maliprestige.Model.DAOProduit;
 import com.maliprestige.Model.Panier;
 import com.maliprestige.Model.Produit;
+import com.maliprestige.Presenter.BasketFrag.BasketFragPresenter;
 import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.BasketFragView;
@@ -23,17 +24,22 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class PanierRecyclerAdapter extends RecyclerView.Adapter<PanierRecyclerAdapter.MyViewHolder> {
 
     private Context context;
     private BasketFragView.IBasketFrag iBasketFrag;
     private ArrayList<Panier> paniers;
+    private Hashtable<Integer, Float> prixUnitaires;
+    private Hashtable<Integer, MyViewHolder> viewHolders;
 
     public PanierRecyclerAdapter(Context context, ArrayList<Panier> paniers, BasketFragView.IBasketFrag iBasketFrag) {
         this.context = context;
         this.iBasketFrag = iBasketFrag;
         this.paniers = paniers;
+        prixUnitaires = new Hashtable<>();
+        viewHolders = new Hashtable<>();
     }
 
     @NonNull
@@ -48,6 +54,8 @@ public class PanierRecyclerAdapter extends RecyclerView.Adapter<PanierRecyclerAd
 
         Panier panier = paniers.get(position);
         holder.positionItem = position;
+        prixUnitaires.put(position, panier.getPrixQuantite()/panier.getQuantite());
+        viewHolders.put(position, holder);
         if(panier.getImageProduit() != null && !panier.getImageProduit().isEmpty()) {
             Picasso.with(context).load(panier.getImageProduit()).memoryPolicy(MemoryPolicy.NO_CACHE).resize(HomePresenter.getScreenResolution(context).getWidth() / 3, (int) ((HomePresenter.getScreenResolution(context).getWidth() / 3) / 0.87f)).into(holder.icone);
         }
@@ -95,19 +103,59 @@ public class PanierRecyclerAdapter extends RecyclerView.Adapter<PanierRecyclerAd
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    Panier panier = paniers.get(positionItem);
+                    String value = s.toString();
+                    if(value != null && !value.isEmpty()){
+                        int newQte = Integer.parseInt(s.toString());
+                        if(newQte==0){
+                            newQte = 1;
+                            viewHolders.get(positionItem).quantite.setText(""+newQte);
+                        }
+                        float prixU = prixUnitaires.get(positionItem);
+                        int id = panier.getId();
+                        float newPrixQte = prixU*newQte;
+                        //--
+                        Panier newPanier = new Panier();
+                        newPanier.setId(id);
+                        newPanier.setQuantite(newQte);
+                        newPanier.setProduitId(panier.getProduitId());
+                        newPanier.setPrixQuantite(newPrixQte);
+                        newPanier.setImageProduit(panier.getImageProduit());
+                        newPanier.setNomProduit(panier.getNomProduit());
+                        newPanier.setToken(panier.getToken());
+                        //--
+                        viewHolders.get(positionItem).prix.setText("€"+String.format("%.2f", newPanier.getPrixQuantite()));
+                        paniers.get(positionItem).setQuantite(newPanier.getQuantite());
+                        paniers.get(positionItem).setPrixQuantite(newPanier.getPrixQuantite());
+                        //--
+                        BasketFragPresenter fragPresenter = new BasketFragPresenter(iBasketFrag);
+                        fragPresenter.modifyBasketData(context, newPanier, "modifier");
+                    }
+                }
 
                 @Override
-                public void afterTextChanged(Editable s) {
-                    Log.i("TAG_NEW_QTE", "QTE = "+s.toString());
-                }
+                public void afterTextChanged(Editable s) {}
             });
 
             // Deleting product
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Panier panier = paniers.get(positionItem);
+                    BasketFragPresenter fragPresenter = new BasketFragPresenter(iBasketFrag);
+                    fragPresenter.modifyBasketData(context, panier, "supprimer");
+                    //--
+                    for (int i = paniers.size()-1; i >= 0; i--){
+                        if(i==positionItem){
+                            paniers.remove(positionItem);
+                            prixUnitaires.remove(positionItem);
+                            viewHolders.remove(positionItem);
+                            notifyItemRemoved(positionItem);
+                            notifyItemRangeChanged(positionItem, paniers.size());
+                            //Log.i("TAG_ACTION", "DELETE : "+panier.toString());
+                        }
+                    }
                 }
             });
         }

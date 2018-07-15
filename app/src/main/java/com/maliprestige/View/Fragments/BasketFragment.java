@@ -84,7 +84,12 @@ public class BasketFragment extends Fragment implements BasketFragView.IBasketFr
 
     @Override
     public void events() {
-
+        btnValiderPanier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragPresenter.retrieveUserAction(v);
+            }
+        });
     }
 
     @Override
@@ -119,6 +124,11 @@ public class BasketFragment extends Fragment implements BasketFragView.IBasketFr
     @Override
     public HomeView.IHome retrieveIHomeInstance(){
         return iHome;
+    }
+
+    @Override
+    public void changeSubTotal(String subtotal) {
+        montantTotal.setText(subtotal);
     }
 
     @Override

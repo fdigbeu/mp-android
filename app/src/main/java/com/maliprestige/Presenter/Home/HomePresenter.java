@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.maliprestige.Model.Client;
 import com.maliprestige.Model.Cryptage;
 import com.maliprestige.Model.DAOClient;
+import com.maliprestige.Model.DAOPanier;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Screen;
 import com.maliprestige.Model.Slide;
@@ -35,7 +36,10 @@ import com.maliprestige.View.Interfaces.HomeView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,6 +63,8 @@ public class HomePresenter implements HomeView.IPresenter{
                 iHome.initialize();
                 iHome.events();
 
+                int numberViewPager = iHome.retrieveNumberViewPager();
+
                 String clientToken = HomePresenter.retrieveClientToken(context);
                 if(clientToken != null && clientToken.length() >= 50){
                     DAOClient daoClient = new DAOClient(context);
@@ -67,7 +73,16 @@ public class HomePresenter implements HomeView.IPresenter{
                     String userEmail = client.getEmail();
                     int drawable = R.drawable.ic_photo_account;
                     iHome.notifyUserIsConnected(true, new String[]{""+drawable, userNom, userEmail});
-                    showViewPager(context.getResources().getString(R.string.lb_commande));
+                    // If order recapitulation
+                    if(numberViewPager == 10){
+                        DAOPanier daoPanier = new DAOPanier(context);
+                        daoPanier.modifyByToken("MP_CLIENT_DECONNECTED", clientToken);
+                        //--
+                        showViewPager("recapitulatif");
+                    }
+                    else{
+                        showViewPager(context.getResources().getString(R.string.lb_commande));
+                    }
                 }
                 else{
                     int drawable = R.drawable.ic_photo_inconnu;
@@ -75,7 +90,7 @@ public class HomePresenter implements HomeView.IPresenter{
                     String userEmail = context.getResources().getString(R.string.lb_identify_you);
                     iHome.notifyUserIsConnected(false, new String[]{""+drawable, userNom, userEmail});
                     // Home : default
-                    iHome.changeHomeView(0, context.getResources().getString(R.string.lb_accueil));
+                    iHome.changeHomeView(numberViewPager, context.getResources().getString(R.string.lb_accueil));
                     // Checked home menu in navigation view
                     iHome.checkedNavigationView(R.id.nav_menu_accueil);
                 }
@@ -148,6 +163,12 @@ public class HomePresenter implements HomeView.IPresenter{
                         iHome.changeHomeView(9, "S'inscrire");
                         iHome.checkedNavigationView(R.id.nav_inscription);
                         break;
+
+                    case "recapitulatif": // Récapitulatif de ma commande
+                        iHome.changeHomeView(10, "Récapitulatif de ma commande");
+                        iHome.checkedNavigationView(R.id.nav_recapitulatif);
+                        break;
+
                 }
             }
         }
@@ -206,6 +227,11 @@ public class HomePresenter implements HomeView.IPresenter{
 
                     case R.id.nav_inscription:
                         iHome.changeHomeView(9, context.getResources().getString(R.string.lb_inscription));
+                        break;
+
+                    case R.id.nav_recapitulatif:
+                        iHome.changeHomeView(10, context.getResources().getString(R.string.lb_recapitulatif_cmd));
+                        iHome.checkedNavigationView(R.id.nav_recapitulatif);
                         break;
 
                     case R.id.nav_partager_app:
@@ -314,6 +340,31 @@ public class HomePresenter implements HomeView.IPresenter{
             Log.e("TAG_ERROR", "HomePresenter-->retrieveSlides() : "+ex.getMessage());
         }
         return null;
+    }
+
+    // Persist number view page
+    public void persistNumberViewPager(int numberViewPager){
+        try {
+            if (iHome != null) {
+                iHome.persistNumberViewPager(numberViewPager);
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->persistNumberViewPager() : "+ex.getMessage());
+        }
+    }
+
+    // Retrieve number viewpager
+    public int retrieveNumberViewPager(){
+        try {
+            if (iHome != null) {
+                return iHome.retrieveNumberViewPager();
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->retrieveNumberViewPager() : "+ex.getMessage());
+        }
+        return 0;
     }
 
     // Persist produits data
@@ -497,6 +548,15 @@ public class HomePresenter implements HomeView.IPresenter{
         int imgWidth = screen.getWidth() <= screen.getHeight() ? screen.getWidth() : screen.getHeight();
         params.width = (int)(imgWidth*0.95f);
         navDrawer.setLayoutParams(params);
+    }
+
+    // Method to find the delai date
+    public static String getDelaiDateLivraison(int numberOfDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DATE, numberOfDate);
+        return sdf.format(c.getTime());
     }
 
     // Method to get data in share preferences

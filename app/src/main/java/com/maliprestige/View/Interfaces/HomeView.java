@@ -22,6 +22,8 @@ public class HomeView {
         public void launchWebHtmlActivity(String url);
         public void openOrCloseMenuDrawer();
         public void progressBarVisibility(int visibility);
+        public void persistNumberViewPager(int numberViewPager);
+        public int retrieveNumberViewPager();
     }
 
     public interface IPresenter{

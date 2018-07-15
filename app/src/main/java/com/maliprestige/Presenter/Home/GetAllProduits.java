@@ -144,7 +144,7 @@ public class GetAllProduits extends AsyncTask<Void, Void, ArrayList<Produit>> {
         produitUrl += context.getResources().getString(R.string.mp_json_produit)
                 .replace("{TYPE_PRODUIT}", typeProduit)
                 .replace("{LIMIT_PRODUIT}", limitProduit);
-        Log.i("TAG_URL_REQUEST", ""+produitUrl);
+        //Log.i("TAG_URL_REQUEST", ""+produitUrl);
     }
 
     public void setHomePresenter(HomeView.IPresenter homePresenter) {

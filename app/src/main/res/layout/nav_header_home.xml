@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_16sp"
+                android:visibility="gone"
                 android:textColor="@color/colorWhiteGreen"
                 android:ellipsize="end"
                 android:singleLine="true" />

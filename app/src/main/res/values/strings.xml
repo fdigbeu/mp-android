@@ -22,6 +22,14 @@
     <string name="lb_deconnexion_encours">Déconnexion en cours...</string>
     <string name="lb_connexion_encours">Connexion en cours...</string>
     <string name="lb_inscription_encours">Inscription en cours...</string>
+    <string name="lb_delai_livraison">Livraison prévue entre le {DATE_LIVRAISON_1} et le {DATE_LIVRAISON_2}</string>
+
+    <string name="lb_btn_annuler">Annuler</string>
+    <string name="lb_btn_valider">Valider</string>
+
+    <string name="lb_recapitulatif_cmd">Récapitulatif de ma commande</string>
+    <string name="lb_recapitulatif">Récapitulatif</string>
+    <string name="lb_pas_commande_encours">Vous n\'avez pas de commande à finaliser.</string>
 
     <string name="google_market_link">market://details?id=com.maliprestige</string>
 
@@ -40,9 +48,19 @@
     <string name="lb_adressses_facturations">ADRESSES DE FACTURATIONS</string>
     <string name="lb_identite">IDENTITÉ</string>
     <string name="lb_mon_panier">MON PANIER</string>
+    <string name="lb_ajouter_newAdresse">Ajouter une nouvelle adresse</string>
+    <string name="lb_mode_paiements">MODE DE PAIEMENTS</string>
+    <string name="lb_paiement_paypal">PAYPAL</string>
+    <string name="lb_paiement_mandat_cash">MANDAT CASH</string>
+    <string name="lb_paiement_virement">VIREMENT</string>
+    <string name="lb_paiement_espece">ESPÈCE</string>
+
+    <string name="lb_date_livraison">DATE DE LA LIVRAISON</string>
+    <string name="lb_montant_a_payer">MONTANT À PAYER</string>
 
     <string name="lb_panier_vide">Votre panier est vide.</string>
     <string name="lb_produit_ajout_succes">Produit ajouté au panier</string>
+    <string name="lb_valider_mon_panier">Valider mon panier</string>
 
     <string name="lb_livraison">Livraison</string>
     <string name="lb_qui_sommes_nous">Qui sommes-nous ?</string>

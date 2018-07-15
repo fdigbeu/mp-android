@@ -18,6 +18,7 @@ public class BasketFragView {
         public void validerPanierVisibility(int visibility);
         public void loadRecyclerViewData(ArrayList<Panier> paniers, int numberColumns);
         public HomeView.IHome retrieveIHomeInstance();
+        public void changeSubTotal(String subtotal);
     }
 
     // Presenter interface
