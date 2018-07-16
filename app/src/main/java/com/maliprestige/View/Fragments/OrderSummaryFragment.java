@@ -2,12 +2,15 @@ package com.maliprestige.View.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 
 import com.maliprestige.Presenter.OrderSummary.OrderSummaryPresenter;
 import com.maliprestige.R;
+import com.maliprestige.View.Activities.AdresseFormActivity;
 import com.maliprestige.View.Activities.HomeActivity;
 import com.maliprestige.View.Interfaces.HomeView;
 import com.maliprestige.View.Interfaces.OrderSummaryFragView;
@@ -45,6 +49,17 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
     private Button validerCommande;
     private Button annulerCommande;
     private ScrollView container;
+
+    // Attributes
+    private String mAdresseLivraison;
+    private String mAdresseFacturation;
+    private int mModePaiement;
+    private String mLibelleDateLivraison;
+    private String mMontant;
+    private String mListeProduitsID;
+    private String mListeProduitsQte;
+    private String mListeProduitsPrix;
+
     // Ref presenter
     private OrderSummaryPresenter summaryPresenter;
 
@@ -92,7 +107,8 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
         validerCommande.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                summaryPresenter.retrieveUserAction(v);
+                summaryPresenter.retrieveUserEntriedData(v, mLibelleDateLivraison, mModePaiement, mAdresseLivraison, mAdresseFacturation,
+                        mMontant, mListeProduitsID, mListeProduitsPrix, mListeProduitsQte);
             }
         });
         annulerCommande.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +153,7 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
                 summaryPresenter.retrieveUserAction(v);
             }
         });
+
     }
 
     @Override
@@ -146,19 +163,36 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
 
     @Override
     public void changeSubTotal(String subtotal) {
+        mMontant = subtotal;
         montantAPayer.setText(subtotal);
     }
 
     @Override
-    public void loadAdressesLivraisons(String[] livraisons) {
+    public void loadAdressesLivraisons(final String[] livraisons) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, livraisons);
         adresseLivraison.setAdapter(adapter);
+        adresseLivraison.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mAdresseLivraison = livraisons[position];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
     @Override
-    public void loadAdressesFacturations(String[] facturations) {
+    public void loadAdressesFacturations(final String[] facturations) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, facturations);
         adresseFacturation.setAdapter(adapter);
+        adresseFacturation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mAdresseFacturation = facturations[position];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
     @Override
@@ -167,18 +201,97 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
     }
 
     @Override
+    public void changeBtnPaypalView() {
+        paiementPayal.setBackgroundResource(R.drawable.progress_bar_hover_radius);
+        paiementMendatCash.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementVirement.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementEspece.setBackgroundResource(R.drawable.progress_bar_radius);
+        mModePaiement = 1;
+    }
+
+    @Override
+    public void changeBtnMendatCashView() {
+        paiementPayal.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementMendatCash.setBackgroundResource(R.drawable.progress_bar_hover_radius);
+        paiementVirement.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementEspece.setBackgroundResource(R.drawable.progress_bar_radius);
+        mModePaiement = 3;
+    }
+
+    @Override
+    public void changeBtnVirementView() {
+        paiementPayal.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementMendatCash.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementVirement.setBackgroundResource(R.drawable.progress_bar_hover_radius);
+        paiementEspece.setBackgroundResource(R.drawable.progress_bar_radius);
+        mModePaiement = 2;
+    }
+
+    @Override
+    public void changeBtnEspeceView() {
+        paiementPayal.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementMendatCash.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementVirement.setBackgroundResource(R.drawable.progress_bar_radius);
+        paiementEspece.setBackgroundResource(R.drawable.progress_bar_hover_radius);
+        mModePaiement = 5;
+    }
+
+    @Override
+    public void launchAdresseForm(String typeAdresse) {
+        Intent intent = new Intent(getActivity(), AdresseFormActivity.class);
+        intent.putExtra("typeAdresse", typeAdresse);
+        startActivityForResult(intent, 1);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    @Override
+    public void displaySnackBar(View view, String message) {
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @Override
+    public void loadListeProduitsId(String liste) {
+        mListeProduitsID = liste;
+    }
+
+    @Override
+    public void loadListeProduitsQte(String liste) {
+        mListeProduitsQte = liste;
+    }
+
+    @Override
+    public void loadListeProduitsPrix(String liste) {
+        mListeProduitsPrix = liste;
+    }
+
+    @Override
+    public void enableDisableButton(boolean enable) {
+        adresseFacturation.setEnabled(enable);
+        ajouterAdresseFacturation.setEnabled(enable);
+        validerCommande.setEnabled(enable);
+        annulerCommande.setEnabled(enable);
+    }
+
+    @Override
+    public int retrieveModePaiement() {
+        return mModePaiement;
+    }
+
+    @Override
     public void messageVisibility(int visibility) {
         messageRecap.setVisibility(visibility);
     }
 
     @Override
-    public void messagePanier(String message) {
+    public void messageSummary(String message) {
         messageRecap.setText(message);
     }
 
     @Override
     public void changeDateLivraison(String message) {
         dateLivraison.setText(message);
+        mLibelleDateLivraison = message;
     }
 
     @Override

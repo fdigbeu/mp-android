@@ -1,6 +1,7 @@
 package com.maliprestige.View.Interfaces;
 
 import android.content.Context;
+import android.view.View;
 
 import com.maliprestige.Model.Panier;
 
@@ -16,11 +17,24 @@ public class OrderSummaryFragView {
         public void loadAdressesLivraisons(String[] livraisons);
         public void loadAdressesFacturations(String[] facturations);
         public void messageVisibility(int visibility);
-        public void messagePanier(String message);
+        public void messageSummary(String message);
         public void changeDateLivraison(String message);
         public void containerVisibility(int visibility);
+        public void changeBtnPaypalView();
+        public void changeBtnMendatCashView();
+        public void changeBtnVirementView();
+        public void changeBtnEspeceView();
+        public void launchAdresseForm(String typeAdresse);
+        public void displaySnackBar(View view, String message);
+        public void loadListeProduitsId(String liste);
+        public void loadListeProduitsQte(String liste);
+        public void loadListeProduitsPrix(String liste);
+        public void enableDisableButton(boolean enable);
+        public int retrieveModePaiement();
     }
 
     // Presenter interface
-    public interface IPresenter{}
+    public interface IPresenter{
+        public void onSendOrderFormFinished(Context context, String returnCode);
+    }
 }

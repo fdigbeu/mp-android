@@ -139,7 +139,7 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
     @Override
     public void onSendConnectionFormFinished(Context context, String returnCode) {
         try {
-            if(iConnectionFrag != null){
+            if(iConnectionFrag != null && context != null){
                 iConnectionFrag.progressVisibility(View.GONE);
                 iConnectionFrag.enableDisableButton(true);
                 if(returnCode == null){

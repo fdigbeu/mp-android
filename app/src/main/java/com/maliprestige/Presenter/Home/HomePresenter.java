@@ -123,7 +123,12 @@ public class HomePresenter implements HomeView.IPresenter{
             if(iHome != null && titreSlide != null){
                 String tabTitre[] = titreSlide.split( " ");
                 String typeProduit = tabTitre.length >= 2 ? tabTitre[1] : tabTitre[0];
-                switch (typeProduit){
+                switch (typeProduit.toLowerCase()){
+                    case "accueil": // Accueil
+                        iHome.changeHomeView(0, titreSlide);
+                        iHome.checkedNavigationView(R.id.nav_menu_accueil);
+                        break;
+
                     case "hommes": // Vêtements hommes
                         iHome.changeHomeView(1, titreSlide);
                         iHome.checkedNavigationView(R.id.nav_vetement_homme);
@@ -144,11 +149,6 @@ public class HomePresenter implements HomeView.IPresenter{
                         iHome.checkedNavigationView(R.id.nav_produit_exotique);
                         break;
 
-                    case "connecter": // Se connecter
-                        iHome.changeHomeView(8, titreSlide);
-                        iHome.checkedNavigationView(R.id.nav_connexion);
-                        break;
-
                     case "compte": // Mon compte
                         iHome.changeHomeView(5, titreSlide);
                         iHome.checkedNavigationView(R.id.nav_mon_compte);
@@ -157,6 +157,11 @@ public class HomePresenter implements HomeView.IPresenter{
                     case "commandes": // Mes commandes
                         iHome.changeHomeView(6, titreSlide);
                         iHome.checkedNavigationView(R.id.nav_mes_commandes);
+                        break;
+
+                    case "connecter": // Se connecter
+                        iHome.changeHomeView(8, titreSlide);
+                        iHome.checkedNavigationView(R.id.nav_connexion);
                         break;
 
                     case "inscription": // S'inscrire

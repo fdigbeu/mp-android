@@ -103,34 +103,36 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
     @Override
     public void onSendInscriptionFormFinished(Context context, String returnCode) {
         try {
-            iInscriptionFrag.progressVisibility(View.GONE);
-            iInscriptionFrag.enableDisableButton(true);
-            if(returnCode == null){
-                Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
-            }
-            else{
-                Log.i("TAG_RETURN_CODE", returnCode);
-                String jsonString = returnCode.replace("null", "");
-                JSONObject jsonObject = new JSONObject(jsonString);
-                String codeRetour = jsonObject.getString("codeRetour");
-                String message = jsonObject.getString("message");
-                //--
-                if(Integer.parseInt(codeRetour) != 200){
-                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            if(iInscriptionFrag != null && context != null){
+                iInscriptionFrag.progressVisibility(View.GONE);
+                iInscriptionFrag.enableDisableButton(true);
+                if(returnCode == null){
+                    Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
                 }
                 else{
-                    JsonData jsonData = new JsonData(jsonString);
-                    Client client = jsonData.getClientFromJson();
-                    // Save token
-                    HomePresenter.saveClientToken(context, client.getToken());
-                    // Save client int the database
-                    DAOClient daoClient = new DAOClient(context);
-                    daoClient.deleteBy(client.getToken());
-                    daoClient.add(client);
-                    // Notify client is connected
-                    HomeView.IHome mIHome = iInscriptionFrag.retrieveIHomeInstance();
-                    HomePresenter homePresenter = new HomePresenter(mIHome);
-                    homePresenter.loadHomeData(context);
+                    Log.i("TAG_RETURN_CODE", returnCode);
+                    String jsonString = returnCode.replace("null", "");
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    String codeRetour = jsonObject.getString("codeRetour");
+                    String message = jsonObject.getString("message");
+                    //--
+                    if(Integer.parseInt(codeRetour) != 200){
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        JsonData jsonData = new JsonData(jsonString);
+                        Client client = jsonData.getClientFromJson();
+                        // Save token
+                        HomePresenter.saveClientToken(context, client.getToken());
+                        // Save client int the database
+                        DAOClient daoClient = new DAOClient(context);
+                        daoClient.deleteBy(client.getToken());
+                        daoClient.add(client);
+                        // Notify client is connected
+                        HomeView.IHome mIHome = iInscriptionFrag.retrieveIHomeInstance();
+                        HomePresenter homePresenter = new HomePresenter(mIHome);
+                        homePresenter.loadHomeData(context);
+                    }
                 }
             }
         }

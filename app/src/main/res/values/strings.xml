@@ -24,6 +24,14 @@
     <string name="lb_inscription_encours">Inscription en cours...</string>
     <string name="lb_delai_livraison">Livraison prévue entre le {DATE_LIVRAISON_1} et le {DATE_LIVRAISON_2}</string>
 
+    <string name="lb_aucune_adresse">Aucune adresse pour le moment</string>
+    <string name="lb_erreur_date_livraison">Erreur ! La date de livraison est nulle</string>
+    <string name="lb_erreur_aucun_mode_paiement">Erreur ! Aucun mode de paiement sélectionné</string>
+    <string name="lb_erreur_adresse_livraison">Erreur ! Aucune adresse de livraison</string>
+    <string name="lb_erreur_adresse_facturation">Erreur ! Aucune adresse de facturation</string>
+    <string name="lb_erreur_data">Erreur ! les données sont incohérentes</string>
+    <string name="lb_erreur_montant">Erreur ! le montant est null</string>
+
     <string name="lb_btn_annuler">Annuler</string>
     <string name="lb_btn_valider">Valider</string>
 
@@ -108,6 +116,7 @@
     <string name="mp_json_client_deconnexion">/api/client/deconnexion.json/</string>
     <string name="mp_json_client_valider_commande">/api/client/valider/commande.json/</string>
     <string name="mp_json_client_ajouter_adresse">/api/client/ajouter/adresse/livraison-ou-facturation.json/</string>
+    <string name="mp_json_client_paiement_paypal">/paiement/paypal/client/1000000000/commande/numero/{NUMERO_COMMANDE}/?clientToken={CLIENT_TOKEN}</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -119,4 +128,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_adresse_form">AdresseFormActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
