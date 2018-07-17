@@ -77,6 +77,7 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
         holder.titleTextView.setText(produit.getNom());
 
         holder.newProduit.setVisibility(produit.isNouveaute() ? View.VISIBLE : View.GONE);
+        holder.newProduit.setText(produit.isNouveaute() && produit.getPrixUnitaireGros()==0 ? "Nouveauté" : (produit.getPrixUnitaireGros() > 0 ? "Le prix est au kilo": ""));
 
         // If reduction exists
         if(produit.isReduction()){
@@ -152,7 +153,7 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
         View relative, relative2, relative3;
         TextView textView, textView2, textView3;
         ImageView imageView, imageView2, imageView3;
-        ImageView newProduit;
+        TextView newProduit;
         TextView titleTextView;
         TextView prixTextView;
         Button btnAjouterPanier;
@@ -175,7 +176,7 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
             imageView2 = itemView.findViewById(R.id.produit_imageview2);
             imageView3 = itemView.findViewById(R.id.produit_imageview3);
 
-            newProduit = itemView.findViewById(R.id.newProduit);
+            newProduit = itemView.findViewById(R.id.newProduit_textView);
             titleTextView = itemView.findViewById(R.id.produit_title_textView);
             prixTextView = itemView.findViewById(R.id.prix_produit_textView);
             btnAjouterPanier = itemView.findViewById(R.id.btn_ajouter_au_panier);
@@ -208,19 +209,19 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
                 public void onClick(View v) {
                     if (iManFrag != null){
                         ManFragPresenter manFragPresenter = new ManFragPresenter(iManFrag);
-                        manFragPresenter.addProductToBasket(context, produits.get(positionItem));
+                        manFragPresenter.addProductToBasket(v, produits.get(positionItem));
                     }
                     else if (iWomanFrag != null){
                         WomanFragPresenter womanFragPresenter = new WomanFragPresenter(iWomanFrag);
-                        womanFragPresenter.addProductToBasket(context, produits.get(positionItem));
+                        womanFragPresenter.addProductToBasket(v, produits.get(positionItem));
                     }
                     else if (iChildFrag != null){
                         ChildFragPresenter childFragPresenter = new ChildFragPresenter(iChildFrag);
-                        childFragPresenter.addProductToBasket(context, produits.get(positionItem));
+                        childFragPresenter.addProductToBasket(v, produits.get(positionItem));
                     }
                     else if (iExoticFrag != null){
                         ExoticFragPresenter exoticFragPresenter = new ExoticFragPresenter(iExoticFrag);
-                        exoticFragPresenter.addProductToBasket(context, produits.get(positionItem));
+                        exoticFragPresenter.addProductToBasket(v, produits.get(positionItem));
                     }
                     else{}
                 }

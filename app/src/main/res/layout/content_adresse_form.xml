@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorGrayLight"
-    tools:context=".View.Fragments.InscriptionFragment">
+    tools:context=".View.Activities.AdresseFormActivity">
 
     <ScrollView
         android:id="@+id/scrollview"
@@ -20,75 +20,92 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/form_civilite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/form_adresse_nom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/lb_form_adresse_nom"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/form_nom"
+                    android:id="@+id/form_adresse_prenom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:hint="@string/lb_form_votre_nom"
+                    android:hint="@string/lb_form_adresse_prenom"
                     android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/largeur_element_ten">
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/form_email"
+                    android:id="@+id/form_adresse_adresse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/lb_form_votre_email"
+                    android:inputType="text"
+                    android:hint="@string/lb_form_adresse_adresse"
                     android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/largeur_element_ten"
-                app:passwordToggleEnabled="true">
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/form_idPassword"
+                    android:id="@+id/form_adresse_cp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:hint="@string/lb_form_votre_password"/>
+                    android:inputType="textPostalAddress"
+                    android:hint="@string/lb_form_adresse_cp"
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/largeur_element_ten"
-                app:passwordToggleEnabled="true">
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/form_idConfirmPassword"
+                    android:id="@+id/form_adresse_ville"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:hint="@string/lb_form_votre_password_confirme"/>
+                    android:inputType="text"
+                    android:hint="@string/lb_form_adresse_ville"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/form_adresse_pays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/lb_form_adresse_pays"
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/form_btn_enregistrer"
+                android:id="@+id/form_btn_adresse_enregistrer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_16sp"
@@ -104,31 +121,19 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"/>
 
-            <TextView
-                android:id="@+id/conditionVente"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textSize="@dimen/text_size_16sp"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="@dimen/largeur_element_ten"
-                android:padding="@dimen/largeur_element_ten"
-                android:clickable="true"
-                android:textColor="@color/colorPink"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:text="@string/lb_form_condition_vente"/>
 
         </LinearLayout>
+
 
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/inscription_frag_progressBar"
+        android:id="@+id/adresse_frag_progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
         android:visibility="gone"
+        android:layout_gravity="center"
         android:padding="@dimen/largeur_element_ten"
         android:background="@drawable/progress_bar_radius">
 
@@ -136,7 +141,7 @@
             android:layout_width="wrap_content"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_16sp"
-            android:text="@string/lb_inscription_encours"
+            android:text="@string/lb_enregistrement_encours"
             android:layout_gravity="center"
             android:layout_height="wrap_content" />
 

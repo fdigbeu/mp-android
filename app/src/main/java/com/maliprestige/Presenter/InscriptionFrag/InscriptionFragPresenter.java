@@ -69,8 +69,8 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
                 if(email.length()==0) {iInscriptionFrag.champEmailObligatoire(); return;}
                 if(password.length()==0) {iInscriptionFrag.champPasswordObligatoire(); return;}
                 if(confirmPassword.length()==0) {iInscriptionFrag.champConfirmPasswordObligatoire(); return;}
-                if(!password.equals(confirmPassword)) { iInscriptionFrag.displaySnackBar(view, view.getContext().getResources().getString(R.string.lb_password_non_identique));return; }
-                if(!HomePresenter.isMailValide(email)){ iInscriptionFrag.displaySnackBar(view, view.getContext().getResources().getString(R.string.lb_form_email_invalide)); return; }
+                if(!password.equals(confirmPassword)) { HomePresenter.messageSnackBar(view, view.getContext().getResources().getString(R.string.lb_password_non_identique));return; }
+                if(!HomePresenter.isMailValide(email)){ HomePresenter.messageSnackBar(view, view.getContext().getResources().getString(R.string.lb_form_email_invalide)); return; }
                 //--
                 if(HomePresenter.isMobileConnected(view.getContext())) {
                     iInscriptionFrag.progressVisibility(View.VISIBLE);
@@ -90,7 +90,7 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
                     sendInscriptionForm.execute();
                 }
                 else{
-                    iInscriptionFrag.displaySnackBar(view, view.getContext().getResources().getString(R.string.no_connection));
+                    HomePresenter.messageSnackBar(view, view.getContext().getResources().getString(R.string.no_connection));
                     iInscriptionFrag.enableDisableButton(true);
                 }
             }

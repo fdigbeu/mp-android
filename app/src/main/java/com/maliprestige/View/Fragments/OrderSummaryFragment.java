@@ -1,12 +1,14 @@
 package com.maliprestige.View.Fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +83,13 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
         // Load presenter data
         summaryPresenter = new OrderSummaryPresenter(this);
         summaryPresenter.loadOrderSummaryData(getActivity());
+    }
+
+    @Override
+    public void onResume() {
+        summaryPresenter.loadClientAdresse(getActivity());
+        Log.i("TAG_CYCLE_VIE", "onResume()");
+        super.onResume();
     }
 
     @Override
@@ -240,14 +249,8 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
     public void launchAdresseForm(String typeAdresse) {
         Intent intent = new Intent(getActivity(), AdresseFormActivity.class);
         intent.putExtra("typeAdresse", typeAdresse);
-        startActivityForResult(intent, 1);
+        startActivity(intent);
         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    @Override
-    public void displaySnackBar(View view, String message) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
     }
 
     @Override
@@ -305,5 +308,11 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
         context = getActivity();
         iHome =(HomeView.IHome) context;
         ((HomeActivity)context).initialiseIOrderSummaryFrag(this);
+    }
+
+    @Override
+    public void onDetach() {
+        summaryPresenter.countDownTimeCancel();
+        super.onDetach();
     }
 }

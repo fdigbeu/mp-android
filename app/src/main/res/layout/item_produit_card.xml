@@ -106,11 +106,15 @@
 
             </HorizontalScrollView>
 
-            <ImageView
-                android:id="@+id/newProduit"
+            <TextView
+                android:id="@+id/newProduit_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_nouveau_produit"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_16sp"
+                android:padding="@dimen/largeur_element_five"
+                android:layout_marginRight="@dimen/largeur_element_five"
+                android:background="@drawable/new_product_radius"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:contentDescription="@string/lb_empty" />

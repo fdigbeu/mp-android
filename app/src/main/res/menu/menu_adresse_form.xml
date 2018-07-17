@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.maliprestige.View.Activities.AdresseFormActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_adresse_livraison"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/lb_new_adresse_livraison"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_adresse_facturation"
+        android:orderInCategory="101"
+        android:title="@string/lb_new_adresse_facturation"
         app:showAsAction="never" />
 </menu>

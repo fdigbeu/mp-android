@@ -32,11 +32,15 @@
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".View.Activities.WebHtmlActivity" />
+        <activity
+            android:name=".View.Activities.WebHtmlActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".View.Activities.AdresseFormActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_adresse_form"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

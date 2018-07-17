@@ -1,6 +1,7 @@
 package com.maliprestige.View.Interfaces;
 
 import android.content.Context;
+import android.view.View;
 
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Slide;

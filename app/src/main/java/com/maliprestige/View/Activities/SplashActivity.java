@@ -33,22 +33,6 @@ public class SplashActivity extends AppCompatActivity implements SplashView.ISpl
         // Load data from presenter
         splashPresenter = new SplashPresenter(this);
         splashPresenter.loadSplashData(SplashActivity.this);
-
-        /*Cryptage cryptage = new Cryptage();
-
-        String email = "andreas@gmail.com";
-        Log.i("TAG_EMAIL", email);
-        String emailCrypte = cryptage.crypterData(email);
-        Log.i("TAG_EMAIL_CRYPTE", emailCrypte);
-
-
-        String password = "andreas";
-        String passwordCrypte = cryptage.crypterData(password);
-        Log.i("TAG_PASSWORD", password);
-        Log.i("TAG_PASSWORD_CRYPTE", passwordCrypte);*/
-
-        //String passwordDecrypte = cryptage.decrypterData(passwordCrypte);
-        //Log.i("TAG_PASSWORD_DECRYPTE", passwordDecrypte);
     }
 
     @Override

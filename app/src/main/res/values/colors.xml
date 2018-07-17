@@ -9,6 +9,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorBlackOpacity50">#80000000</color>
     <color name="colorPink">#FC636B</color>
+    <color name="colorPinkOpacity50">#80FC636B</color>
     <color name="colorGrayLight">#EEEEEE</color>
     <color name="colorGrayDark">#6d6d6d</color>
     <color name="colorGrayGreen">#AAC4B5</color>

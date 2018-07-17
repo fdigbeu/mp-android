@@ -3,9 +3,11 @@ package com.maliprestige.Presenter.Home;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.maliprestige.View.Interfaces.AdresseFormView;
 import com.maliprestige.View.Interfaces.ConnectionFragView;
 import com.maliprestige.View.Interfaces.HomeView;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
+import com.maliprestige.View.Interfaces.OrderSummaryFragView;
 import com.maliprestige.View.Interfaces.PwdOublieDialogView;
 
 import java.io.BufferedReader;
@@ -31,6 +33,8 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
     private ConnectionFragView.IPresenter iConnectionPresenter;
     private InscriptionFragView.IPresenter iInscriptionPresenter;
     private PwdOublieDialogView.IPresenter iPwdOublieDialogPresenter;
+    private OrderSummaryFragView.IPresenter iOrderSummaryPresenter;
+    private AdresseFormView.IPresenter iAdresseFormPresenter;
 
     @Override
     protected void onPreExecute() {
@@ -82,6 +86,8 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
         if(iInscriptionPresenter != null) iInscriptionPresenter.onSendInscriptionFormFinished(context, s);
         if(iPwdOublieDialogPresenter != null) iPwdOublieDialogPresenter.onSendPwdOublieFormFinished(context, s);
         if(iHomePresenter != null) iHomePresenter.onUserDeconnectionFinished(context, s);
+        if(iOrderSummaryPresenter != null) iOrderSummaryPresenter.onSendOrderFormFinished(context, s);
+        if(iAdresseFormPresenter != null) iAdresseFormPresenter.onSendAdresseFormFinished(context, s);
     }
 
     public void initializeData(Context context, HashMap<String, String> postDataParams, String actionForm){
@@ -121,5 +127,13 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
 
     public void setiPwdOublieDialogPresenter(PwdOublieDialogView.IPresenter iPwdOublieDialogPresenter) {
         this.iPwdOublieDialogPresenter = iPwdOublieDialogPresenter;
+    }
+
+    public void setiOrderSummaryPresenter(OrderSummaryFragView.IPresenter iOrderSummaryPresenter) {
+        this.iOrderSummaryPresenter = iOrderSummaryPresenter;
+    }
+
+    public void setiAdresseFormPresenter(AdresseFormView.IPresenter iAdresseFormPresenter) {
+        this.iAdresseFormPresenter = iAdresseFormPresenter;
     }
 }

@@ -25,7 +25,6 @@ public class OrderSummaryFragView {
         public void changeBtnVirementView();
         public void changeBtnEspeceView();
         public void launchAdresseForm(String typeAdresse);
-        public void displaySnackBar(View view, String message);
         public void loadListeProduitsId(String liste);
         public void loadListeProduitsQte(String liste);
         public void loadListeProduitsPrix(String liste);

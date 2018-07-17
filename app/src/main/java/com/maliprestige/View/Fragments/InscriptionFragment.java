@@ -143,12 +143,6 @@ public class InscriptionFragment extends Fragment implements InscriptionFragView
     }
 
     @Override
-    public void displaySnackBar(View view, String message) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
-
-    @Override
     public void enableDisableButton(boolean enable) {
         btnEnregistrer.setEnabled(enable);
     }

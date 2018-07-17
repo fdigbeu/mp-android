@@ -42,6 +42,29 @@ public class JsonData {
         return null;
     }
 
+    public Adresse getAdresseFacturationFromJson(String token) {
+        try {
+            if(jsonString != null && !jsonString.isEmpty()) {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                Adresse adresse = new Adresse();
+                String libelleAdresse = jsonObject.getString("libelleAdresse");
+                adresse.setType("facturation");
+                int adresseId = jsonObject.getInt("adresseId");
+                adresse.setAdresseId(adresseId);
+                String destinataire = libelleAdresse.split(":")[0].trim();
+                adresse.setDestinataire(destinataire);
+                String libelle = libelleAdresse.replace(destinataire + " : ", "").trim();
+                adresse.setLibelle(libelle);
+                adresse.setToken(token);
+                return adresse;
+            }
+            return null;
+        }
+        catch (JSONException ex){
+            return null;
+        }
+    }
+
     public ArrayList<Adresse> getAdressesFacturationsFromJson(String token) {
         try {
             if(jsonString != null && !jsonString.isEmpty()) {
@@ -62,6 +85,29 @@ public class JsonData {
                     adresses.add(adresse);
                 }
                 return adresses;
+            }
+            return null;
+        }
+        catch (JSONException ex){
+            return null;
+        }
+    }
+
+    public Adresse getAdresseLivraisonFromJson(String token) {
+        try {
+            if(jsonString != null && !jsonString.isEmpty()) {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                Adresse adresse = new Adresse();
+                String libelleAdresse = jsonObject.getString("libelleAdresse");
+                adresse.setType("livraison");
+                int adresseId = jsonObject.getInt("adresseId");
+                adresse.setAdresseId(adresseId);
+                String destinataire = libelleAdresse.split(":")[0].trim();
+                adresse.setDestinataire(destinataire);
+                String libelle = libelleAdresse.replace(destinataire + " : ", "").trim();
+                adresse.setLibelle(libelle);
+                adresse.setToken(token);
+                return adresse;
             }
             return null;
         }

@@ -131,9 +131,10 @@ public class ManFragPresenter implements ManFragView.IPresenter{
     }
 
     // Method to add product to the basket
-    public void addProductToBasket(Context context, Produit produit){
+    public void addProductToBasket(View view, Produit produit){
         try {
             if(iManFrag != null && produit != null){
+                Context context = view.getContext();
                 String clientToken = HomePresenter.retrieveClientToken(context);
                 int produitId = produit.getProduitId();
                 float prixProduit = 0f;
@@ -167,10 +168,10 @@ public class ManFragPresenter implements ManFragView.IPresenter{
                         daoPanier.add(panier);
                     }
                     //--
-                    Toast.makeText(context, context.getResources().getString(R.string.lb_produit_ajout_succes), Toast.LENGTH_SHORT).show();
+                    HomePresenter.messageSnackBar(view, context.getResources().getString(R.string.lb_produit_ajout_succes));
                 }
                 else{
-                    Toast.makeText(context, "Erreur ! aucun token trouvé.", Toast.LENGTH_LONG).show();
+                    HomePresenter.messageSnackBar(view, "Erreur ! aucun token trouvé.");
                 }
             }
         }

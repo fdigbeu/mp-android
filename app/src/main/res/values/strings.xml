@@ -22,6 +22,7 @@
     <string name="lb_deconnexion_encours">Déconnexion en cours...</string>
     <string name="lb_connexion_encours">Connexion en cours...</string>
     <string name="lb_inscription_encours">Inscription en cours...</string>
+    <string name="lb_enregistrement_encours">Enregistrement en cours...</string>
     <string name="lb_delai_livraison">Livraison prévue entre le {DATE_LIVRAISON_1} et le {DATE_LIVRAISON_2}</string>
 
     <string name="lb_aucune_adresse">Aucune adresse pour le moment</string>
@@ -50,9 +51,9 @@
     <string name="lb_message_partager_app">Bonjour, \n\nJe tiens à te faire découvrir l\'application android Mali Prestige.\nClique sur le lien qui apparaît en bas de ce message, et n\'hésite pas à en parler autour de toi.\n\nhttps://play.google.com/store/apps/details?id=com.maliprestige</string>
 
     <string name="lb_adressses_livraisons">ADRESSES DE LIVRAISONS</string>
-    <string name="lb_nom_prenom">Nom / Prénom</string>
-    <string name="lb_email">E-mail</string>
-    <string name="lb_telephones">Téléphones</string>
+    <string name="lb_nom_prenom">NOM </string>
+    <string name="lb_email">E-MAIL </string>
+    <string name="lb_telephones">N° TEL </string>
     <string name="lb_adressses_facturations">ADRESSES DE FACTURATIONS</string>
     <string name="lb_identite">IDENTITÉ</string>
     <string name="lb_mon_panier">MON PANIER</string>
@@ -62,6 +63,9 @@
     <string name="lb_paiement_mandat_cash">MANDAT CASH</string>
     <string name="lb_paiement_virement">VIREMENT</string>
     <string name="lb_paiement_espece">ESPÈCE</string>
+
+    <string name="lb_new_adresse_facturation">Nouvelle adresse de facturation</string>
+    <string name="lb_new_adresse_livraison">Nouvelle adresse de livraison</string>
 
     <string name="lb_date_livraison">DATE DE LA LIVRAISON</string>
     <string name="lb_montant_a_payer">MONTANT À PAYER</string>
@@ -92,6 +96,13 @@
     <string name="lb_form_condition_vente">En vous inscrivant, vous acceptez nos conditions de ventes</string>
     <string name="lb_form_email_invalide">L\'adresse email n\'est pas valide</string>
 
+    <string name="lb_form_adresse_nom">Nom</string>
+    <string name="lb_form_adresse_prenom">Prénom</string>
+    <string name="lb_form_adresse_adresse">Adresse</string>
+    <string name="lb_form_adresse_cp">Code postal</string>
+    <string name="lb_form_adresse_ville">Ville</string>
+    <string name="lb_form_adresse_pays">Pays</string>
+
     <string name="lb_who_are_you">Qui êtes-vous ?</string>
     <string name="lb_identify_you">Veuillez vous identifier</string>
 
@@ -116,7 +127,7 @@
     <string name="mp_json_client_deconnexion">/api/client/deconnexion.json/</string>
     <string name="mp_json_client_valider_commande">/api/client/valider/commande.json/</string>
     <string name="mp_json_client_ajouter_adresse">/api/client/ajouter/adresse/livraison-ou-facturation.json/</string>
-    <string name="mp_json_client_paiement_paypal">/paiement/paypal/client/1000000000/commande/numero/{NUMERO_COMMANDE}/?clientToken={CLIENT_TOKEN}</string>
+    <string name="mp_json_client_paiement_paypal">/api/client/{CLIENT_TOKEN}/commande/numero/{NUMERO_COMMANDE}/paiement/paypal.json/</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

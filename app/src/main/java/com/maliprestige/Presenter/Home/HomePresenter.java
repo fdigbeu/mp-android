@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.view.ContextThemeWrapper;
@@ -334,6 +335,7 @@ public class HomePresenter implements HomeView.IPresenter{
             Log.e("TAG_ERROR", "HomePresenter-->persistSlides() : "+ex.getMessage());
         }
     }
+
     // Retrieve persist slides data
     public ArrayList<Slide> retrievePersistSlides(){
         try {
@@ -383,6 +385,7 @@ public class HomePresenter implements HomeView.IPresenter{
             Log.e("TAG_ERROR", "HomePresenter-->persistProduits() : "+ex.getMessage());
         }
     }
+
     // Retrieve persist produits data
     public ArrayList<Produit> retrievePersistProduits(String key){
         try {
@@ -520,6 +523,17 @@ public class HomePresenter implements HomeView.IPresenter{
     public static String decrypterData(String data){
         Cryptage cryptage = new Cryptage();
         return cryptage.decrypterData(data);
+    }
+
+    // Method to display snackbar message
+    public static void messageSnackBar(View view, String message){
+        try {
+            if(view != null && message != null){
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        }
+        catch (Exception ex){}
     }
 
     // Share apps
