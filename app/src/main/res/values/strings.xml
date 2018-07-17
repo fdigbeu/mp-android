@@ -64,6 +64,8 @@
     <string name="lb_paiement_virement">VIREMENT</string>
     <string name="lb_paiement_espece">ESPÈCE</string>
 
+    <string name="lb_form_search_keyword">Mot clé à rechercher</string>
+
     <string name="lb_new_adresse_facturation">Nouvelle adresse de facturation</string>
     <string name="lb_new_adresse_livraison">Nouvelle adresse de livraison</string>
 
@@ -120,7 +122,7 @@
     <string name="mp_json_slide">/api/slides.json/</string>
     <!-- TYPE_PRODUIT = all|homme|femme|enfant|exotique et LIMIT_PRODUIT = 0 à n -->
     <string name="mp_json_produit">/api/type/{TYPE_PRODUIT}/limit/{LIMIT_PRODUIT}/produits.json/</string>
-    <string name="mp_json_client_pwd_oublie">/mot-de-passe-oublie.json/</string>
+    <string name="mp_json_client_pwd_oublie">/api/client/mot-de-passe-oublie.json/</string>
     <string name="mp_json_client_commande">/api/client/token/{CLIENT_TOKEN}/commandes.json/</string>
     <string name="mp_json_client_connexion">/api/client/connexion.json/</string>
     <string name="mp_json_client_inscription">/api/client/inscription.json/</string>

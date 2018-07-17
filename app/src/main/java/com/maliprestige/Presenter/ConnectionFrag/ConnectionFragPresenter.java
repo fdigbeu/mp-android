@@ -19,7 +19,6 @@ import com.maliprestige.View.Dialogs.PwdOublieDialog;
 import com.maliprestige.View.Interfaces.ConnectionFragView;
 import com.maliprestige.View.Interfaces.HomeView;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -62,10 +61,12 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
     }
 
     // Method to show dialog to modify password
-    public void passwordOublie(Context context){
-        if(iConnectionFrag != null && context != null) {
+    public void passwordOublie(View view){
+        if(iConnectionFrag != null && view != null) {
             try {
+                Context context = view.getContext();
                 PwdOublieDialog pwdOublieDialog = new PwdOublieDialog(context);
+                pwdOublieDialog.setmView(view);
                 pwdOublieDialog.showForm();
             }
             catch (Exception ex){
@@ -122,6 +123,7 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
                     String actionForm = view.getContext().getResources().getString(R.string.mp_json_hote_production) + view.getContext().getResources().getString(R.string.mp_json_client_connexion);
                     sendConnexionForm = new SendFormData();
                     sendConnexionForm.setiConnectionPresenter(this);
+                    sendConnexionForm.setView(view);
                     sendConnexionForm.initializeData(view.getContext(), postDataParams, actionForm);
                     sendConnexionForm.execute();
                 }
@@ -160,7 +162,12 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
                     }
                     Log.i("TAG_JSON", jsonString);
                     if(Integer.parseInt(codeRetour) != 200){
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        if(sendConnexionForm != null && sendConnexionForm.getView() != null){
+                            HomePresenter.messageSnackBar(sendConnexionForm.getView(), message);
+                        }
+                        else {
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        }
                     }
                     else{
                         JsonData jsonData = new JsonData(jsonString);

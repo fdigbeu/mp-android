@@ -29,8 +29,10 @@ import com.maliprestige.Model.Client;
 import com.maliprestige.Model.Cryptage;
 import com.maliprestige.Model.DAOClient;
 import com.maliprestige.Model.DAOPanier;
+import com.maliprestige.Model.JsonData;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Screen;
+import com.maliprestige.Model.Search;
 import com.maliprestige.Model.Slide;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.HomeView;
@@ -49,9 +51,12 @@ public class HomePresenter implements HomeView.IPresenter{
 
     private HomeView.IHome iHome;
 
+    private GetAllProduits produitsAsyntask;
+
     private static String MP_LAST_CLIENT_CONNECTED = "MP_LAST_CLIENT_CONNECTED";
     private static String MP_CLIENT_TOKEN = "MP_CLIENT_TOKEN";
     private static String MP_CLIENT_DECONNECTED = "MP_CLIENT_DECONNECTED";
+    private static String MP_AUTO_COMPLETE_DATA = "MP_AUTO_COMPLETE_DATA";
 
     public HomePresenter(HomeView.IHome iHome) {
         this.iHome = iHome;
@@ -95,6 +100,28 @@ public class HomePresenter implements HomeView.IPresenter{
                     // Checked home menu in navigation view
                     iHome.checkedNavigationView(R.id.nav_menu_accueil);
                 }
+                //--
+                iHome.searchVisibility(View.GONE);
+                iHome.fabSearchVisibility(View.GONE);
+                // Verify if Search contains data
+                String searchJson = retrieveAutoCompleteData(context);
+                if(searchJson != null){
+                    JsonData jsonData = new JsonData(searchJson);
+                    if(jsonData != null) {
+                        ArrayList<String> searchList = jsonData.getAutoCompleteSearchDataFromJson();
+                        if(searchList != null && searchList.size() > 0) {
+                            iHome.loadAutoCompleteData(searchList);
+                            iHome.fabSearchVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+                // Search new data if connection exists
+                if(HomePresenter.isMobileConnected(context)){
+                    produitsAsyntask = new GetAllProduits();
+                    produitsAsyntask.setHomePresenter(this);
+                    produitsAsyntask.initialize(context, "all", "1000");
+                    produitsAsyntask.execute();
+                }
             }
         }
         catch (Exception ex){
@@ -110,12 +137,26 @@ public class HomePresenter implements HomeView.IPresenter{
                     drawer.closeDrawer(GravityCompat.START);
                 } else {
                     iHome.closeActivity();
+                    cancelAsyntask();
                 }
             }
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "HomePresenter-->openOrCloseMenuDrawer() : "+ex.getMessage());
         }
+    }
+
+    // Method to retrieve viewpager current item
+    public int retrieveViewPagerCurrentItem(){
+        try {
+            if(iHome != null) {
+                return iHome.retrieveViewPagerCurrentItem();
+            }
+        }
+        catch (Exception ex){
+            return -1;
+        }
+        return -1;
     }
 
     // Method to show view pager
@@ -180,6 +221,36 @@ public class HomePresenter implements HomeView.IPresenter{
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "HomePresenter-->showViewPager() : "+ex.getMessage());
+        }
+    }
+
+    // Method to manage user action
+    public void retrieveUserAction(View view, String value){
+        try {
+            if(iHome != null && view != null){
+                int id = view.getId();
+                switch (id){
+                    case R.id.imageViewClose:
+                        String data = iHome.retrieveSearchData();
+                        if(data.length()==0)
+                            iHome.searchVisibility(View.GONE);
+                        else
+                            iHome.changeSearchData("");
+                        break;
+
+                    case R.id.autoCompletSearch:
+                        String itemSelected = value;
+                        messageSnackBar(view, itemSelected);
+                        break;
+
+                    case R.id.fab_search:
+                        iHome.searchVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->retrieveUserAction() : "+ex.getMessage());
         }
     }
 
@@ -525,6 +596,20 @@ public class HomePresenter implements HomeView.IPresenter{
         return cryptage.decrypterData(data);
     }
 
+    // Method to retrieve autocomplete data
+    public static String retrieveAutoCompleteData(Context context){
+        try { return getDataFromSharePreferences(context, MP_AUTO_COMPLETE_DATA); }
+        catch (Exception ex){
+            return null;
+        }
+    }
+
+    // Method to save autocomplete data
+    public static void saveAutoCompleteData(Context context, String jsonSearch){
+        try { saveDataInSharePreferences(context, MP_AUTO_COMPLETE_DATA, jsonSearch); }
+        catch (Exception ex){ Log.e("TAG_ERROR", "HomePresenter-->saveAutoCompleteData() : "+ex.getMessage()); }
+    }
+
     // Method to display snackbar message
     public static void messageSnackBar(View view, String message){
         try {
@@ -597,7 +682,29 @@ public class HomePresenter implements HomeView.IPresenter{
 
     @Override
     public void onLoadProduitsFinished(Context context, ArrayList<Produit> produits) {
-
+        // Save produit in search data
+        if(produits != null && produits.size() > 0){
+            ArrayList<Search> searches = new ArrayList<>();
+            ArrayList<String> searchList = new ArrayList<>();
+            for (int i=0; i<produits.size(); i++){
+                Search search = new Search();
+                search.setProduitId(produits.get(i).getProduitId());
+                search.setNomProduit(produits.get(i).getNom());
+                search.setImage1(produits.get(i).getImage1());
+                search.setImage2(produits.get(i).getImage2());
+                search.setImage3(produits.get(i).getImage3());
+                searches.add(search);
+                //--
+                searchList.add(produits.get(i).getNom());
+            }
+            if(searches.size() > 0){
+                saveAutoCompleteData(context, searches.toString());
+                iHome.loadAutoCompleteData(searchList);
+                iHome.fabSearchVisibility(View.VISIBLE);
+                //Log.i("TAG_SEARCH", "TOTAL = "+searches.size());
+                //Log.i("TAG_SEARCH", searches.toString());
+            }
+        }
     }
 
     @Override
@@ -627,5 +734,14 @@ public class HomePresenter implements HomeView.IPresenter{
         catch (Exception ex){
             Log.e("TAG_ERROR", "HomePresenter-->onUserDeconnectionFinished() : "+ex.getMessage());
         }
+    }
+
+    public void cancelAsyntask(){
+        try {
+            if(produitsAsyntask != null){
+                produitsAsyntask.cancel(true);
+            }
+        }
+        catch (Exception ex){}
     }
 }

@@ -143,4 +143,48 @@ public class JsonData {
             return null;
         }
     }
+
+    // Retrieve all search data (Product object)
+    public ArrayList<Search> getSearchDataFromJson() {
+        try {
+            if(jsonString != null && !jsonString.isEmpty()) {
+                ArrayList<Search> searches = new ArrayList<>();
+                JSONArray resultats = new JSONArray(jsonString);
+                for (int i = 0; i < resultats.length(); i++) {
+                    JSONObject jsonObject = resultats.getJSONObject(i);
+                    Search search = new Search();
+                    search.setProduitId(jsonObject.getInt("produitId"));
+                    search.setNomProduit(jsonObject.getString("nomProduit"));
+                    search.setImage1(jsonObject.getString("image1"));
+                    search.setImage2(jsonObject.getString("image2"));
+                    search.setImage3(jsonObject.getString("image3"));
+                    searches.add(search);
+                }
+                return searches;
+            }
+            return null;
+        }
+        catch (JSONException ex){
+            return null;
+        }
+    }
+
+    // Retrieve all search name (Product name)
+    public ArrayList<String> getAutoCompleteSearchDataFromJson() {
+        try {
+            if(jsonString != null && !jsonString.isEmpty()) {
+                ArrayList<String> searches = new ArrayList<>();
+                JSONArray resultats = new JSONArray(jsonString);
+                for (int i = 0; i < resultats.length(); i++) {
+                    JSONObject jsonObject = resultats.getJSONObject(i);
+                    searches.add(jsonObject.getString("nomProduit"));
+                }
+                return searches;
+            }
+            return null;
+        }
+        catch (JSONException ex){
+            return null;
+        }
+    }
 }

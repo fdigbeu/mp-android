@@ -35,7 +35,7 @@ public class OrderSummaryPresenter implements OrderSummaryFragView.IPresenter {
     }
 
     // Method to load order summary data
-    public void loadOrderSummaryData(Context context){
+    public void loadOrderSummaryData(final Context context){
         try {
             if(iOrderSummaryFrag != null && context != null){
                 iOrderSummaryFrag.initialize();
@@ -110,10 +110,14 @@ public class OrderSummaryPresenter implements OrderSummaryFragView.IPresenter {
                 }
                 else{
                     iOrderSummaryFrag.messageVisibility(View.VISIBLE);
-                    HomeView.IHome iHome = iOrderSummaryFrag.retrieveIHomeInstance();
+                    final HomeView.IHome iHome = iOrderSummaryFrag.retrieveIHomeInstance();
                     if(iHome != null){
                         HomePresenter homePresenter = new HomePresenter(iHome);
-                        homePresenter.showViewPager(context.getResources().getString(R.string.lb_accueil));
+                        int currentViewPagerItem = homePresenter.retrieveViewPagerCurrentItem();
+                        // If current Fragment is : OrderSummaryFragment
+                        if(currentViewPagerItem==10){
+                            homePresenter.showViewPager(context.getResources().getString(R.string.lb_accueil));
+                        }
                     }
                 }
             }
@@ -222,6 +226,7 @@ public class OrderSummaryPresenter implements OrderSummaryFragView.IPresenter {
                             String actionForm = view.getContext().getResources().getString(R.string.mp_json_hote_production) + view.getContext().getResources().getString(R.string.mp_json_client_valider_commande);
                             sendOrderForm = new SendFormData();
                             sendOrderForm.setiOrderSummaryPresenter(this);
+                            sendOrderForm.setView(view);
                             sendOrderForm.initializeData(view.getContext(), postDataParams, actionForm);
                             sendOrderForm.execute();
                         }
@@ -300,17 +305,23 @@ public class OrderSummaryPresenter implements OrderSummaryFragView.IPresenter {
                 iOrderSummaryFrag.progressVisibility(View.GONE);
                 iOrderSummaryFrag.enableDisableButton(true);
                 if(returnCode == null){
-                    Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
+                    if(sendOrderForm != null && sendOrderForm.getView() != null)
+                        HomePresenter.messageSnackBar(sendOrderForm.getView(), context.getResources().getString(R.string.unstable_connection));
+                    else
+                        Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Log.i("TAG_RETURN_CODE", returnCode);
+                    //Log.i("TAG_RETURN_CODE", returnCode);
                     String jsonString = returnCode.replace("null", "");
                     JSONObject jsonObject = new JSONObject(jsonString);
                     String codeRetour = jsonObject.getString("codeRetour");
                     String message = jsonObject.getString("message");
                     //--
                     if(Integer.parseInt(codeRetour) != 200){
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        if(sendOrderForm != null && sendOrderForm.getView() != null)
+                            HomePresenter.messageSnackBar(sendOrderForm.getView(), message);
+                        else
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                     }
                     else{
                         HomeView.IHome iHome = iOrderSummaryFrag.retrieveIHomeInstance();
@@ -331,11 +342,14 @@ public class OrderSummaryPresenter implements OrderSummaryFragView.IPresenter {
 
                             if(iHome != null) {
                                 iHome.launchWebHtmlActivity(urlPaypal);
-                                Log.i("TAG_URL", urlPaypal);
+                                //Log.i("TAG_URL", urlPaypal);
                             }
                         }
                         else{
-                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                            if(sendOrderForm != null && sendOrderForm.getView() != null)
+                                HomePresenter.messageSnackBar(sendOrderForm.getView(), message);
+                            else
+                                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                             // Redirection vers liste des commandes
                             if(iHome != null){
                                 homePresenter.showViewPager(context.getResources().getString(R.string.lb_commande));

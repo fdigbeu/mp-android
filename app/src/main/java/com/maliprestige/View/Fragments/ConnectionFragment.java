@@ -88,7 +88,7 @@ public class ConnectionFragment extends Fragment implements ConnectionFragView.I
         passwordOublie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragPresenter.passwordOublie(getActivity());
+                fragPresenter.passwordOublie(v);
             }
         });
         pasDeCompte.setOnClickListener(new View.OnClickListener() {

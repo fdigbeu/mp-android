@@ -38,6 +38,42 @@
 
         </android.support.v7.widget.Toolbar>
 
+        <RelativeLayout
+            android:id="@+id/layoutSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginLeft="@dimen/largeur_element_ten"
+            android:layout_marginRight="@dimen/largeur_element_ten"
+            android:layout_marginBottom="@dimen/largeur_element_ten">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompletSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_18sp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:hint="@string/lb_form_search_keyword"
+                android:padding="@dimen/largeur_element_ten"
+                android:textColorHint="@color/colorPrimary"
+                android:background="@drawable/progress_bar_hover_radius"
+                android:singleLine="true"
+                android:completionThreshold="1"/>
+
+            <ImageView
+                android:id="@+id/imageViewClose"
+                android:clickable="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cancel_activity"
+                android:foreground="?android:attr/selectableItemBackground" />
+
+        </RelativeLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <!-- home content -->
@@ -61,7 +97,8 @@
         app:backgroundTint="@color/colorPrimary"
         fab:fab_colorNormal="@color/colorPrimaryDark"
         fab:fab_colorPressed="@color/colorPrimary"
-        fab:fab_colorRipple="@color/colorPrimaryDark"  />
+        fab:fab_colorRipple="@color/colorPrimaryDark"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/layout_home_progressBar"

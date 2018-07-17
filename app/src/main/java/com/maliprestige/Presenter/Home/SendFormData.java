@@ -2,6 +2,7 @@ package com.maliprestige.Presenter.Home;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 
 import com.maliprestige.View.Interfaces.AdresseFormView;
 import com.maliprestige.View.Interfaces.ConnectionFragView;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 public class SendFormData extends AsyncTask<Void, Void, String> {
     private Context context;
+    private View view;
     private  String codeRetour;
     private URL url;
     private String actionForm;
@@ -135,5 +137,13 @@ public class SendFormData extends AsyncTask<Void, Void, String> {
 
     public void setiAdresseFormPresenter(AdresseFormView.IPresenter iAdresseFormPresenter) {
         this.iAdresseFormPresenter = iAdresseFormPresenter;
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    public View getView() {
+        return view;
     }
 }

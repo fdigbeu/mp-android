@@ -12,10 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Slide;
 import com.maliprestige.Presenter.Home.HomePresenter;
@@ -69,6 +74,11 @@ public class HomeActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
     private TextView homeTitle;
+
+    private RelativeLayout layoutSearch;
+    private AutoCompleteTextView autoCompletSearch;
+    private ImageView imageViewClose;
+    private FloatingActionButton fabSearch;
 
     private ImageView userPhoto;
     private TextView userNom;
@@ -151,6 +161,11 @@ public class HomeActivity extends AppCompatActivity
 
         //HomePresenter.getNavDrawerDimension(HomeActivity.this, navigationView);
 
+        layoutSearch = findViewById(R.id.layoutSearch);
+        autoCompletSearch = findViewById(R.id.autoCompletSearch);
+        imageViewClose = findViewById(R.id.imageViewClose);
+        fabSearch = findViewById(R.id.fab_search);
+
         layoutProgress = findViewById(R.id.layout_home_progressBar);
 
         // HomeViewPager contents
@@ -182,6 +197,28 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 homePresenter.showUserConnectedMenu(v);
+            }
+        });
+
+        imageViewClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homePresenter.retrieveUserAction(v, null);
+            }
+        });
+
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homePresenter.retrieveUserAction(v, null);
+            }
+        });
+
+        // AutoComplete textView
+        autoCompletSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                homePresenter.retrieveUserAction(view, adapterView.getItemAtPosition(i).toString());
             }
         });
     }
@@ -239,6 +276,37 @@ public class HomeActivity extends AppCompatActivity
     public void persistNumberViewPager(int numberViewPager){ this.numberViewPager = numberViewPager; }
     @Override
     public int retrieveNumberViewPager(){ return this.numberViewPager; }
+
+    @Override
+    public void searchVisibility(int visibility) {
+        layoutSearch.setVisibility(visibility);
+    }
+
+    @Override
+    public void fabSearchVisibility(int visibility) {
+        fabSearch.setVisibility(visibility);
+    }
+
+    @Override
+    public void loadAutoCompleteData(ArrayList<String> data) {
+        ArrayAdapter<String> adapterChapter = new ArrayAdapter<>(HomeActivity.this, R.layout.item_autocomplete, data);
+        autoCompletSearch.setAdapter(adapterChapter);
+    }
+
+    @Override
+    public void changeSearchData(String data) {
+        autoCompletSearch.setText(data);
+    }
+
+    @Override
+    public String retrieveSearchData() {
+        return autoCompletSearch.getText().toString().trim();
+    }
+
+    @Override
+    public int retrieveViewPagerCurrentItem() {
+        return homeViewPager.getCurrentItem();
+    }
 
 
     // Persist slides data

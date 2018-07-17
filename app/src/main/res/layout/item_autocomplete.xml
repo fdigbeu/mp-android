@@ -7,7 +7,8 @@
     android:gravity="center"
     android:padding="@dimen/largeur_element_ten"
     android:textColor="@color/colorGrayDark"
+    android:background="@color/colorWhite"
     android:textSize="@dimen/text_size_18sp"
     android:ellipsize="end"
-    android:lines="2"
+    android:singleLine="true"
     android:foreground="?android:attr/selectableItemBackground" />

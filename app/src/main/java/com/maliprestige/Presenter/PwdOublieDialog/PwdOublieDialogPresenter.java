@@ -3,11 +3,15 @@ package com.maliprestige.Presenter.PwdOublieDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.maliprestige.Model.JsonData;
 import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.Presenter.Home.SendFormData;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.PwdOublieDialogView;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -49,11 +53,12 @@ public class PwdOublieDialogPresenter implements PwdOublieDialogView.IPresenter{
                     iPwdOublieDialog.enableDisableButton(false);
                     //--
                     postDataParams = new HashMap<>();
-                    postDataParams.put("email", email);
+                    postDataParams.put("email", HomePresenter.crypterData(email));
                     //--
                     String actionForm = view.getContext().getResources().getString(R.string.mp_json_hote_production) + view.getContext().getResources().getString(R.string.mp_json_client_pwd_oublie);
                     sendPwdOublieForm = new SendFormData();
                     sendPwdOublieForm.setiPwdOublieDialogPresenter(this);
+                    sendPwdOublieForm.setView(view);
                     sendPwdOublieForm.initializeData(view.getContext(), postDataParams, actionForm);
                     sendPwdOublieForm.execute();
                 }
@@ -88,6 +93,41 @@ public class PwdOublieDialogPresenter implements PwdOublieDialogView.IPresenter{
 
     @Override
     public void onSendPwdOublieFormFinished(Context context, String returnCode) {
-
+        try {
+            if(iPwdOublieDialog != null && context != null){
+                iPwdOublieDialog.progressVisibility(View.GONE);
+                iPwdOublieDialog.enableDisableButton(true);
+                if(returnCode == null){
+                    if(sendPwdOublieForm != null && sendPwdOublieForm.getView() != null)
+                        HomePresenter.messageSnackBar(sendPwdOublieForm.getView(), context.getResources().getString(R.string.unstable_connection));
+                    else
+                        Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
+                }
+                else{
+                    String jsonString = returnCode.replace("null", "");
+                    Log.i("TAG_RETURN_CODE", jsonString);
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    String codeRetour = jsonObject.getString("codeRetour");
+                    String message = jsonObject.getString("message");
+                    //--
+                    if(Integer.parseInt(codeRetour) != 200){
+                        if(sendPwdOublieForm != null && sendPwdOublieForm.getView() != null)
+                            HomePresenter.messageSnackBar(sendPwdOublieForm.getView(), message);
+                        else
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        String newCryptePassword = jsonObject.getString("newPassword");
+                        if(sendPwdOublieForm != null && sendPwdOublieForm.getView() != null)
+                            HomePresenter.messageSnackBar(sendPwdOublieForm.getView(), message);
+                        else
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "InscriptionFragPresenter-->onSendInscriptionFormFinished() : "+ex.getMessage());
+        }
     }
 }

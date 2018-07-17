@@ -25,6 +25,7 @@ public class PwdOublieDialog implements PwdOublieDialogView.IPwdOublieDialog{
     private Button btnFermer;
     private Button btnEnvoyer;
     private String email;
+    private View mView;
     // Ref presenter
     private PwdOublieDialogPresenter dialogPresenter;
 
@@ -107,5 +108,9 @@ public class PwdOublieDialog implements PwdOublieDialogView.IPwdOublieDialog{
     @Override
     public void closeDialog() {
         mDialog.dismiss();
+    }
+
+    public void setmView(View mView) {
+        this.mView = mView;
     }
 }

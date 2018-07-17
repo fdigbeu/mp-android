@@ -87,9 +87,9 @@ public class OrderSummaryFragment extends Fragment implements OrderSummaryFragVi
 
     @Override
     public void onResume() {
+        super.onResume();
         summaryPresenter.loadClientAdresse(getActivity());
         Log.i("TAG_CYCLE_VIE", "onResume()");
-        super.onResume();
     }
 
     @Override

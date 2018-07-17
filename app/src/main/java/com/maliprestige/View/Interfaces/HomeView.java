@@ -25,6 +25,12 @@ public class HomeView {
         public void progressBarVisibility(int visibility);
         public void persistNumberViewPager(int numberViewPager);
         public int retrieveNumberViewPager();
+        public void searchVisibility(int visibility);
+        public void fabSearchVisibility(int visibility);
+        public void loadAutoCompleteData(ArrayList<String> data);
+        public void changeSearchData(String data);
+        public String retrieveSearchData();
+        public int retrieveViewPagerCurrentItem();
     }
 
     public interface IPresenter{
