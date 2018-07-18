@@ -15,13 +15,31 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/title_commande_textView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/largeur_element_ten"
-            android:gravity="center_horizontal"
-            android:textSize="@dimen/text_size_18sp"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/title_commande_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/largeur_element_ten"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/text_size_18sp"/>
+            <ImageView
+                android:id="@+id/menu_commande_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/largeur_element_ten"
+                android:src="@drawable/ic_menu_more"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
+                />
+        </RelativeLayout>
         <TextView
             android:layout_width="match_parent"
             style="@style/CustomHorizontalLine" />

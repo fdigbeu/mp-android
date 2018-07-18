@@ -61,7 +61,13 @@ public class GetAllProduits extends AsyncTask<Void, Void, ArrayList<Produit>> {
             urlConnection.setConnectTimeout(8000);
             urlConnection.setReadTimeout(8000);
             urlConnection.connect();
-
+            // If connection failed
+            if (urlConnection.getResponseCode() != 200) {
+                DAOProduit daoProduit = new DAOProduit(context);
+                produits = daoProduit.getAllBy(typeProduit);
+                return produits;
+            }
+            //--
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;

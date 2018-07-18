@@ -1,8 +1,10 @@
 package com.maliprestige.Presenter.OrderFrag;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.maliprestige.Model.Commande;
@@ -10,9 +12,12 @@ import com.maliprestige.Model.CommandeProduit;
 import com.maliprestige.Model.DAOCommande;
 import com.maliprestige.Model.DAOCommandeProduit;
 import com.maliprestige.Presenter.Home.HomePresenter;
+import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.HomeView;
 import com.maliprestige.View.Interfaces.OrderFragView;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class OrderFragPresenter implements OrderFragView.IPresenter{
@@ -33,6 +38,7 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
                 iOrderFrag.initialize();
                 iOrderFrag.events();
 
+                iOrderFrag.messageVisibility(View.GONE);
                 HomeView.IHome mIHome = iOrderFrag.retrieveIHomeInstance();
                 HomePresenter homePresenter = new HomePresenter(mIHome);
                 ArrayList<Commande> commandes = homePresenter.retrievePersistCommandes();
@@ -62,12 +68,42 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
                                 homePresenter.persistCommandes(commandes);
                             }
                         }
+                        else{
+                            iOrderFrag.messageVisibility(View.VISIBLE);
+                            iOrderFrag.messageOrder(context.getResources().getString(R.string.lb_aucune_commande));
+                        }
                     }
                 }
             }
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "OrderFragPresenter-->loadOrderFragData() : "+ex.getMessage());
+        }
+    }
+
+    // Method to refresh fragment data
+    public void refreshFragmentData(Context context){
+        try {
+            String clientToken = HomePresenter.retrieveClientToken(context);
+            if(HomePresenter.isMobileConnected(context) && iOrderFrag != null && clientToken != null && clientToken.length() >= 50){
+                HomeView.IHome iHome = iOrderFrag.retrieveIHomeInstance();
+                if(iHome != null){
+                    HomePresenter homePresenter = new HomePresenter(iHome);
+                    boolean refreshData = homePresenter.retrieveRefreshFragment();
+                    if(refreshData){
+                        iOrderFrag.progressVisibility(View.VISIBLE);
+                        ordersAsyntask = new GetAllOrders();
+                        ordersAsyntask.setOrderFragPresenter(this);
+                        ordersAsyntask.initialize(context, clientToken);
+                        ordersAsyntask.execute();
+                        //--
+                        homePresenter.initializeRefreshFragment(false);
+                    }
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "OrderFragPresenter-->refreshFragmentData() : "+ex.getMessage());
         }
     }
 
@@ -100,10 +136,94 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
         }
     }
 
+    // Method to show popup menu
+    public void showPopupMenuOrder(View view, String numeroCommande, String numeroFacture, boolean isFactureAcquittee){
+        try {
+            if(iOrderFrag != null){
+                showPopupWindow(view, numeroCommande, numeroFacture, isFactureAcquittee);
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "OrderFragPresenter-->showPopupMenuOrder() : "+ex.getMessage());
+        }
+    }
+
+    // Manage when user click on reading item
+    private void showPopupWindow(final View view, final String numeroCommande, final String numeroFacture, final boolean isFactureAcquittee) {
+        MenuItem paypalMenuItem;
+        final Context context = view.getContext();
+        final String clientToken = HomePresenter.retrieveClientToken(context);
+        final HomeView.IHome iHome = iOrderFrag.retrieveIHomeInstance();
+        if(HomePresenter.isMobileConnected(context)){
+            if(iHome != null && clientToken != null && clientToken.length() >= 50){
+                //---
+                PopupMenu popup = new PopupMenu(view.getContext(), view);
+                try {
+                    Field[] fields = popup.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        if ("mPopup".equals(field.getName())) {
+                            field.setAccessible(true);
+                            Object menuPopupHelper = field.get(popup);
+                            Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                            Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                            setForceIcons.invoke(menuPopupHelper, true);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                popup.getMenuInflater().inflate(R.menu.menu_user_orders, popup.getMenu());
+                paypalMenuItem = popup.getMenu().findItem(R.id.action_reglement_paypal);
+                paypalMenuItem.setVisible(!isFactureAcquittee);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+                        switch (id){
+                            case R.id.action_voir_detail:
+                                String urlDetailCommande = context.getResources().getString(R.string.mp_json_hote_production)+
+                                        context.getResources().getString(R.string.mp_json_client_detail_commande)
+                                                .replace("{NUMERO_COMMANDE}", numeroCommande)
+                                                .replace("{CLIENT_TOKEN}", clientToken);
+                                HomePresenter pCmd = new HomePresenter(iHome);
+                                pCmd.launchWebHtmlActivity(urlDetailCommande);
+                                pCmd.initializeRefreshFragment(false);
+                                break;
+                            case R.id.action_reglement_paypal:
+                                String urlPaypal = context.getResources().getString(R.string.mp_json_hote_production)+
+                                        context.getResources().getString(R.string.mp_json_client_paiement_paypal)
+                                                .replace("{NUMERO_COMMANDE}", numeroCommande)
+                                                .replace("{CLIENT_TOKEN}", clientToken);
+                                HomePresenter pPaypal = new HomePresenter(iHome);
+                                pPaypal.launchWebHtmlActivity(urlPaypal);
+                                pPaypal.initializeRefreshFragment(true);
+                                break;
+                            case R.id.action_voir_facture:
+                                String urlGenererFacture = context.getResources().getString(R.string.mp_json_hote_production)+
+                                        context.getResources().getString(R.string.mp_json_client_generer_facture)
+                                                .replace("{NUMERO_FACTURE}", numeroFacture)
+                                                .replace("{CLIENT_TOKEN}", clientToken);
+                                HomePresenter.launchExternalPageWeb(context, urlGenererFacture);
+                                HomePresenter pFacture = new HomePresenter(iHome);
+                                pFacture.initializeRefreshFragment(false);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        }
+        else{
+            HomePresenter.messageSnackBar(view, context.getResources().getString(R.string.no_connection));
+        }
+    }
+
     @Override
     public void onLoadCommandesFinished(Context context, ArrayList<Commande> commandes) {
         try {
             iOrderFrag.progressVisibility(View.GONE);
+            iOrderFrag.messageVisibility(View.GONE);
             String clientToken = HomePresenter.retrieveClientToken(context);
             if (iOrderFrag != null && clientToken != null && clientToken.length() >= 50){
                 //Log.i("TAG_DATA", "onLoadCommandesFinished(INSIDE_TOKEN)");
@@ -149,6 +269,10 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
                         if(mIHome != null) {
                             homePresenter.persistCommandes(commandes);
                         }
+                    }
+                    else{
+                        iOrderFrag.messageVisibility(View.VISIBLE);
+                        iOrderFrag.messageOrder(context.getResources().getString(R.string.lb_aucune_commande));
                     }
                 }
             }

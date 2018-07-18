@@ -55,7 +55,13 @@ public class GetAllSlides  extends AsyncTask<Void, Void, ArrayList<Slide>> {
             urlConnection.setConnectTimeout(8000);
             urlConnection.setReadTimeout(8000);
             urlConnection.connect();
-
+            // If connection failed
+            if (urlConnection.getResponseCode() != 200) {
+                DAOSlide daoSlide = new DAOSlide(context);
+                slides = daoSlide.getAll();
+                return slides;
+            }
+            //--
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;

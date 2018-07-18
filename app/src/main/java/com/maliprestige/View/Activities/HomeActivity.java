@@ -327,10 +327,22 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public ArrayList<Produit> retrievePersistProduits(String key){ return this.listeProduits.get(key); }
 
+    // Persistence Refresh fragment
+    private boolean refresh;
+    @Override
+    public void initializeRefreshFragment(boolean refresh) { this.refresh = refresh; }
+    @Override
+    public boolean retrieveRefreshFragment() { return this.refresh; }
+
     // Persist orders data
     private ArrayList<Commande> commandes;
     @Override
     public void persistCommandes(ArrayList<Commande> commandes){ this.commandes = commandes; }
     @Override
     public ArrayList<Commande> retrievePersistCommandes(){ return this.commandes; }
+
+    @Override
+    public void emptyPersistence(){
+        commandes = null;
+    }
 }

@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.maliprestige.Model.Commande;
 import com.maliprestige.Presenter.OrderFrag.OrderFragPresenter;
@@ -30,6 +32,7 @@ public class OrderFragment extends Fragment implements OrderFragView.IOrderFrag{
     // Ref HomeActivity interface
     private HomeView.IHome iHome;
 
+    private TextView messageOrder;
     private OrderFragPresenter fragPresenter;
     private RecyclerView recyclerView;
     private LinearLayout progressBar;
@@ -55,9 +58,17 @@ public class OrderFragment extends Fragment implements OrderFragView.IOrderFrag{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        fragPresenter.refreshFragmentData(getActivity());
+        Log.i("TAG_RESUME", "refreshFragmentData(RESUME)");
+    }
+
+    @Override
     public void initialize() {
         recyclerView = getActivity().findViewById(R.id.order_recyclerView);
         progressBar = getActivity().findViewById(R.id.order_frag_progressBar);
+        messageOrder = getActivity().findViewById(R.id.order_message_textView);
     }
 
     @Override
@@ -68,6 +79,16 @@ public class OrderFragment extends Fragment implements OrderFragView.IOrderFrag{
     @Override
     public void progressVisibility(int visibility) {
         progressBar.setVisibility(visibility);
+    }
+
+    @Override
+    public void messageVisibility(int visibility) {
+        messageOrder.setVisibility(visibility);
+    }
+
+    @Override
+    public void messageOrder(String message) {
+        messageOrder.setText(message);
     }
 
     @Override

@@ -34,6 +34,9 @@ public class HomeView {
         public int retrieveViewPagerCurrentItem();
         public void persistCommandes(ArrayList<Commande> commandes);
         public ArrayList<Commande> retrievePersistCommandes();
+        public void emptyPersistence();
+        public void initializeRefreshFragment(boolean refresh);
+        public boolean retrieveRefreshFragment();
     }
 
     public interface IPresenter{

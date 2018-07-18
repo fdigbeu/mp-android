@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_voir_detail"
+        android:icon="@drawable/ic_order_info"
+        android:title="@string/lb_order_detail" />
+    <item
+        android:id="@+id/action_reglement_paypal"
+        android:icon="@drawable/ic_order_credit_card"
+        android:title="@string/lb_order_regler" />
+    <item
+        android:id="@+id/action_voir_facture"
+        android:icon="@drawable/ic_file_download"
+        android:title="@string/lb_order_facture" />
+</menu>

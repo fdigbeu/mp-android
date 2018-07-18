@@ -91,19 +91,6 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
         }
     }
 
-    // Method to load external page web
-    public void loadPasswordOubliePageWeb(Context context){
-        try {
-            String url = context.getResources().getString(R.string.mp_json_hote_production)+context.getResources().getString(R.string.mp_json_client_pwd_oublie);
-            if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            }
-        }
-        catch (Exception ex){
-            Log.e("TAG_ERROR", "ConnectionFragPresenter-->loadPasswordOubliePageWeb() : "+ex.getMessage());
-        }
-    }
-
     // Method to retrieve user data
     public void retrieveFormData(View view, String email, String password){
         try {
@@ -145,7 +132,12 @@ public class ConnectionFragPresenter implements ConnectionFragView.IPresenter {
                 iConnectionFrag.progressVisibility(View.GONE);
                 iConnectionFrag.enableDisableButton(true);
                 if(returnCode == null){
-                    Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
+                    if(sendConnexionForm != null && sendConnexionForm.getView() != null){
+                        HomePresenter.messageSnackBar(sendConnexionForm.getView(), context.getResources().getString(R.string.unstable_connection));
+                    }
+                    else{
+                        Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
+                    }
                 }
                 else{
                     String jsonString = returnCode.replace("null", "");

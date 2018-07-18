@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
@@ -81,6 +82,7 @@ public class OrderRecyclerAdapter extends RecyclerView.Adapter<OrderRecyclerAdap
         View container;
         LinearLayout orderItems;
         TextView title;
+        ImageView menuOrder;
         TextView statuts;
         int positionItem;
 
@@ -90,12 +92,21 @@ public class OrderRecyclerAdapter extends RecyclerView.Adapter<OrderRecyclerAdap
             container = itemView.findViewById(R.id.container);
             orderItems = itemView.findViewById(R.id.layout_order_items);
             title = itemView.findViewById(R.id.title_commande_textView);
+            menuOrder = itemView.findViewById(R.id.menu_commande_imageView);
             statuts = itemView.findViewById(R.id.statut_commande_textView);
 
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                }
+            });
+
+            menuOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderFragPresenter fragPresenter = new OrderFragPresenter(iOrderFrag);
+                    fragPresenter.showPopupMenuOrder(v, commandes.get(positionItem).getNumeroCommande(), commandes.get(positionItem).getNumeroFacture(), commandes.get(positionItem).isFactureAcquittee());
                 }
             });
         }

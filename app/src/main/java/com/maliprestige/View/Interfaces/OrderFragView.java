@@ -12,6 +12,8 @@ public class OrderFragView {
         public void initialize();
         public void events();
         public void progressVisibility(int visibility);
+        public void messageVisibility(int visibility);
+        public void messageOrder(String message);
         public void loadRecyclerViewData(ArrayList<Commande> commandes, int numberColumns);
         public HomeView.IHome retrieveIHomeInstance();
     }

@@ -87,6 +87,7 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
                     sendInscriptionForm = new SendFormData();
                     sendInscriptionForm.setiInscriptionPresenter(this);
                     sendInscriptionForm.initializeData(view.getContext(), postDataParams, actionForm);
+                    sendInscriptionForm.setView(view);
                     sendInscriptionForm.execute();
                 }
                 else{
@@ -107,7 +108,12 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
                 iInscriptionFrag.progressVisibility(View.GONE);
                 iInscriptionFrag.enableDisableButton(true);
                 if(returnCode == null){
-                    Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
+                    if(sendInscriptionForm != null && sendInscriptionForm.getView() != null){
+                        HomePresenter.messageSnackBar(sendInscriptionForm.getView(), context.getResources().getString(R.string.unstable_connection));
+                    }
+                    else {
+                        Toast.makeText(context, context.getResources().getString(R.string.unstable_connection), Toast.LENGTH_LONG).show();
+                    }
                 }
                 else{
                     Log.i("TAG_RETURN_CODE", returnCode);
@@ -117,7 +123,12 @@ public class InscriptionFragPresenter implements InscriptionFragView.IPresenter{
                     String message = jsonObject.getString("message");
                     //--
                     if(Integer.parseInt(codeRetour) != 200){
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        if(sendInscriptionForm != null && sendInscriptionForm.getView() != null){
+                            HomePresenter.messageSnackBar(sendInscriptionForm.getView(), message);
+                        }
+                        else {
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        }
                     }
                     else{
                         JsonData jsonData = new JsonData(jsonString);

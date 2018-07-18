@@ -497,6 +497,27 @@ public class HomePresenter implements HomeView.IPresenter{
         return null;
     }
 
+    // Persist : Method to know if the fragment must to be refresh
+    public void initializeRefreshFragment(boolean refresh) {
+        try {
+            iHome.initializeRefreshFragment(refresh);
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->initializeRefreshFragment() : "+ex.getMessage());
+        }
+    }
+
+    // Retrieve persist : Method to know if the fragment must to be refresh
+    public boolean retrieveRefreshFragment() {
+        try {
+            return iHome.retrieveRefreshFragment();
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->retrieveRefreshFragment() : "+ex.getMessage());
+        }
+        return false;
+    }
+
     // Method to show user connected menu
     public void showUserConnectedMenu(View view){
         if(iHome != null && view != null) {
@@ -663,6 +684,18 @@ public class HomePresenter implements HomeView.IPresenter{
         catch (Exception ex){}
     }
 
+    // Method to load external page web
+    public static void launchExternalPageWeb(Context context, String url){
+        try {
+            if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->launchExternalPageWeb() : "+ex.getMessage());
+        }
+    }
+
     public static void sendMessage(Context context){
         String message = "";
         String email = context.getResources().getString(R.string.lb_contact_adresse_email);
@@ -754,6 +787,7 @@ public class HomePresenter implements HomeView.IPresenter{
                     }
                     saveClientToken(context, MP_CLIENT_DECONNECTED);
                     loadHomeData(context);
+                    iHome.emptyPersistence();
                     Log.i("TAG_DECONNEXION_CODE", returnCode);
                 }
             }

@@ -43,4 +43,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/order_message_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_20sp"
+        android:textColor="@color/colorPrimary"
+        android:padding="@dimen/largeur_element_ten"/>
+
 </FrameLayout>

@@ -54,7 +54,11 @@ public class GetAllOrders extends AsyncTask<Void, Void, ArrayList<Commande>> {
             urlConnection.setConnectTimeout(8000);
             urlConnection.setReadTimeout(8000);
             urlConnection.connect();
-
+            // If connection failed
+            if (urlConnection.getResponseCode() != 200) {
+                return null;
+            }
+            //--
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
