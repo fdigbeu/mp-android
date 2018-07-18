@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 
 import com.maliprestige.Model.DAOSlide;
 import com.maliprestige.Model.Slide;
+import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.HomeFragView;
 
@@ -48,8 +49,12 @@ public class GetAllSlides  extends AsyncTask<Void, Void, ArrayList<Slide>> {
         try {
             URL url = new URL(slideUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(8000);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestProperty("User-Agent", HomePresenter.USER_AGENT);
+            urlConnection.setRequestProperty("Connection", "close");
             urlConnection.setConnectTimeout(8000);
+            urlConnection.setReadTimeout(8000);
+            urlConnection.connect();
 
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

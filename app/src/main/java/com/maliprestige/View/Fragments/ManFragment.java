@@ -97,7 +97,7 @@ public class ManFragment extends Fragment implements ManFragView.IManFrag{
 
     @Override
     public void onDetach() {
-        fragPresenter.cancelAsytask();
+        fragPresenter.cancelAsyntask();
         super.onDetach();
     }
 }

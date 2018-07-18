@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maliprestige.Model.Client;
+import com.maliprestige.Model.Commande;
 import com.maliprestige.Model.Cryptage;
 import com.maliprestige.Model.DAOClient;
 import com.maliprestige.Model.DAOPanier;
@@ -57,6 +58,7 @@ public class HomePresenter implements HomeView.IPresenter{
     private static String MP_CLIENT_TOKEN = "MP_CLIENT_TOKEN";
     private static String MP_CLIENT_DECONNECTED = "MP_CLIENT_DECONNECTED";
     private static String MP_AUTO_COMPLETE_DATA = "MP_AUTO_COMPLETE_DATA";
+    public static final String USER_AGENT = "Mozilla/5.0 (Linux; U; Android 1.6; en-us; GenericAndroidDevice) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1";
 
     public HomePresenter(HomeView.IHome iHome) {
         this.iHome = iHome;
@@ -466,6 +468,31 @@ public class HomePresenter implements HomeView.IPresenter{
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "HomePresenter-->retrievePersistProduits() : "+ex.getMessage());
+        }
+        return null;
+    }
+
+    // Persist orders data
+    public void persistCommandes(ArrayList<Commande> commandes){
+        try {
+            if (iHome != null && commandes != null) {
+                iHome.persistCommandes(commandes);
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->persistCommandes() : "+ex.getMessage());
+        }
+    }
+
+    // Retrieve persist orders data
+    public ArrayList<Commande> retrievePersistCommandes(){
+        try {
+            if (iHome != null) {
+                return iHome.retrievePersistCommandes();
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->retrievePersistCommandes() : "+ex.getMessage());
         }
         return null;
     }

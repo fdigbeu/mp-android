@@ -42,7 +42,7 @@ public class ManFragPresenter implements ManFragView.IPresenter{
                 if(produits != null && produits.size() > 0){
                     iManFrag.loadRecyclerViewData(produits, 1);
                     homePresenter.persistProduits("homme", produits);
-                    Log.i("TAG_DATA", "loadManFragData(RETRIEVE_PERSIST_DATA)");
+                    //Log.i("TAG_DATA", "loadManFragData(RETRIEVE_PERSIST_DATA)");
                 }
                 else{
                     // Load all data produits
@@ -181,7 +181,7 @@ public class ManFragPresenter implements ManFragView.IPresenter{
     }
 
 
-    public void cancelAsytask(){
+    public void cancelAsyntask(){
         if(manAsyntask != null){
             manAsyntask.cancel(true);
         }

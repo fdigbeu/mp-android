@@ -4,6 +4,9 @@ public class CommandeProduit {
     private int id;
     private int produitId;
     private String numeroCommande;
+    private String nomProduit;
+    private int qteProduit;
+    private float prixQteProduit;
     private String token;
 
     public int getId() {
@@ -36,5 +39,29 @@ public class CommandeProduit {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getNomProduit() {
+        return nomProduit;
+    }
+
+    public void setNomProduit(String nomProduit) {
+        this.nomProduit = nomProduit;
+    }
+
+    public int getQteProduit() {
+        return qteProduit;
+    }
+
+    public void setQteProduit(int qteProduit) {
+        this.qteProduit = qteProduit;
+    }
+
+    public float getPrixQteProduit() {
+        return prixQteProduit;
+    }
+
+    public void setPrixQteProduit(float prixQteProduit) {
+        this.prixQteProduit = prixQteProduit;
     }
 }

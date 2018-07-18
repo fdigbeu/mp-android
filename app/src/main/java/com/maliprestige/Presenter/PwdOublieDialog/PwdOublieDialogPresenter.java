@@ -105,7 +105,7 @@ public class PwdOublieDialogPresenter implements PwdOublieDialogView.IPresenter{
                 }
                 else{
                     String jsonString = returnCode.replace("null", "");
-                    Log.i("TAG_RETURN_CODE", jsonString);
+                    //Log.i("TAG_RETURN_CODE", jsonString);
                     JSONObject jsonObject = new JSONObject(jsonString);
                     String codeRetour = jsonObject.getString("codeRetour");
                     String message = jsonObject.getString("message");
@@ -117,7 +117,8 @@ public class PwdOublieDialogPresenter implements PwdOublieDialogView.IPresenter{
                             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                     }
                     else{
-                        String newCryptePassword = jsonObject.getString("newPassword");
+                        String newCryptePassword = HomePresenter.decrypterData(jsonObject.getString("newPassword"));
+                        Log.i("TAG_NEW_PASSWORD", "NEW_PASSWORD : "+newCryptePassword);
                         if(sendPwdOublieForm != null && sendPwdOublieForm.getView() != null)
                             HomePresenter.messageSnackBar(sendPwdOublieForm.getView(), message);
                         else

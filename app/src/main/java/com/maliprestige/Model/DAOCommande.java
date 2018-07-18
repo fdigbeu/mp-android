@@ -132,6 +132,11 @@ public class DAOCommande {
             commande.setFactureAcquittee(Boolean.parseBoolean(isFactureAcquittee));
             commande.setDateAcquittement(dateAcquittement);
             commande.setToken(token);
+            //--
+            DAOCommandeProduit daoCommandeProduit = new DAOCommandeProduit(context);
+            ArrayList<CommandeProduit> commandeProduits = daoCommandeProduit.getAllBy(token, numeroCommande);
+            commande.setCommandeProduits(commandeProduits);
+            //--
             resultat.add(commande);
             //--
             cursor.moveToNext();

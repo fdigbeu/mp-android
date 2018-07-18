@@ -3,6 +3,7 @@ package com.maliprestige.View.Interfaces;
 import android.content.Context;
 import android.view.View;
 
+import com.maliprestige.Model.Commande;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Slide;
 
@@ -31,6 +32,8 @@ public class HomeView {
         public void changeSearchData(String data);
         public String retrieveSearchData();
         public int retrieveViewPagerCurrentItem();
+        public void persistCommandes(ArrayList<Commande> commandes);
+        public ArrayList<Commande> retrievePersistCommandes();
     }
 
     public interface IPresenter{

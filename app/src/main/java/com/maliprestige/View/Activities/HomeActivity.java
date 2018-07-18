@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.maliprestige.Model.Commande;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Slide;
 import com.maliprestige.Presenter.Home.HomePresenter;
@@ -45,6 +46,7 @@ import com.maliprestige.View.Interfaces.HomeFragView;
 import com.maliprestige.View.Interfaces.HomeView;
 import com.maliprestige.View.Interfaces.InscriptionFragView;
 import com.maliprestige.View.Interfaces.ManFragView;
+import com.maliprestige.View.Interfaces.OrderFragView;
 import com.maliprestige.View.Interfaces.OrderSummaryFragView;
 import com.maliprestige.View.Interfaces.WomanFragView;
 import com.maliprestige.View.ViewPagers.HomeViewPager;
@@ -64,6 +66,7 @@ public class HomeActivity extends AppCompatActivity
     private InscriptionFragView.IInscriptionFrag iInscriptionFrag;
     private ConnectionFragView.IConnectionFrag iConnectionFrag;
     private BasketFragView.IBasketFrag iBasketFrag;
+    private OrderFragView.IOrderFrag iOrderFrag;
     private OrderSummaryFragView.IOrderSummaryFrag iOrderSummaryFrag;
 
     private LinearLayout layoutProgress;
@@ -268,6 +271,7 @@ public class HomeActivity extends AppCompatActivity
     public void initialiseIInscriptionFrag(InscriptionFragView.IInscriptionFrag iInscriptionFrag){ this.iInscriptionFrag = iInscriptionFrag; }
     public void initialiseIConnectionFrag(ConnectionFragView.IConnectionFrag iConnectionFrag){ this.iConnectionFrag = iConnectionFrag; }
     public void initialiseIBasketFrag(BasketFragView.IBasketFrag iBasketFrag){ this.iBasketFrag = iBasketFrag; }
+    public void initialiseIOrderFrag(OrderFragView.IOrderFrag iOrderFrag){ this.iOrderFrag = iOrderFrag; }
     public void initialiseIOrderSummaryFrag(OrderSummaryFragView.IOrderSummaryFrag iOrderSummaryFrag){ this.iOrderSummaryFrag = iOrderSummaryFrag; }
 
     // Persist redirection value
@@ -322,4 +326,11 @@ public class HomeActivity extends AppCompatActivity
     public void persistProduits(String key, ArrayList<Produit> produits){ this.listeProduits.put(key, produits); }
     @Override
     public ArrayList<Produit> retrievePersistProduits(String key){ return this.listeProduits.get(key); }
+
+    // Persist orders data
+    private ArrayList<Commande> commandes;
+    @Override
+    public void persistCommandes(ArrayList<Commande> commandes){ this.commandes = commandes; }
+    @Override
+    public ArrayList<Commande> retrievePersistCommandes(){ return this.commandes; }
 }

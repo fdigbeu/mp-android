@@ -1,5 +1,7 @@
 package com.maliprestige.Model;
 
+import java.util.ArrayList;
+
 public class Commande {
     private int id;
     private int commandeId;
@@ -25,6 +27,7 @@ public class Commande {
     private boolean isFactureAcquittee;
     private String dateAcquittement;
     private String token;
+    private ArrayList<CommandeProduit> commandeProduits;
 
     public int getId() {
         return id;
@@ -216,5 +219,13 @@ public class Commande {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public ArrayList<CommandeProduit> getCommandeProduits() {
+        return commandeProduits;
+    }
+
+    public void setCommandeProduits(ArrayList<CommandeProduit> commandeProduits) {
+        this.commandeProduits = commandeProduits;
     }
 }

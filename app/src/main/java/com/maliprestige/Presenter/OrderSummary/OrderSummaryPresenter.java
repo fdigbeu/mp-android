@@ -131,30 +131,37 @@ public class OrderSummaryPresenter implements OrderSummaryFragView.IPresenter {
     public void loadClientAdresse(Context context){
         try {
             if(iOrderSummaryFrag != null && context != null){
-                String clientToken = HomePresenter.retrieveClientToken(context);
-                if(clientToken != null && clientToken.length() >= 50){
-                    // Adresse de facturation
-                    String[] mAdressesFac = {"Aucune adresse pour le moment"};
-                    DAOAdresse daoAdresse = new DAOAdresse(context);
-                    ArrayList<Adresse> adressesFacturations = daoAdresse.getAll(clientToken, "facturation");
-                    if(adressesFacturations != null && adressesFacturations.size() > 0){
-                        mAdressesFac = new String[adressesFacturations.size()];
-                        for (int i=0; i<adressesFacturations.size(); i++){
-                            mAdressesFac[i] = adressesFacturations.get(i).getDestinataire()+" : "+adressesFacturations.get(i).getLibelle();
+                HomeView.IHome iHome = iOrderSummaryFrag.retrieveIHomeInstance();
+                if(iHome != null){
+                    int viewPagerCurrentItem = iHome.retrieveViewPagerCurrentItem();
+                    // If current fragement is : OrderSummaryFragment
+                    if(viewPagerCurrentItem == 10){
+                        String clientToken = HomePresenter.retrieveClientToken(context);
+                        if(clientToken != null && clientToken.length() >= 50){
+                            // Adresse de facturation
+                            String[] mAdressesFac = {"Aucune adresse pour le moment"};
+                            DAOAdresse daoAdresse = new DAOAdresse(context);
+                            ArrayList<Adresse> adressesFacturations = daoAdresse.getAll(clientToken, "facturation");
+                            if(adressesFacturations != null && adressesFacturations.size() > 0){
+                                mAdressesFac = new String[adressesFacturations.size()];
+                                for (int i=0; i<adressesFacturations.size(); i++){
+                                    mAdressesFac[i] = adressesFacturations.get(i).getDestinataire()+" : "+adressesFacturations.get(i).getLibelle();
+                                }
+                            }
+                            iOrderSummaryFrag.loadAdressesFacturations(mAdressesFac);
+                            // Adresse de livraison
+                            String[] mAdressesLiv = {"Aucune adresse pour le moment"};
+                            daoAdresse = new DAOAdresse(context);
+                            ArrayList<Adresse> adressesLivraisons = daoAdresse.getAll(clientToken, "livraison");
+                            if(adressesLivraisons != null && adressesLivraisons.size() > 0){
+                                mAdressesLiv = new String[adressesLivraisons.size()];
+                                for (int i=0; i<adressesLivraisons.size(); i++){
+                                    mAdressesLiv[i] = adressesLivraisons.get(i).getDestinataire()+" : "+adressesLivraisons.get(i).getLibelle();
+                                }
+                            }
+                            iOrderSummaryFrag.loadAdressesLivraisons(mAdressesLiv);
                         }
                     }
-                    iOrderSummaryFrag.loadAdressesFacturations(mAdressesFac);
-                    // Adresse de livraison
-                    String[] mAdressesLiv = {"Aucune adresse pour le moment"};
-                    daoAdresse = new DAOAdresse(context);
-                    ArrayList<Adresse> adressesLivraisons = daoAdresse.getAll(clientToken, "livraison");
-                    if(adressesLivraisons != null && adressesLivraisons.size() > 0){
-                        mAdressesLiv = new String[adressesLivraisons.size()];
-                        for (int i=0; i<adressesLivraisons.size(); i++){
-                            mAdressesLiv[i] = adressesLivraisons.get(i).getDestinataire()+" : "+adressesLivraisons.get(i).getLibelle();
-                        }
-                    }
-                    iOrderSummaryFrag.loadAdressesLivraisons(mAdressesLiv);
                 }
             }
         }

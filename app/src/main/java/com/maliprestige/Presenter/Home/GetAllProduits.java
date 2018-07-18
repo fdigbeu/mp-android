@@ -56,8 +56,11 @@ public class GetAllProduits extends AsyncTask<Void, Void, ArrayList<Produit>> {
         try {
             URL url = new URL(produitUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(8000);
+            urlConnection.setRequestProperty("User-Agent", HomePresenter.USER_AGENT);
+            urlConnection.setRequestProperty("Connection", "close");
             urlConnection.setConnectTimeout(8000);
+            urlConnection.setReadTimeout(8000);
+            urlConnection.connect();
 
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
