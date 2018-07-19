@@ -52,8 +52,8 @@ public class GetAllOrders extends AsyncTask<Void, Void, ArrayList<Commande>> {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("User-Agent", HomePresenter.USER_AGENT);
             urlConnection.setRequestProperty("Connection", "close");
-            urlConnection.setConnectTimeout(15000);
-            urlConnection.setReadTimeout(15000);
+            urlConnection.setConnectTimeout(10000);
+            urlConnection.setReadTimeout(10000);
             urlConnection.connect();
             // If connection failed
             if (urlConnection.getResponseCode() != 200) {

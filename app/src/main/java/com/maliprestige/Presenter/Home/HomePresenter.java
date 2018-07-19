@@ -30,6 +30,7 @@ import com.maliprestige.Model.Commande;
 import com.maliprestige.Model.Cryptage;
 import com.maliprestige.Model.DAOClient;
 import com.maliprestige.Model.DAOPanier;
+import com.maliprestige.Model.DAOSearch;
 import com.maliprestige.Model.JsonData;
 import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Screen;
@@ -57,7 +58,6 @@ public class HomePresenter implements HomeView.IPresenter{
     private static String MP_LAST_CLIENT_CONNECTED = "MP_LAST_CLIENT_CONNECTED";
     private static String MP_CLIENT_TOKEN = "MP_CLIENT_TOKEN";
     private static String MP_CLIENT_DECONNECTED = "MP_CLIENT_DECONNECTED";
-    private static String MP_AUTO_COMPLETE_DATA = "MP_AUTO_COMPLETE_DATA";
     public static final String USER_AGENT = "Mozilla/5.0 (Linux; U; Android 1.6; en-us; GenericAndroidDevice) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1";
 
     public HomePresenter(HomeView.IHome iHome) {
@@ -106,16 +106,13 @@ public class HomePresenter implements HomeView.IPresenter{
                 iHome.searchVisibility(View.GONE);
                 iHome.fabSearchVisibility(View.GONE);
                 // Verify if Search contains data
-                String searchJson = retrieveAutoCompleteData(context);
-                if(searchJson != null){
-                    JsonData jsonData = new JsonData(searchJson);
-                    if(jsonData != null) {
-                        ArrayList<String> searchList = jsonData.getAutoCompleteSearchDataFromJson();
-                        if(searchList != null && searchList.size() > 0) {
-                            iHome.loadAutoCompleteData(searchList);
-                            iHome.fabSearchVisibility(View.VISIBLE);
-                        }
-                    }
+                DAOSearch daoSearch = new DAOSearch(context);
+                ArrayList<Search> searches = daoSearch.getAll();
+                if(searches != null && searches.size() > 0){
+                    ArrayList<String> searchList = new ArrayList<>();
+                    for (int i=0; i<searches.size(); i++){ searchList.add(searches.get(i).getNomProduit().trim()); }
+                    iHome.loadAutoCompleteData(searchList);
+                    iHome.fabSearchVisibility(View.VISIBLE);
                 }
                 // Search new data if connection exists
                 if(HomePresenter.isMobileConnected(context)){
@@ -655,20 +652,6 @@ public class HomePresenter implements HomeView.IPresenter{
         return cryptage.decrypterData(data);
     }
 
-    // Method to retrieve autocomplete data
-    public static String retrieveAutoCompleteData(Context context){
-        try { return getDataFromSharePreferences(context, MP_AUTO_COMPLETE_DATA); }
-        catch (Exception ex){
-            return null;
-        }
-    }
-
-    // Method to save autocomplete data
-    public static void saveAutoCompleteData(Context context, String jsonSearch){
-        try { saveDataInSharePreferences(context, MP_AUTO_COMPLETE_DATA, jsonSearch); }
-        catch (Exception ex){ Log.e("TAG_ERROR", "HomePresenter-->saveAutoCompleteData() : "+ex.getMessage()); }
-    }
-
     // Method to display snackbar message
     public static void messageSnackBar(View view, String message){
         try {
@@ -753,28 +736,33 @@ public class HomePresenter implements HomeView.IPresenter{
 
     @Override
     public void onLoadProduitsFinished(Context context, ArrayList<Produit> produits) {
-        // Save produit in search data
-        if(produits != null && produits.size() > 0){
-            ArrayList<Search> searches = new ArrayList<>();
-            ArrayList<String> searchList = new ArrayList<>();
-            for (int i=0; i<produits.size(); i++){
-                Search search = new Search();
-                search.setProduitId(produits.get(i).getProduitId());
-                search.setNomProduit(produits.get(i).getNom());
-                search.setImage1(produits.get(i).getImage1());
-                search.setImage2(produits.get(i).getImage2());
-                search.setImage3(produits.get(i).getImage3());
-                searches.add(search);
-                //--
-                searchList.add(produits.get(i).getNom());
+        try {
+            // Save produit in search data
+            if(iHome != null && produits != null && produits.size() > 0){
+                ArrayList<String> searchList = new ArrayList<>();
+                DAOSearch daoSearch = new DAOSearch(context);
+                daoSearch.deleteAll();
+                for (int i=0; i<produits.size(); i++){
+                    Search search = new Search();
+                    search.setProduitId(produits.get(i).getProduitId());
+                    search.setNomProduit(produits.get(i).getNom());
+                    search.setImage1(produits.get(i).getImage1());
+                    search.setImage2(produits.get(i).getImage2());
+                    search.setImage3(produits.get(i).getImage3());
+                    //--
+                    daoSearch = new DAOSearch(context);
+                    daoSearch.add(search);
+                    //--
+                    searchList.add(produits.get(i).getNom());
+                }
+                if(searchList.size() > 0){
+                    iHome.loadAutoCompleteData(searchList);
+                    iHome.fabSearchVisibility(View.VISIBLE);
+                }
             }
-            if(searches.size() > 0){
-                saveAutoCompleteData(context, searches.toString());
-                iHome.loadAutoCompleteData(searchList);
-                iHome.fabSearchVisibility(View.VISIBLE);
-                //Log.i("TAG_SEARCH", "TOTAL = "+searches.size());
-                //Log.i("TAG_SEARCH", searches.toString());
-            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERREUR", "HomePresenter->onLoadProduitsFinished() : "+ex.getMessage());
         }
     }
 

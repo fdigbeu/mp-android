@@ -17,7 +17,7 @@ public class DAOCommande {
 
     public void createTable(){
         String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "commandeId INTEGER, " +
+                "commandeId VARCHAR, " +
                 "numeroCommande VARCHAR, " +
                 "montantCommande VARCHAR, " +
                 "dateValidation VARCHAR, " +
@@ -84,7 +84,7 @@ public class DAOCommande {
         for(Integer j=0; j<count; j++){
             Commande commande = new Commande();
             int id = cursor.getInt(cursor.getColumnIndex("id"));
-            int commandeId = cursor.getInt(cursor.getColumnIndex("commandeId"));
+            int commandeId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("commandeId")));
             String numeroCommande = cursor.getString(cursor.getColumnIndex("numeroCommande"));
             float montantCommande = cursor.getFloat(cursor.getColumnIndex("montantCommande"));
             String dateValidation = cursor.getString(cursor.getColumnIndex("dateValidation"));

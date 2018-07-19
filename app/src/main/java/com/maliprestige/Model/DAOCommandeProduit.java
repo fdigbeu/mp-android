@@ -17,7 +17,7 @@ public class DAOCommandeProduit {
     }
 
     public void createTable(){
-        String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, produitId INTEGER, nomProduit VARCHAR, qteProduit VARCHAR, prixQteProduit VARCHAR, numeroCommande VARCHAR, token VARCHAR);";
+        String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, produitId VARCHAR, nomProduit VARCHAR, qteProduit VARCHAR, prixQteProduit VARCHAR, numeroCommande VARCHAR, token VARCHAR);";
         connexion = new DAOConnexion(context);
         connexion.getDb().execSQL(sql);
     }
@@ -44,7 +44,7 @@ public class DAOCommandeProduit {
         for(Integer j=0; j<count; j++){
             CommandeProduit commandeProduit = new CommandeProduit();
             int id = cursor.getInt(cursor.getColumnIndex("id"));
-            int produitId = cursor.getInt(cursor.getColumnIndex("produitId"));
+            int produitId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("produitId")));
             String nomProduit = cursor.getString(cursor.getColumnIndex("nomProduit"));
             String qteProduit = cursor.getString(cursor.getColumnIndex("qteProduit"));
             String prixQteProduit = cursor.getString(cursor.getColumnIndex("prixQteProduit"));
@@ -76,7 +76,7 @@ public class DAOCommandeProduit {
         for(Integer j=0; j<count; j++){
             CommandeProduit commandeProduit = new CommandeProduit();
             int id = cursor.getInt(cursor.getColumnIndex("id"));
-            int produitId = cursor.getInt(cursor.getColumnIndex("produitId"));
+            int produitId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("produitId")));
             String nomProduit = cursor.getString(cursor.getColumnIndex("nomProduit"));
             String qteProduit = cursor.getString(cursor.getColumnIndex("qteProduit"));
             String prixQteProduit = cursor.getString(cursor.getColumnIndex("prixQteProduit"));

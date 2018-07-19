@@ -17,7 +17,7 @@ public class DAOAdresse {
     }
 
     public void createTable(){
-        String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, adresseId INTEGER, type VARCHAR, token VARCHAR, destinataire VARCHAR, libelle VARCHAR);";
+        String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, adresseId VARCHAR, type VARCHAR, token VARCHAR, destinataire VARCHAR, libelle VARCHAR);";
         connexion = new DAOConnexion(context);
         connexion.getDb().execSQL(sql);
     }
@@ -43,7 +43,7 @@ public class DAOAdresse {
         for(Integer j=0; j<count; j++){
             Adresse adresse = new Adresse();
             int id = cursor.getInt(cursor.getColumnIndex("id"));
-            int adresseId = cursor.getInt(cursor.getColumnIndex("adresseId"));
+            int adresseId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("adresseId")));
             String type = cursor.getString(cursor.getColumnIndex("type"));
             String token = cursor.getString(cursor.getColumnIndex("token"));
             String destinataire = cursor.getString(cursor.getColumnIndex("destinataire"));

@@ -37,7 +37,7 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
     private DiapoPresenter diapoPresenter;
     private int numberOfDiapo;
     private MenuItem menuItem;
-    private TextView imagePager;
+    private TextView compteurImage;
     private DiapoView.IPlaceholder iPlaceholder;
 
     @Override
@@ -79,7 +79,7 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mViewPager = findViewById(R.id.container);
         diapoTitle = findViewById(R.id.diapoTitle);
-        imagePager = findViewById(R.id.detail_image_pager);
+        compteurImage = findViewById(R.id.detail_image_pager);
     }
 
     @Override
@@ -134,6 +134,7 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
     @Override
     public void feedDiapoPageNumber(String pageNumber) {
         menuItem.setTitle(pageNumber);
+        compteurImage.setText("IMAGE "+pageNumber);
     }
 
     /**

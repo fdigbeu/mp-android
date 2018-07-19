@@ -5,7 +5,11 @@ import android.util.Log;
 import android.view.View;
 
 import com.maliprestige.Model.DAOPanier;
+import com.maliprestige.Model.DAOProduit;
+import com.maliprestige.Model.JsonData;
 import com.maliprestige.Model.Panier;
+import com.maliprestige.Model.Produit;
+import com.maliprestige.Model.Search;
 import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.BasketFragView;
@@ -128,6 +132,28 @@ public class BasketFragPresenter implements BasketFragView.IPresenter{
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "BasketFragPresenter-->modifyBasketData() : "+ex.getMessage());
+        }
+    }
+
+    // Method to show bascket detail
+    public void showProductDetail(Context context, Panier panier){
+        try {
+            if(iBasketFrag != null){
+                Log.i("TAG_PRODUIT_ID", "panier : "+panier.getProduitId());
+                /*HomeView.IHome mIHome = iBasketFrag.retrieveIHomeInstance();
+                HomePresenter homePresenter = new HomePresenter(mIHome);
+                if(panier != null){
+                    String jsonString = HomePresenter.retrieveAutoCompleteData(context);
+                    Log.e("TAG_ERROR", "jsonString : "+jsonString);
+                    JsonData jsonData = new JsonData(jsonString);
+                    ArrayList<String> searches = jsonData.getAutoCompleteSearchDataFromJson();
+                    Log.e("TAG_ERROR", "jsonData : "+searches.size());
+                    //homePresenter.launchProduitDetail(produit);
+                }*/
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "BasketFragPresenter-->showProductDetail() : "+ex.getMessage());
         }
     }
 

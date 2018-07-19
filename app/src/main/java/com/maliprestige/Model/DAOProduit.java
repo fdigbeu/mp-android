@@ -17,7 +17,7 @@ public class DAOProduit {
 
     public void createTable(){
         String sql = "CREATE TABLE IF NOT EXISTS "+table_name+" (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "produitId INTEGER, " +
+                "produitId VARCHAR, " +
                 "nom VARCHAR, " +
                 "descrition VARCHAR, " +
                 "prixUnitaire VARCHAR, " +
@@ -99,7 +99,7 @@ public class DAOProduit {
         for(Integer j=0; j<count; j++){
             Produit produit = new Produit();
             int id = cursor.getInt(cursor.getColumnIndex("id"));
-            int produitId = cursor.getInt(cursor.getColumnIndex("produitId"));
+            int produitId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("produitId")));
             String nom = cursor.getString(cursor.getColumnIndex("nom"));
             String descrition = cursor.getString(cursor.getColumnIndex("descrition"));
             String prixUnitaire = cursor.getString(cursor.getColumnIndex("prixUnitaire"));
@@ -169,7 +169,7 @@ public class DAOProduit {
         return resultat;
     }
 
-    public Produit getInfoBy(int mProduitId){
+    public Produit getInfoBy(String mProduitId){
         createTable();
         ArrayList<Produit> resultat = new ArrayList<>();
         Cursor cursor = connexion.getDb().rawQuery("Select * FROM " + table_name +" WHERE produitId = '"+mProduitId+"'", null);

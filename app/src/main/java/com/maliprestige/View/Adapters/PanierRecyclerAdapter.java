@@ -93,7 +93,8 @@ public class PanierRecyclerAdapter extends RecyclerView.Adapter<PanierRecyclerAd
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    BasketFragPresenter basketFragPresenter = new BasketFragPresenter(iBasketFrag);
+                    basketFragPresenter.showProductDetail(context, paniers.get(positionItem));
                 }
             });
 
