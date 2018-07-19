@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.maliprestige.Presenter.Splash.SplashPresenter;
 import com.maliprestige.R;
@@ -22,6 +23,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView.ISpl
     private ImageView imageExotique;
     private ImageView imageLogo;
     private CountDownTimer downTimer;
+    private TextView msgErreur;
     // Presenter
     private SplashPresenter splashPresenter;
 
@@ -42,6 +44,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView.ISpl
         imageEnfant = findViewById(R.id.imageEnfant);
         imageExotique = findViewById(R.id.imageExotique);
         imageLogo = findViewById(R.id.imageLogo);
+        msgErreur = findViewById(R.id.messageSplash);
     }
 
     @Override
@@ -78,6 +81,11 @@ public class SplashActivity extends AppCompatActivity implements SplashView.ISpl
                 finish();
             }
         }.start();
+    }
+
+    @Override
+    public void messageVisibility(int visibility) {
+        msgErreur.setVisibility(visibility);
     }
 
     @Override

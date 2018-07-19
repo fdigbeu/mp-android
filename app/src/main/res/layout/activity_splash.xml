@@ -58,4 +58,18 @@
         android:contentDescription="@string/lb_empty"
         android:scaleType="fitCenter"/>
 
+    <TextView
+        android:id="@+id/messageSplash"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorPink"
+        android:background="@drawable/message_erreur_radius"
+        android:textSize="@dimen/text_size_20sp"
+        android:visibility="gone"
+        android:padding="@dimen/largeur_element_ten"
+        android:layout_margin="@dimen/largeur_element_ten"
+        android:text="@string/lb_splash_message_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

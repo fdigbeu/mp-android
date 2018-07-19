@@ -6,6 +6,7 @@ public class SplashView {
         public void events();
         public void hideHeader();
         public void displayHome();
+        public void messageVisibility(int visibility);
     }
 
     public interface IPresenter{}

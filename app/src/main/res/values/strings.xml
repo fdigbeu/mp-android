@@ -64,6 +64,8 @@
     <string name="lb_paiement_virement">VIREMENT</string>
     <string name="lb_paiement_espece">ESPÈCE</string>
 
+    <string name="lb_splash_message_error">Vous n\'avez pas de connexion internet. \nLe premier chargement de l\'application requiert une connexion internet.\nCette connexion permettra de communiquer avec le serveur de Mali Prestige.</string>
+
     <string name="lb_order_detail">Voir le détail</string>
     <string name="lb_detail_commande">Détail de la commande</string>
     <string name="lb_detail_facture">Détail de la facture</string>

@@ -3,9 +3,13 @@ package com.maliprestige.Presenter.Splash;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
 
+import com.maliprestige.Model.DAOSlide;
 import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.View.Interfaces.SplashView;
+
+import java.util.ArrayList;
 
 public class SplashPresenter {
 
@@ -29,7 +33,22 @@ public class SplashPresenter {
                 iSplash.hideHeader();
                 iSplash.initialize();
                 iSplash.events();
-                iSplash.displayHome();
+
+                iSplash.messageVisibility(View.GONE);
+
+                // Verify if slide data has never saved
+                DAOSlide daoSlide = new DAOSlide(context);
+                if(daoSlide.getAll() == null || (daoSlide.getAll() != null && daoSlide.getAll().size()==0)){
+                    if(HomePresenter.isMobileConnected(context)){
+                        iSplash.displayHome();
+                    }
+                    else{
+                       iSplash.messageVisibility(View.VISIBLE);
+                    }
+                }
+                else{
+                    iSplash.displayHome();
+                }
             }
         }
         catch (Exception ex){
