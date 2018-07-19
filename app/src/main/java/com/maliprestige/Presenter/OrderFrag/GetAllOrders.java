@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.maliprestige.Model.Commande;
 import com.maliprestige.Model.CommandeProduit;
+import com.maliprestige.Model.DAOCommande;
 import com.maliprestige.Presenter.Home.HomePresenter;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.OrderFragView;
@@ -51,12 +52,14 @@ public class GetAllOrders extends AsyncTask<Void, Void, ArrayList<Commande>> {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("User-Agent", HomePresenter.USER_AGENT);
             urlConnection.setRequestProperty("Connection", "close");
-            urlConnection.setConnectTimeout(8000);
-            urlConnection.setReadTimeout(8000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setReadTimeout(15000);
             urlConnection.connect();
             // If connection failed
             if (urlConnection.getResponseCode() != 200) {
-                return null;
+                DAOCommande daoCommande = new DAOCommande(context);
+                commandes = daoCommande.getAllBy(clientToken);
+                return commandes;
             }
             //--
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -70,7 +73,9 @@ public class GetAllOrders extends AsyncTask<Void, Void, ArrayList<Commande>> {
         }
         catch (Exception ex) {
             Log.e("TAG_ERREUR", "GetAllOrders->Exception(Ex) : "+ex.getMessage());
-            return null;
+            DAOCommande daoCommande = new DAOCommande(context);
+            commandes = daoCommande.getAllBy(clientToken);
+            return commandes;
         }
         finally {
             urlConnection.disconnect();
@@ -123,7 +128,9 @@ public class GetAllOrders extends AsyncTask<Void, Void, ArrayList<Commande>> {
         }
         catch (JSONException ex) {
             Log.e("TAG_ERREUR", "GetAllOrders->JSONException(ex) : "+ex.getMessage());
-            return null;
+            DAOCommande daoCommande = new DAOCommande(context);
+            commandes = daoCommande.getAllBy(clientToken);
+            return commandes;
         }
 
         return commandes;

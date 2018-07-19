@@ -16,6 +16,7 @@ public class OrderFragView {
         public void messageOrder(String message);
         public void loadRecyclerViewData(ArrayList<Commande> commandes, int numberColumns);
         public HomeView.IHome retrieveIHomeInstance();
+        public void swipeRefreshVisibility(boolean visible);
     }
 
     // Presenter interface

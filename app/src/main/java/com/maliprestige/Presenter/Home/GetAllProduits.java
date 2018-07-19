@@ -58,8 +58,8 @@ public class GetAllProduits extends AsyncTask<Void, Void, ArrayList<Produit>> {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("User-Agent", HomePresenter.USER_AGENT);
             urlConnection.setRequestProperty("Connection", "close");
-            urlConnection.setConnectTimeout(8000);
-            urlConnection.setReadTimeout(8000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setReadTimeout(15000);
             urlConnection.connect();
             // If connection failed
             if (urlConnection.getResponseCode() != 200) {

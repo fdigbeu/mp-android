@@ -35,8 +35,8 @@ public class HomeView {
         public void persistCommandes(ArrayList<Commande> commandes);
         public ArrayList<Commande> retrievePersistCommandes();
         public void emptyPersistence();
-        public void initializeRefreshFragment(boolean refresh);
-        public boolean retrieveRefreshFragment();
+        public void initializeRefreshFragment(String refresh);
+        public String retrieveRefreshFragment();
     }
 
     public interface IPresenter{

@@ -65,6 +65,8 @@
     <string name="lb_paiement_espece">ESPÈCE</string>
 
     <string name="lb_order_detail">Voir le détail</string>
+    <string name="lb_detail_commande">Détail de la commande</string>
+    <string name="lb_detail_facture">Détail de la facture</string>
     <string name="lb_order_regler">Régler la commande</string>
     <string name="lb_order_facture">Télécharger la facture</string>
 
@@ -137,7 +139,8 @@
     <string name="mp_json_client_ajouter_adresse">/api/client/ajouter/adresse/livraison-ou-facturation.json/</string>
     <string name="mp_json_client_paiement_paypal">/api/client/{CLIENT_TOKEN}/commande/numero/{NUMERO_COMMANDE}/paiement/paypal.json/</string>
     <string name="mp_json_client_detail_commande">/api/client/{CLIENT_TOKEN}/commande/numero/{NUMERO_COMMANDE}/detail.json/</string>
-    <string name="mp_json_client_generer_facture">/api/client/{CLIENT_TOKEN}/facture/numero/{NUMERO_FACTURE}/detail.pdf</string>
+    <string name="mp_json_client_generer_facture">/api/client/{CLIENT_TOKEN}/detail/facture/numero/mp-{NUMERO_FACTURE}.pdf</string>
+    <string name="mp_json_client_detail_facture">/api/client/{CLIENT_TOKEN}/facture/numero/{NUMERO_FACTURE}/detail.json/</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

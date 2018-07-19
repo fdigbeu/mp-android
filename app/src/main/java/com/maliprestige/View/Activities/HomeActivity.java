@@ -328,11 +328,11 @@ public class HomeActivity extends AppCompatActivity
     public ArrayList<Produit> retrievePersistProduits(String key){ return this.listeProduits.get(key); }
 
     // Persistence Refresh fragment
-    private boolean refresh;
+    private String refresh; // paypal, order-summary
     @Override
-    public void initializeRefreshFragment(boolean refresh) { this.refresh = refresh; }
+    public void initializeRefreshFragment(String refresh) { this.refresh = refresh; }
     @Override
-    public boolean retrieveRefreshFragment() { return this.refresh; }
+    public String retrieveRefreshFragment() { return this.refresh; }
 
     // Persist orders data
     private ArrayList<Commande> commandes;
@@ -344,5 +344,6 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void emptyPersistence(){
         commandes = null;
+        refresh = null;
     }
 }

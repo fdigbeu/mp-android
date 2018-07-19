@@ -31,13 +31,15 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
     }
 
     // Method to load order fragment data
-    public void loadOrderFragData(Context context){
+    public void loadOrderFragData(View view){
         try {
+            Context context = view.getContext();
             String clientToken = HomePresenter.retrieveClientToken(context);
             if(iOrderFrag != null && context != null && clientToken != null && clientToken.length() >= 50){
                 iOrderFrag.initialize();
                 iOrderFrag.events();
 
+                iOrderFrag.swipeRefreshVisibility(false);
                 iOrderFrag.messageVisibility(View.GONE);
                 HomeView.IHome mIHome = iOrderFrag.retrieveIHomeInstance();
                 HomePresenter homePresenter = new HomePresenter(mIHome);
@@ -81,6 +83,27 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
         }
     }
 
+
+    // Method to refresh data by swiping
+    public void swipeRefresFragmenthData(View view){
+        try {
+            Context context = view.getContext();
+            String clientToken = HomePresenter.retrieveClientToken(context);
+            if(HomePresenter.isMobileConnected(context) && iOrderFrag != null && clientToken != null && clientToken.length() >= 50) {
+                HomeView.IHome iHome = iOrderFrag.retrieveIHomeInstance();
+                if(iHome != null) {
+                    HomePresenter homePresenter = new HomePresenter(iHome);
+                    homePresenter.initializeRefreshFragment("refresh");
+                    //--
+                    refreshFragmentData(context);
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "OrderFragPresenter-->swipeRefresFragmenthData() : "+ex.getMessage());
+        }
+    }
+
     // Method to refresh fragment data
     public void refreshFragmentData(Context context){
         try {
@@ -89,15 +112,22 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
                 HomeView.IHome iHome = iOrderFrag.retrieveIHomeInstance();
                 if(iHome != null){
                     HomePresenter homePresenter = new HomePresenter(iHome);
-                    boolean refreshData = homePresenter.retrieveRefreshFragment();
-                    if(refreshData){
+                    String refreshData = homePresenter.retrieveRefreshFragment();
+                    if(refreshData != null && (
+                            refreshData.equalsIgnoreCase("paypal") ||
+                            refreshData.equalsIgnoreCase("refresh")
+                    )){
                         iOrderFrag.progressVisibility(View.VISIBLE);
+                        if(refreshData.equalsIgnoreCase("refresh")){
+                            iOrderFrag.swipeRefreshVisibility(true);
+                            iOrderFrag.progressVisibility(View.GONE);
+                        }
                         ordersAsyntask = new GetAllOrders();
                         ordersAsyntask.setOrderFragPresenter(this);
                         ordersAsyntask.initialize(context, clientToken);
                         ordersAsyntask.execute();
                         //--
-                        homePresenter.initializeRefreshFragment(false);
+                        homePresenter.initializeRefreshFragment(null);
                     }
                 }
             }
@@ -180,14 +210,23 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
                     public boolean onMenuItemClick(MenuItem item) {
                         int id = item.getItemId();
                         switch (id){
-                            case R.id.action_voir_detail:
+                            case R.id.action_detail_commande:
                                 String urlDetailCommande = context.getResources().getString(R.string.mp_json_hote_production)+
                                         context.getResources().getString(R.string.mp_json_client_detail_commande)
                                                 .replace("{NUMERO_COMMANDE}", numeroCommande)
                                                 .replace("{CLIENT_TOKEN}", clientToken);
                                 HomePresenter pCmd = new HomePresenter(iHome);
                                 pCmd.launchWebHtmlActivity(urlDetailCommande);
-                                pCmd.initializeRefreshFragment(false);
+                                pCmd.initializeRefreshFragment(null);
+                                break;
+                            case R.id.action_detail_facture:
+                                String urlDetailFacture = context.getResources().getString(R.string.mp_json_hote_production)+
+                                        context.getResources().getString(R.string.mp_json_client_detail_facture)
+                                                .replace("{NUMERO_FACTURE}", numeroFacture)
+                                                .replace("{CLIENT_TOKEN}", clientToken);
+                                HomePresenter pFacture = new HomePresenter(iHome);
+                                pFacture.launchWebHtmlActivity(urlDetailFacture);
+                                pFacture.initializeRefreshFragment(null);
                                 break;
                             case R.id.action_reglement_paypal:
                                 String urlPaypal = context.getResources().getString(R.string.mp_json_hote_production)+
@@ -196,7 +235,7 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
                                                 .replace("{CLIENT_TOKEN}", clientToken);
                                 HomePresenter pPaypal = new HomePresenter(iHome);
                                 pPaypal.launchWebHtmlActivity(urlPaypal);
-                                pPaypal.initializeRefreshFragment(true);
+                                pPaypal.initializeRefreshFragment("paypal");
                                 break;
                             case R.id.action_voir_facture:
                                 String urlGenererFacture = context.getResources().getString(R.string.mp_json_hote_production)+
@@ -204,8 +243,8 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
                                                 .replace("{NUMERO_FACTURE}", numeroFacture)
                                                 .replace("{CLIENT_TOKEN}", clientToken);
                                 HomePresenter.launchExternalPageWeb(context, urlGenererFacture);
-                                HomePresenter pFacture = new HomePresenter(iHome);
-                                pFacture.initializeRefreshFragment(false);
+                                HomePresenter pvFacture = new HomePresenter(iHome);
+                                pvFacture.initializeRefreshFragment(null);
                                 break;
                         }
                         return true;
@@ -222,10 +261,11 @@ public class OrderFragPresenter implements OrderFragView.IPresenter{
     @Override
     public void onLoadCommandesFinished(Context context, ArrayList<Commande> commandes) {
         try {
-            iOrderFrag.progressVisibility(View.GONE);
-            iOrderFrag.messageVisibility(View.GONE);
             String clientToken = HomePresenter.retrieveClientToken(context);
             if (iOrderFrag != null && clientToken != null && clientToken.length() >= 50){
+                iOrderFrag.swipeRefreshVisibility(false);
+                iOrderFrag.progressVisibility(View.GONE);
+                iOrderFrag.messageVisibility(View.GONE);
                 //Log.i("TAG_DATA", "onLoadCommandesFinished(INSIDE_TOKEN)");
                 // Save commande in database
                 if(commandes != null && commandes.size() > 0){

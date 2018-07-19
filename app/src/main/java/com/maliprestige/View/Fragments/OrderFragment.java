@@ -1,10 +1,12 @@
 package com.maliprestige.View.Fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,11 +34,13 @@ public class OrderFragment extends Fragment implements OrderFragView.IOrderFrag{
     // Ref HomeActivity interface
     private HomeView.IHome iHome;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private TextView messageOrder;
     private OrderFragPresenter fragPresenter;
     private RecyclerView recyclerView;
     private LinearLayout progressBar;
     private OrderRecyclerAdapter adapter;
+    private View rootView;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -46,7 +50,9 @@ public class OrderFragment extends Fragment implements OrderFragView.IOrderFrag{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order, container, false);
+        View mView = inflater.inflate(R.layout.fragment_order, container, false);
+        rootView = mView.getRootView();
+        return mView;
     }
 
 
@@ -54,7 +60,7 @@ public class OrderFragment extends Fragment implements OrderFragView.IOrderFrag{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         fragPresenter = new OrderFragPresenter(this);
-        fragPresenter.loadOrderFragData(getActivity());
+        fragPresenter.loadOrderFragData(rootView);
     }
 
     @Override
@@ -69,11 +75,23 @@ public class OrderFragment extends Fragment implements OrderFragView.IOrderFrag{
         recyclerView = getActivity().findViewById(R.id.order_recyclerView);
         progressBar = getActivity().findViewById(R.id.order_frag_progressBar);
         messageOrder = getActivity().findViewById(R.id.order_message_textView);
+        swipeRefreshLayout = getActivity().findViewById(R.id.order_SwipeRefreshLayout);
+        //rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
     }
 
     @Override
     public void events() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fragPresenter.swipeRefresFragmenthData(rootView);
+            }
+        });
+    }
 
+    @Override
+    public void swipeRefreshVisibility(boolean visible){
+        swipeRefreshLayout.setRefreshing(visible);
     }
 
     @Override

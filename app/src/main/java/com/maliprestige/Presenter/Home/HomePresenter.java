@@ -498,7 +498,7 @@ public class HomePresenter implements HomeView.IPresenter{
     }
 
     // Persist : Method to know if the fragment must to be refresh
-    public void initializeRefreshFragment(boolean refresh) {
+    public void initializeRefreshFragment(String refresh) {
         try {
             iHome.initializeRefreshFragment(refresh);
         }
@@ -508,14 +508,14 @@ public class HomePresenter implements HomeView.IPresenter{
     }
 
     // Retrieve persist : Method to know if the fragment must to be refresh
-    public boolean retrieveRefreshFragment() {
+    public String retrieveRefreshFragment() {
         try {
             return iHome.retrieveRefreshFragment();
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "HomePresenter-->retrieveRefreshFragment() : "+ex.getMessage());
         }
-        return false;
+        return null;
     }
 
     // Method to show user connected menu
