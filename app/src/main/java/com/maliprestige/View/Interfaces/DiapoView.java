@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Search;
 import com.maliprestige.Model.Slide;
 
@@ -22,6 +23,12 @@ public class DiapoView {
         public void changeDiapoTitle(String title);
         public void setNumberOfDiapoFinded(int number);
         public void feedDiapoPageNumber(String pageNumber);
+        public void persistProduit(Produit produit);
+        public Produit retrievePersistProduit();
+        public void layoutPanierVisibility(int visibility);
+        public void changePrixValue(String value);
+        public void changeNewProduitValue(String value);
+        public void newProduitVisibility(int visibility);
     }
 
     public interface IPlaceholder{

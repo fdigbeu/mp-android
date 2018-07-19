@@ -18,8 +18,10 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.maliprestige.Model.Produit;
 import com.maliprestige.Presenter.Diapo.DiapoPresenter;
 import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.DiapoView;
@@ -37,8 +39,11 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
     private DiapoPresenter diapoPresenter;
     private int numberOfDiapo;
     private MenuItem menuItem;
-    private TextView compteurImage;
+    private TextView newProduit;
     private DiapoView.IPlaceholder iPlaceholder;
+    private LinearLayout layoutPanier;
+    private TextView prixProduit;
+    private Button btnAjouterAuPanier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +84,10 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mViewPager = findViewById(R.id.container);
         diapoTitle = findViewById(R.id.diapoTitle);
-        compteurImage = findViewById(R.id.detail_image_pager);
+        newProduit = findViewById(R.id.newProduit_textView);
+        layoutPanier = findViewById(R.id.layout_ajouter_au_panier);
+        prixProduit = findViewById(R.id.detail_prix_unitaire);
+        btnAjouterAuPanier = findViewById(R.id.btn_ajouter_au_panier);
     }
 
     @Override
@@ -95,6 +103,12 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
 
             @Override
             public void onPageScrollStateChanged(int state) {}
+        });
+        btnAjouterAuPanier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                diapoPresenter.retrieveUserAction(v);
+            }
         });
     }
 
@@ -133,8 +147,33 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
 
     @Override
     public void feedDiapoPageNumber(String pageNumber) {
-        menuItem.setTitle(pageNumber);
-        compteurImage.setText("IMAGE "+pageNumber);
+        menuItem.setTitle("IMAGE "+pageNumber);
+    }
+
+    private Produit produit = null;
+    @Override
+    public void persistProduit(Produit produit) { this.produit = produit; }
+    @Override
+    public Produit retrievePersistProduit() { return produit; }
+
+    @Override
+    public void layoutPanierVisibility(int visibility) {
+        layoutPanier.setVisibility(visibility);
+    }
+
+    @Override
+    public void changePrixValue(String value) {
+        prixProduit.setText(value);
+    }
+
+    @Override
+    public void changeNewProduitValue(String value) {
+        newProduit.setText(value);
+    }
+
+    @Override
+    public void newProduitVisibility(int visibility) {
+        newProduit.setVisibility(visibility);
     }
 
     /**

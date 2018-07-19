@@ -63,6 +63,20 @@ public class BasketFragPresenter implements BasketFragView.IPresenter{
         }
     }
 
+    // Method to refresh basket data
+    public void refreshBasketData(Context context) {
+        if(iBasketFrag != null && context != null){
+            HomeView.IHome iHome = iBasketFrag.retrieveIHomeInstance();
+            if(iHome != null){
+                int viewPagerCurrentItem = iHome.retrieveViewPagerCurrentItem();
+                // If current fragement is : BasketFragment
+                if(viewPagerCurrentItem == 7){
+                    loadBasketFragData(context);
+                }
+            }
+        }
+    }
+
     // Method to retrieve user action
     public void retrieveUserAction(View view){
         try {

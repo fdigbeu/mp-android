@@ -73,6 +73,12 @@ public class BasketFragment extends Fragment implements BasketFragView.IBasketFr
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        fragPresenter.refreshBasketData(getActivity());
+    }
+
+    @Override
     public void initialize() {
         recyclerView = getActivity().findViewById(R.id.panierRecyclerView);
         progressBar = getActivity().findViewById(R.id.panier_frag_progressBar);

@@ -169,7 +169,7 @@ public class DAOProduit {
         return resultat;
     }
 
-    public Produit getInfoBy(String mProduitId){
+    public Produit getInfoBy(int mProduitId){
         createTable();
         ArrayList<Produit> resultat = new ArrayList<>();
         Cursor cursor = connexion.getDb().rawQuery("Select * FROM " + table_name +" WHERE produitId = '"+mProduitId+"'", null);
@@ -246,7 +246,7 @@ public class DAOProduit {
             cursor.moveToNext();
         }
         connexion.getDb().close();
-        return resultat.size() == 0 ? resultat.get(0) : null;
+        return resultat.size() > 0 ? resultat.get(0) : null;
     }
 
     public ArrayList<Produit> getAll(){

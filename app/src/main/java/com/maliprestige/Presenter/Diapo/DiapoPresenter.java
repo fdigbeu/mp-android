@@ -6,9 +6,15 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 
+import com.maliprestige.Model.DAOPanier;
+import com.maliprestige.Model.DAOProduit;
+import com.maliprestige.Model.DAOSearch;
 import com.maliprestige.Model.JsonData;
+import com.maliprestige.Model.Panier;
+import com.maliprestige.Model.Produit;
 import com.maliprestige.Model.Search;
 import com.maliprestige.Presenter.Home.HomePresenter;
+import com.maliprestige.R;
 import com.maliprestige.View.Interfaces.DiapoView;
 
 import java.util.ArrayList;
@@ -39,12 +45,8 @@ public class DiapoPresenter {
                 String produitImage3 = intent.getStringExtra("produitImage3");
                 //--
                 iDiapo.initialize();
-                //--
-                /*Log.i("TAG_PRODUIT", "produitId = "+produitId);
-                Log.i("TAG_PRODUIT", "nomProduit = "+nomProduit);
-                Log.i("TAG_PRODUIT", "produitImage1 = "+produitImage1);
-                Log.i("TAG_PRODUIT", "produitImage2 = "+produitImage2);
-                Log.i("TAG_PRODUIT", "produitImage3 = "+produitImage3);*/
+                iDiapo.layoutPanierVisibility(View.GONE);
+                iDiapo.newProduitVisibility(View.GONE);
                 //--
                 if(!nomProduit.isEmpty() && nomProduit != null){
                     iDiapo.changeDiapoTitle(nomProduit);
@@ -57,6 +59,34 @@ public class DiapoPresenter {
                 }
                 else{
                     iDiapo.closeActivity();
+                }
+                //--
+                if(produitId == null){
+                    DAOSearch daoSearch = new DAOSearch(context);
+                    Search search = daoSearch.getInfoByNom(nomProduit);
+                    if(search != null){
+                        produitId = ""+search.getProduitId();
+                    }
+                }
+                if(produitId != null){
+                    DAOProduit daoProduit = new DAOProduit(context);
+                    Produit produit = daoProduit.getInfoBy(Integer.parseInt(produitId));
+                    if(produit != null) {
+                        // Persist produit data
+                        iDiapo.persistProduit(produit);
+                        Log.i("TAG_PRODUIT", "PERSISTENCE_DU_PRODUIT");
+                        //---
+                        iDiapo.layoutPanierVisibility(View.VISIBLE);
+                        iDiapo.newProduitVisibility(produit.isNouveaute() ? View.VISIBLE : View.GONE);
+                        iDiapo.changeNewProduitValue(produit.isNouveaute() && produit.getPrixUnitaireGros()==0 ? "Nouveauté" : (produit.getPrixUnitaireGros() > 0 ? "Le prix est au kilo": ""));
+                        //--
+                        if(produit.isReduction()){
+                            iDiapo.changePrixValue("€"+String.format("%.2f", produit.getPrixReductionTtc()));
+                        }
+                        else{
+                            iDiapo.changePrixValue(produit.getPrixUnitaireGros() > 0 ? "€"+String.format("%.2f", produit.getPrixUnitaireGros()) : "€"+String.format("%.2f", produit.getPrixUnitaireTtc()));
+                        }
+                    }
                 }
             }
             catch (Exception ex){
@@ -153,4 +183,67 @@ public class DiapoPresenter {
             Log.e("TAG_ERREUR", "DiapoPresenter->cancelCountDownTimer() : "+ex.getMessage());
         }
     }
+
+    public void retrieveUserAction(View view){
+        try {
+            if(iDiapo != null && view != null){
+                Produit produit = iDiapo.retrievePersistProduit();
+                addProductToBasket(view, produit);
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERREUR", "DiapoPresenter->retrieveUserAction() : "+ex.getMessage());
+        }
+    }
+
+    // Method to add product to the basket
+    public void addProductToBasket(View view, Produit produit){
+        try {
+            if(iDiapo != null && produit != null){
+                Context context = view.getContext();
+                String clientToken = HomePresenter.retrieveClientToken(context);
+                int produitId = produit.getProduitId();
+                float prixProduit = 0f;
+                int quantite = 1;
+                if(produit.isReduction()){ prixProduit = produit.getPrixReductionTtc(); }
+                else{ prixProduit = produit.getPrixUnitaireGros() > 0 ? produit.getPrixUnitaireGros() : produit.getPrixUnitaireTtc(); }
+                //--
+                float prixQuantite = quantite*prixProduit;
+                //--
+                Panier panier = new Panier();
+                if(clientToken != null && !clientToken.isEmpty()){
+                    DAOPanier daoPanier = new DAOPanier(context);
+                    Panier existDejaDansPanier = daoPanier.getInfoBy(clientToken, produitId);
+                    // If already exists
+                    if(existDejaDansPanier != null){
+                        quantite = existDejaDansPanier.getQuantite()+1;
+                        prixQuantite = quantite*prixProduit;
+                        daoPanier = new DAOPanier(context);
+                        daoPanier.modify(clientToken, produitId, quantite, prixQuantite);
+                    }
+                    else {
+                        panier.setToken(clientToken);
+                        panier.setQuantite(quantite);
+                        panier.setPrixQuantite(prixQuantite);
+                        panier.setProduitId(produitId);
+                        panier.setImageProduit(produit.getImage1());
+                        panier.setDelaiJourMin(produit.getDelaiJourMin());
+                        panier.setDelaiJourMax(produit.getDelaiJourMax());
+                        panier.setNomProduit(produit.getNom());
+                        daoPanier = new DAOPanier(context);
+                        daoPanier.add(panier);
+                    }
+                    //--
+                    HomePresenter.messageSnackBar(view, context.getResources().getString(R.string.lb_produit_ajout_succes));
+                }
+                else{
+                    HomePresenter.messageSnackBar(view, "Erreur ! aucun token trouvé.");
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "DiapoPresenter-->addProductToBasket() : "+ex.getMessage());
+        }
+    }
+
 }

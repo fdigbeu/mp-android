@@ -5,8 +5,9 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="largeur_element_ten">10dp</dimen>
     <dimen name="largeur_element_five">5dp</dimen>
-    <dimen name="text_size_18sp">18sp</dimen>
+    <dimen name="text_size_14sp">14sp</dimen>
     <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="text_size_18sp">18sp</dimen>
     <dimen name="text_size_20sp">20sp</dimen>
     <dimen name="text_size_27sp">25sp</dimen>
     <dimen name="appbar_padding_top">0dp</dimen>

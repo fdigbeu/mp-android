@@ -91,7 +91,7 @@ public class GetAllProduits extends AsyncTask<Void, Void, ArrayList<Produit>> {
             for (int i = 0; i < results.length(); i++){
                 JSONObject jsonObject = results.getJSONObject(i);
                 Produit produit = new Produit();
-                produit.setProduitId(jsonObject.getInt("id"));
+                produit.setProduitId(Integer.parseInt(jsonObject.getString("id")));
                 produit.setNom(jsonObject.getString("nom"));
                 produit.setDescrition(jsonObject.getString("descrition"));
                 produit.setPrixUnitaire(Float.parseFloat(jsonObject.getString("prixUnitaire")));
