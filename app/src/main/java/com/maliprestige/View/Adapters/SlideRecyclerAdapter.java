@@ -66,7 +66,7 @@ public class SlideRecyclerAdapter extends RecyclerView.Adapter<SlideRecyclerAdap
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            container = itemView.findViewById(R.id.container);
+            container = itemView.findViewById(R.id.accueil_container);
             imageView = itemView.findViewById(R.id.slide_imageview);
             textView = itemView.findViewById(R.id.slide_title_textView);
 

@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/largeur_element_ten">
 
     <LinearLayout
-        android:id="@+id/container"
+        android:id="@+id/commande_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

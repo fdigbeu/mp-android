@@ -126,7 +126,13 @@ public class ExoticFragPresenter implements ExoticFragView.IPresenter{
     // Method to show product detail
     public void showProductDetail(Produit produit){
         try {
-
+            if(iExoticFrag != null){
+                HomeView.IHome mIHome = iExoticFrag.retrieveIHomeInstance();
+                HomePresenter homePresenter = new HomePresenter(mIHome);
+                if(produit != null){
+                    homePresenter.launchProduitDetail(produit);
+                }
+            }
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "ExoticFragPresenter-->showProductDetail() : "+ex.getMessage());

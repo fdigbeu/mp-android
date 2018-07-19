@@ -89,7 +89,7 @@ public class OrderRecyclerAdapter extends RecyclerView.Adapter<OrderRecyclerAdap
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            container = itemView.findViewById(R.id.container);
+            container = itemView.findViewById(R.id.commande_container);
             orderItems = itemView.findViewById(R.id.layout_order_items);
             title = itemView.findViewById(R.id.title_commande_textView);
             menuOrder = itemView.findViewById(R.id.menu_commande_imageView);

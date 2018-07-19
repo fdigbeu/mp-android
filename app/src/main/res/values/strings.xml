@@ -83,6 +83,7 @@
     <string name="lb_panier_vide">Votre panier est vide.</string>
     <string name="lb_produit_ajout_succes">Produit ajouté au panier</string>
     <string name="lb_valider_mon_panier">Valider mon panier</string>
+    <string name="lb_ajouter_mon_panier">Ajouter à mon panier</string>
 
     <string name="lb_livraison">Livraison</string>
     <string name="lb_qui_sommes_nous">Qui sommes-nous ?</string>

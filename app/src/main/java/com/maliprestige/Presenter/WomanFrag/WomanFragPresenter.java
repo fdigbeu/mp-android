@@ -126,7 +126,13 @@ public class WomanFragPresenter implements WomanFragView.IPresenter{
     // Method to show product detail
     public void showProductDetail(Produit produit){
         try {
-
+            if(iWomanFrag != null){
+                HomeView.IHome mIHome = iWomanFrag.retrieveIHomeInstance();
+                HomePresenter homePresenter = new HomePresenter(mIHome);
+                if(produit != null){
+                    homePresenter.launchProduitDetail(produit);
+                }
+            }
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "WomanFragPresenter-->showProductDetail() : "+ex.getMessage());

@@ -10,6 +10,7 @@ public class Search {
     @Override
     public String toString() {
         return "{\"produitId\":\""+produitId+"\"," +
+                "\"nomProduit\":\""+nomProduit+"\"," +
                 "\"image1\":\""+image1+"\"," +
                 "\"image2\":\""+image2+"\"," +
                 "\"image3\":"+image3+"}";

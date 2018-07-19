@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,7 +101,6 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         // Loading of presenter
         homePresenter = new HomePresenter(this);
         homePresenter.loadHomeData(HomeActivity.this);
@@ -333,6 +333,18 @@ public class HomeActivity extends AppCompatActivity
     public void initializeRefreshFragment(String refresh) { this.refresh = refresh; }
     @Override
     public String retrieveRefreshFragment() { return this.refresh; }
+
+    @Override
+    public void launchProduitDetail(Produit produit) {
+        Intent intent = new Intent(HomeActivity.this, DiapoActivity.class);
+        intent.putExtra("nomProduit", produit.getNom());
+        intent.putExtra("produitId", produit.getProduitId());
+        intent.putExtra("produitImage1", produit.getImage1());
+        intent.putExtra("produitImage2", produit.getImage2());
+        intent.putExtra("produitImage3", produit.getImage3());
+        startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 
     // Persist orders data
     private ArrayList<Commande> commandes;

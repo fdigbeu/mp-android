@@ -44,7 +44,9 @@
         <activity
             android:name=".View.Activities.DiapoActivity"
             android:label="@string/title_activity_diapo"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

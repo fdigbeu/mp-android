@@ -125,7 +125,13 @@ public class ChildFragPresenter implements ChildFragView.IPresenter{
     // Method to show product detail
     public void showProductDetail(Produit produit){
         try {
-
+            if(iChildFrag != null){
+                HomeView.IHome mIHome = iChildFrag.retrieveIHomeInstance();
+                HomePresenter homePresenter = new HomePresenter(mIHome);
+                if(produit != null){
+                    homePresenter.launchProduitDetail(produit);
+                }
+            }
         }
         catch (Exception ex){
             Log.e("TAG_ERROR", "ChildFragPresenter-->showProductDetail() : "+ex.getMessage());

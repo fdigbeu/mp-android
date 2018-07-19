@@ -162,7 +162,7 @@ public class ProduitRecyclerAdapter extends RecyclerView.Adapter<ProduitRecycler
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            container = itemView.findViewById(R.id.container);
+            container = itemView.findViewById(R.id.produit_container);
 
             relative = itemView.findViewById(R.id.relative_image);
             relative2 = itemView.findViewById(R.id.relative_image2);

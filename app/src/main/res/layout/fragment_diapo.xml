@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorGrayLight"
     tools:context=".View.Activities.DiapoActivity$PlaceholderFragment">
 
-    <ImageView
-        android:id="@+id/diapo_imageview"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/nav_header_height"
+        android:clipToPadding="false">
+        <ImageView
+            android:id="@+id/diapo_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/lb_empty" />
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/detail_image_pager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/lb_empty" />
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="@dimen/largeur_element_ten"
+        android:padding="@dimen/largeur_element_ten"
+        android:textStyle="bold"
+        android:text="IMAGE 1/1"
+        android:background="@drawable/progress_bar_hover_radius"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/text_size_20sp"/>
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

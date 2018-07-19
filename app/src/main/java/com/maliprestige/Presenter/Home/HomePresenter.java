@@ -397,6 +397,17 @@ public class HomePresenter implements HomeView.IPresenter{
         }
     }
 
+    public void launchProduitDetail(Produit produit){
+        try {
+            if(iHome != null) {
+                iHome.launchProduitDetail(produit);
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->launchProduitDetail() : "+ex.getMessage());
+        }
+    }
+
     // Persist slides data
     public void persistSlides(ArrayList<Slide> slides){
         try {

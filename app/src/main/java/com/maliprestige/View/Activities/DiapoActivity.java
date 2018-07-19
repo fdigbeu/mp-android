@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
     private DiapoPresenter diapoPresenter;
     private int numberOfDiapo;
     private MenuItem menuItem;
+    private TextView imagePager;
     private DiapoView.IPlaceholder iPlaceholder;
 
     @Override
@@ -50,16 +52,21 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menuItem = menu.findItem(R.id.action_diapo_pager);
         getMenuInflater().inflate(R.menu.menu_diapo, menu);
+        menuItem = menu.findItem(R.id.action_diapo_pager);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_diapo_pager) {
-            return true;
+        switch (id){
+            case android.R.id.home:
+                diapoPresenter.closeActivity();
+                break;
+
+            case R.id.action_diapo_pager:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -68,8 +75,11 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
     public void initialize() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // Display Home Back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mViewPager = findViewById(R.id.container);
         diapoTitle = findViewById(R.id.diapoTitle);
+        imagePager = findViewById(R.id.detail_image_pager);
     }
 
     @Override
@@ -112,7 +122,7 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
     public ArrayList<String> retrievePersistDiapos(){ return this.urlDiapos; }
 
     @Override
-    public void changeDiapoTitel(String title) {
+    public void changeDiapoTitle(String title) {
         diapoTitle.setText(title);
     }
 
@@ -209,5 +219,11 @@ public class DiapoActivity extends AppCompatActivity implements DiapoView.IDiapo
         public int getCount() {
             return numberOfDiapo;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        diapoPresenter.cancelCountDownTimer();
     }
 }

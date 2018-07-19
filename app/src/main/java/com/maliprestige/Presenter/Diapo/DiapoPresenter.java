@@ -2,6 +2,7 @@ package com.maliprestige.Presenter.Diapo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 
@@ -16,6 +17,7 @@ public class DiapoPresenter {
 
     private DiapoView.IDiapo iDiapo;
     private DiapoView.IPlaceholder iPlaceholder;
+    private CountDownTimer downTimer;
 
     public DiapoPresenter(DiapoView.IDiapo iDiapo) {
         this.iDiapo = iDiapo;
@@ -28,34 +30,28 @@ public class DiapoPresenter {
 
     // Load diapo data
     public void loadDiapoData(Context context, Intent intent){
-        if(context != null && intent != null){
+        if(context != null && intent != null && iDiapo != null){
             try {
-                String nomProduit = intent.getStringExtra("nomProduit");
                 String produitId = intent.getStringExtra("produitId");
-                Search search = null;
-                String jsonSearches = HomePresenter.retrieveAutoCompleteData(context);
-                JsonData jsonData = new JsonData(jsonSearches);
-                ArrayList<Search> searches = jsonData.getSearchDataFromJson();
+                String nomProduit = intent.getStringExtra("nomProduit");
+                String produitImage1 = intent.getStringExtra("produitImage1");
+                String produitImage2 = intent.getStringExtra("produitImage2");
+                String produitImage3 = intent.getStringExtra("produitImage3");
                 //--
-                if(searches != null && searches.size() > 0){
-                    for (int i=0; i<searches.size(); i++){
-                        // Search by name
-                        if(nomProduit != null && nomProduit.length() >= 2){
-                            if(nomProduit.trim().equalsIgnoreCase(searches.get(i).getNomProduit().trim())){ search = searches.get(i); break; }
-                        }
-                        // Search by id
-                        if(produitId != null && Integer.parseInt(produitId) > 0){
-                            if(Integer.parseInt(produitId) == searches.get(i).getProduitId()){ search = searches.get(i); break; }
-                        }
-                    }
-                }
+                iDiapo.initialize();
                 //--
-                if(search != null){
-                    iDiapo.changeDiapoTitel(search.getNomProduit());
+                /*Log.i("TAG_PRODUIT", "produitId = "+produitId);
+                Log.i("TAG_PRODUIT", "nomProduit = "+nomProduit);
+                Log.i("TAG_PRODUIT", "produitImage1 = "+produitImage1);
+                Log.i("TAG_PRODUIT", "produitImage2 = "+produitImage2);
+                Log.i("TAG_PRODUIT", "produitImage3 = "+produitImage3);*/
+                //--
+                if(!nomProduit.isEmpty() && nomProduit != null){
+                    iDiapo.changeDiapoTitle(nomProduit);
                     ArrayList<String> urlDiapos = new ArrayList<>();
-                    if(search.getImage1() != null && !search.getImage1().isEmpty()){ urlDiapos.add(search.getImage1()); }
-                    if(search.getImage2() != null && !search.getImage2().isEmpty()){ urlDiapos.add(search.getImage2()); }
-                    if(search.getImage3() != null && !search.getImage3().isEmpty()){ urlDiapos.add(search.getImage3()); }
+                    if(produitImage1 != null && !produitImage1.isEmpty()){ urlDiapos.add(produitImage1); }
+                    if(produitImage2 != null && !produitImage2.isEmpty()){ urlDiapos.add(produitImage2); }
+                    if(produitImage3 != null && !produitImage3.isEmpty()){ urlDiapos.add(produitImage3); }
                     setNumberOfDiapoFinded(urlDiapos.size());
                     loadDataDiapoFinded(urlDiapos);
                 }
@@ -80,7 +76,7 @@ public class DiapoPresenter {
                     ArrayList<String> urlDiapos = iDiapo.retrievePersistDiapos();
                     if(urlDiapos.size() > positionFrag){
                         int width = HomePresenter.getScreenResolution(context).getWidth();
-                        int height = (int)(width*0.87f);
+                        int height = (int)(width*1.14f);
                         iPlaceholder.loadDiapoData(urlDiapos.get(positionFrag), width, height);
                     }
                 }
@@ -103,13 +99,21 @@ public class DiapoPresenter {
         }
     }
 
-    public void loadDataDiapoFinded(ArrayList<String> urlDiapos){
+    public void loadDataDiapoFinded(final ArrayList<String> urlDiapos){
         try {
             if(iDiapo != null){
                 iDiapo.persistDiapos(urlDiapos);
                 iDiapo.loadPlaceHolderFragment();
                 iDiapo.events();
-                iDiapo.feedDiapoPageNumber("1/"+urlDiapos.size());
+                downTimer = new CountDownTimer(500, 500) {
+                    @Override
+                    public void onTick(long l) {}
+
+                    @Override
+                    public void onFinish() {
+                        iDiapo.feedDiapoPageNumber("1/"+urlDiapos.size());
+                    }
+                }.start();
             }
         }
         catch (Exception ex){
@@ -119,10 +123,34 @@ public class DiapoPresenter {
 
     public void changeDiapoNumber(int currentViewPager, int totalViewPager){
         try {
-            iDiapo.feedDiapoPageNumber((currentViewPager+1)+"/"+totalViewPager);
+            if(iDiapo != null) {
+                iDiapo.feedDiapoPageNumber((currentViewPager + 1) + "/" + totalViewPager);
+            }
         }
         catch (Exception ex){
             Log.e("TAG_ERREUR", "DiapoPresenter->changeDiapoNumber() : "+ex.getMessage());
+        }
+    }
+
+    public void closeActivity(){
+        try {
+            if(iDiapo != null) {
+                iDiapo.closeActivity();
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERREUR", "DiapoPresenter->closeActivity() : "+ex.getMessage());
+        }
+    }
+
+    public void cancelCountDownTimer(){
+        try {
+            if(downTimer != null){
+                downTimer.cancel();
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERREUR", "DiapoPresenter->cancelCountDownTimer() : "+ex.getMessage());
         }
     }
 }

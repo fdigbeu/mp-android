@@ -37,6 +37,7 @@ public class HomeView {
         public void emptyPersistence();
         public void initializeRefreshFragment(String refresh);
         public String retrieveRefreshFragment();
+        public void launchProduitDetail(Produit produit);
     }
 
     public interface IPresenter{

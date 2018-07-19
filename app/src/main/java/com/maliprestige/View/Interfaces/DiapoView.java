@@ -19,7 +19,7 @@ public class DiapoView {
         public void closeActivity();
         public void persistDiapos(ArrayList<String> urlDiapos);
         public ArrayList<String> retrievePersistDiapos();
-        public void changeDiapoTitel(String title);
+        public void changeDiapoTitle(String title);
         public void setNumberOfDiapoFinded(int number);
         public void feedDiapoPageNumber(String pageNumber);
     }
