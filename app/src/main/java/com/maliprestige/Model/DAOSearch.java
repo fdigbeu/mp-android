@@ -91,6 +91,36 @@ public class DAOSearch {
         return resultat.size()>0 ? resultat.get(0) : null;
     }
 
+    public Search getInfoByNom(String mProduitNom){
+        createTable();
+        ArrayList<Search> resultat = new ArrayList<>();
+        Cursor cursor = connexion.getDb().rawQuery("Select * FROM " + table_name + " " +
+                "WHERE nomProduit LIKE '"+mProduitNom+"'", null);
+        int count = cursor.getCount();
+        cursor.moveToFirst();
+        //--
+        for(Integer j=0; j<count; j++){
+            Search search = new Search();
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            int produitId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("produitId")));
+            String nomProduit = cursor.getString(cursor.getColumnIndex("nomProduit"));
+            String image1 = cursor.getString(cursor.getColumnIndex("image1"));
+            String image2 = cursor.getString(cursor.getColumnIndex("image2"));
+            String image3 = cursor.getString(cursor.getColumnIndex("image3"));
+            //--
+            search.setProduitId(produitId);
+            search.setNomProduit(nomProduit);
+            search.setImage1(image1);
+            search.setImage2(image2);
+            search.setImage3(image3);
+            resultat.add(search);
+            //--
+            cursor.moveToNext();
+        }
+        connexion.getDb().close();
+        return resultat.size()>0 ? resultat.get(0) : null;
+    }
+
     public void deleteAll()
     {
         createTable();

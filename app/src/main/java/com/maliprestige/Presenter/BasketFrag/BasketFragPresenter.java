@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.maliprestige.Model.DAOPanier;
 import com.maliprestige.Model.DAOProduit;
+import com.maliprestige.Model.DAOSearch;
 import com.maliprestige.Model.JsonData;
 import com.maliprestige.Model.Panier;
 import com.maliprestige.Model.Produit;
@@ -140,16 +141,20 @@ public class BasketFragPresenter implements BasketFragView.IPresenter{
         try {
             if(iBasketFrag != null){
                 Log.i("TAG_PRODUIT_ID", "panier : "+panier.getProduitId());
-                /*HomeView.IHome mIHome = iBasketFrag.retrieveIHomeInstance();
-                HomePresenter homePresenter = new HomePresenter(mIHome);
-                if(panier != null){
-                    String jsonString = HomePresenter.retrieveAutoCompleteData(context);
-                    Log.e("TAG_ERROR", "jsonString : "+jsonString);
-                    JsonData jsonData = new JsonData(jsonString);
-                    ArrayList<String> searches = jsonData.getAutoCompleteSearchDataFromJson();
-                    Log.e("TAG_ERROR", "jsonData : "+searches.size());
-                    //homePresenter.launchProduitDetail(produit);
-                }*/
+                DAOSearch daoSearch = new DAOSearch(context);
+                Search search = daoSearch.getInfo(panier.getProduitId());
+                if(search != null && panier != null){
+                    HomeView.IHome mIHome = iBasketFrag.retrieveIHomeInstance();
+                    HomePresenter homePresenter = new HomePresenter(mIHome);
+                    Produit produit = new Produit();
+                    produit.setProduitId(panier.getProduitId());
+                    produit.setNom(panier.getNomProduit());
+                    produit.setImage1(search.getImage1());
+                    produit.setImage2(search.getImage2());
+                    produit.setImage3(search.getImage3());
+                    homePresenter.launchProduitDetail(produit);
+                }
+                //Log.i("TAG_PRODUIT_NOM", "panier : "+search.getNomProduit());
             }
         }
         catch (Exception ex){

@@ -223,6 +223,32 @@ public class HomePresenter implements HomeView.IPresenter{
         }
     }
 
+    public void retrieveUserCompleteSearchValue(View view, String value){
+        try {
+            if(iHome != null && value != null && !value.isEmpty()){
+                Context context = view.getContext();
+                DAOSearch daoSearch = new DAOSearch(context);
+                Search search = daoSearch.getInfoByNom(value.trim());
+                //--
+                if(search != null){
+                    Produit produit = new Produit();
+                    produit.setProduitId(search.getProduitId());
+                    produit.setNom(search.getNomProduit());
+                    produit.setImage1(search.getImage1());
+                    produit.setImage2(search.getImage2());
+                    produit.setImage3(search.getImage3());
+                    launchProduitDetail(produit);
+                }
+                else{
+                    messageSnackBar(view, context.getResources().getString(R.string.lb_erreur_data));
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.e("TAG_ERROR", "HomePresenter-->retrieveUserCompleteSearchValue() : "+ex.getMessage());
+        }
+    }
+
     // Method to manage user action
     public void retrieveUserAction(View view, String value){
         try {
@@ -235,11 +261,6 @@ public class HomePresenter implements HomeView.IPresenter{
                             iHome.searchVisibility(View.GONE);
                         else
                             iHome.changeSearchData("");
-                        break;
-
-                    case R.id.autoCompletSearch:
-                        String itemSelected = value;
-                        messageSnackBar(view, itemSelected);
                         break;
 
                     case R.id.fab_search:

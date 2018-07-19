@@ -165,7 +165,7 @@ public class HomeActivity extends AppCompatActivity
         //HomePresenter.getNavDrawerDimension(HomeActivity.this, navigationView);
 
         layoutSearch = findViewById(R.id.layoutSearch);
-        autoCompletSearch = findViewById(R.id.autoCompletSearch);
+        autoCompletSearch = findViewById(R.id.auto_complet_textView);
         imageViewClose = findViewById(R.id.imageViewClose);
         fabSearch = findViewById(R.id.fab_search);
 
@@ -221,9 +221,19 @@ public class HomeActivity extends AppCompatActivity
         autoCompletSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                homePresenter.retrieveUserAction(view, adapterView.getItemAtPosition(i).toString());
+                homePresenter.retrieveUserCompleteSearchValue(view, adapterView.getItemAtPosition(i).toString());
             }
         });
+
+        /*autoCompletSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                homePresenter.retrieveUserAction(view, parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });*/
     }
 
     @Override

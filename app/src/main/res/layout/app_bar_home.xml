@@ -48,7 +48,7 @@
             android:layout_marginBottom="@dimen/largeur_element_ten">
 
             <AutoCompleteTextView
-                android:id="@+id/autoCompletSearch"
+                android:id="@+id/auto_complet_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
